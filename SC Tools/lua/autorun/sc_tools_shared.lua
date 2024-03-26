@@ -115,6 +115,8 @@ end
 local dissolveCounter = 0
 local dissolver -- Reuse dissolver
 function RemoveEffectDissolve(ent)
+  if not IsValid(ent) or ent:IsPlayer() then return false end
+  if CLIENT then return true end
   -- https://developer.valvesoftware.com/wiki/Env_entity_dissolver
   local phys = ent:GetPhysicsObject()
   if IsValid(phys) then phys:EnableGravity(false) end
@@ -129,6 +131,9 @@ function RemoveEffectDissolve(ent)
   end
 
   dissolver:Fire("Dissolve", "sc_dissolve_" .. dissolveCounter)
+  -- Disable collision
+  ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
+  ent:SetSolid(SOLID_NONE)
   -- Use timer.Create for updating 60 sec counter
   timer.Create("SCRemoveDissolveCleanup", 60, 1, function() if IsValid(dissolver) then dissolver:Remove() end end)
 end
@@ -138,6 +143,9 @@ function RemoveEffectRemove(ent)
   if CLIENT then return true end
   -- Remove all constraints to stop ropes from hanging around
   constraint.RemoveAll(ent)
+  -- Disable collision
+  ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
+  ent:SetSolid(SOLID_NONE)
   -- Remove the entity after 0.1 second
   timer.Simple(0.1, function() if IsValid(ent) then ent:Remove() end end)
   -- Make the entity not solid
