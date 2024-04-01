@@ -78,7 +78,7 @@ local function CleanRagdoll()
   local result = 0
   -- Server-sided ragdoll
   for _, v in ipairs(ents.GetAll()) do
-    if v:GetClass() == "prop_ragdoll" then
+    if v:GetClass() == "prop_ragdoll" and v:GetName() == "" then
       RemoveEffect(v)
       result = result + 1
     end

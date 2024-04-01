@@ -9,6 +9,19 @@ function ReadConfigFiles(overwrite)
   local comment = {"You can add comment using '#'.", "'#' can be either start of the line or middle of the line. Any character after '#' will be ignored."}
   if overwrite or table.IsEmpty(SC_SMALL_MODELS) then
     local small_models_default = {}
+    small_models_default["models/combine_apc_destroyed_gib02.mdl"] = true
+    small_models_default["models/combine_apc_destroyed_gib03.mdl"] = true
+    small_models_default["models/combine_apc_destroyed_gib04.mdl"] = true
+    small_models_default["models/combine_apc_destroyed_gib05.mdl"] = true
+    small_models_default["models/combine_apc_destroyed_gib06.mdl"] = true
+    small_models_default["models/props/cs_office/trash_can_p1.mdl"] = true
+    small_models_default["models/props/cs_office/trash_can_p2.mdl"] = true
+    small_models_default["models/props/cs_office/trash_can_p3.mdl"] = true
+    small_models_default["models/props/cs_office/trash_can_p4.mdl"] = true
+    small_models_default["models/props/cs_office/trash_can_p5.mdl"] = true
+    small_models_default["models/props/cs_office/trash_can_p7.mdl"] = true
+    small_models_default["models/props/cs_office/trash_can_p8.mdl"] = true
+    small_models_default["models/props/cs_office/water_bottle.mdl"] = true
     small_models_default["models/props_c17/chair02a.mdl"] = true
     small_models_default["models/props_c17/chair02a.mdl"] = true
     small_models_default["models/props_c17/tools_pliers01a.mdl"] = true
@@ -34,14 +47,6 @@ function ReadConfigFiles(overwrite)
     small_models_default["models/props_lab/jar01a.mdl"] = true
     small_models_default["models/props_wasteland/cafeteria_table001a.mdl"] = true
     small_models_default["models/props_wasteland/controlroom_chair001a.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p1.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p2.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p3.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p4.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p5.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p7.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p8.mdl"] = true
-    small_models_default["models/props/cs_office/water_bottle.mdl"] = true
     SC_SMALL_MODELS = ReadConfigFile("sc_tools/small.txt", small_models_default, comment)
   end
 
