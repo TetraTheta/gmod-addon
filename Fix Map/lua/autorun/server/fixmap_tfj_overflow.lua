@@ -1,5 +1,5 @@
 local function fixmap_tfj_overflow()
-  if game.GetMap() == "overflow" then
+  if SERVER and game.GetMap() == "overflow" then
     local mathCounter = ents.FindByName("bridge_wave2_counter")[1]
     mathCounter:Input("AddOutput", mathCounter, nil, "OnHitMax apc01_bullseye,Break,,11,1")
     mathCounter:Input("AddOutput", mathCounter, nil, "OnHitMax apc01_driver,SetRelationship,!player D_HT 9999,11,1")

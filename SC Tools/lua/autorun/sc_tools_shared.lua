@@ -68,7 +68,7 @@ function GetPlayerByName(name)
   end
 
   for _, p in ipairs(player.GetHumans()) do
-    if p:GetName():lower() == rname then return p end
+    if p:GetName():lower() == rname:lower() then return p end
   end
   return nil
 end

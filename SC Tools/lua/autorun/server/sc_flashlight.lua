@@ -37,6 +37,8 @@ local function AllowFlashlight(ply, cmd, args, str)
     if p ~= nil and IsValid(p) and p:IsPlayer() then
       p:AllowFlashlight(true)
       SendMessage(ply, HUD_PRINTTALK, "[SC Flashlight] Flashlight is enabled to " .. p:GetName() .. ".")
+    else
+      SendMessage(ply, HUD_PRINTTALK, "[SC Flashlight] Failed to get player named '" .. args[1] .. "'.")
     end
   else
     SendMessage(ply, HUD_PRINTCONSOLE, "[SC Flashlight] You must provide one player.")
