@@ -1,0 +1,5 @@
+* text=auto
+*.lua eol=crlf
+*.qc eol=crlf
+*.smd eol=crlf
+*.vmt eol=crlf

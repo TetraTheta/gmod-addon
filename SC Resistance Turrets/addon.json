@@ -1,0 +1,12 @@
+{
+  "title": "SC Resistance Turret",
+  "type": "entity",
+  "tags": [
+    "fun",
+    "roleplay"
+  ],
+  "ignore": [
+    "models/.ignore/*",
+    "modelssrc/*"
+  ]
+}

@@ -1,0 +1,16 @@
+version 1
+nodes
+  0 "Base" -1
+  1 "Leftright" 0
+  2 "Gun" 1
+  3 "Barrel" 2
+  4 "cover" 2
+end
+skeleton
+time 0
+    0 0.748047 0.238403 17.875000 1.570674 0.000061 -0.000061   # pos: raw   rot: raw48
+    1 0.332457 15.529396 -0.220379 0.000000 1.047198 0.000000   # pos: bone   rot: raw48
+    2 2.006938 17.841654 7.452806 0.000000 0.000000 0.000000   # pos: desc_bone   rot: desc_bone
+    3 1.671227 1.473717 3.726596 0.000000 0.000000 0.000000   # pos: desc_bone   rot: desc_bone
+    4 2.516212 0.478182 -0.870788 0.000000 0.000000 0.000000   # pos: desc_bone   rot: desc_bone
+end

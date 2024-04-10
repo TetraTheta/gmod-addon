@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+  "$basetexture" "models/sc_turret_resistance/floor_turret/default"
+  "$bumpmap" "models/sc_turret_resistance/floor_turret/default_normal"
+  "$phong" "1"
+  "$phongalbedotint" "1"
+  "$phongboost" "4"
+  "$phongexponent" "10"
+  //"$phongexponenttexture" "models/sc_turret_resistance/floor_turret/default_phong"
+  "$phongfresnelranges" "[0.1 0.5 1]"
+  "$selfillum" "1"
+  "$surfaceprop" "metal"
+}

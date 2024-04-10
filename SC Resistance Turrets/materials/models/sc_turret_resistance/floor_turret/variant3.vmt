@@ -1,0 +1,24 @@
+"VertexLitGeneric"
+{
+  "$bumpmap" "models/sc_turret_resistance/floor_turret/default_normal"
+  "$phong" 1
+  "$phongboost" "4"
+  "$phongexponent" "10"
+  "$phongfresnelranges" "[0.1 0.5 1]"
+  "$selfillum" "1"
+  "$selfillumtint" "[3 3 3]"
+  "$surfaceprop" "metal"
+
+  // Use separate self-illum mask on Pre DX9 hardware
+  ">=dx90_20b"
+  {
+    "$basetexture" "models/sc_turret_resistance/floor_turret/variant3_noalpha"
+    "$selfillummask" "models/sc_turret_resistance/floor_turret/variant_glow"
+  }
+
+  // Use redundant self-illum in base alpha on Pre DX9 hardware
+  "<dx90_20b"
+  {
+    "$basetexture" "models/sc_turret_resistance/floor_turret/variant3"
+  }
+}
