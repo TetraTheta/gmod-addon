@@ -3,6 +3,8 @@ SWEP.Base = "sc_adminpistol"
 SCAPCclassName = "sc_adminpistol_clean"
 -- SWEP Information
 SWEP.Category = "SC Admin Weapons"
+SWEP.Spawnable = true
+SWEP.AdminOnly = true
 SWEP.PrintName = "Admin Pistol (Clean)"
 SWEP.Instructions = "Click to shoot, Reload to change secondary fire mode. Doesn't create bullet hole decal."
 -- Prevent weapon impact decal

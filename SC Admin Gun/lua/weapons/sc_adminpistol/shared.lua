@@ -325,10 +325,14 @@ function SWEP:SecondaryAttackRPGRocket()
   --- NPC cannot do secondary attack
   ---@cast owner Player
   if SERVER then
+    local muzzle = self:LookupAttachment("muzzle")
+    local mpos = (muzzle > 0) and self:GetAttachment(muzzle).Pos or owner:GetShootPos()
     local round = ents.Create("rpg_missile")
-    round:SetPos(owner:GetShootPos())
+    round:SetPos(mpos + (self:GetUp() * 2))
+    round:SetAngles(owner:GetAimVector():Angle())
     round:SetOwner(owner)
     round:Spawn()
+    round:NextThink(CurTime())
     local roundPhys = round:GetPhysicsObject()
     if IsValid(roundPhys) then roundPhys:SetVelocity(owner:GetAimVector() * self.Secondary.RPGRocket.Speed) end
   end

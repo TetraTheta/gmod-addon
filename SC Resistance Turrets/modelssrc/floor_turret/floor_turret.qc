@@ -82,7 +82,9 @@ $poseparameter "aim_pitch" -15 15 loop 0
 
 // TODO: Stop the turret being a tumbling doll
 $collisionmodel "floor_turret_physics.smd" {
-  $masscenter "[0 0 0]"
+  $concave
+  $mass 35
+  $masscenter "[0 0 10]"
 }
 
 $animation "aim_right_corrective_animation" "floor_turret_anims\aim_right_corrective_animation.smd" {

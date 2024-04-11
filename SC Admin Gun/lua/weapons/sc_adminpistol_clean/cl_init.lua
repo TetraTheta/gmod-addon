@@ -1,4 +1,5 @@
 include("shared.lua")
+SWEP.IconOverride = "materials/entities/weapon_pistol.png"
 killicon.AddFont(SCAPCclassName, "HL2MPTypeDeath", "-", Color(255, 80, 0, 255), 0.52)
 -- env_explosion is not well match
 killicon.AddFont("env_explosion", "HL2MPTypeDeath", "7", Color(255, 80, 0, 255), 0.35)
