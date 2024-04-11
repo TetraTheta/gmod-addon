@@ -9,7 +9,7 @@ local npc = {
   Offset = 8,
   OnFloor = true,
   Rotate = Angle(0, 180, 0),
-  Skin = 2,
+  Skin = 2, -- TODO: Add hook for NPC creation for assigning skin to it
   TotalSpawnFlags = 640
 }
 list.Set("NPC", "sc_turret_resistance_floor", npc)
@@ -25,7 +25,13 @@ hook.Add("EntityFireBullets", "sc_turret_resistance_floor_firebullets", function
           local teye = entity:EyePos() -- or use 'eyes' attachment position
           -- entity:LookupAttachment("eyes") > 0
           -- entity:GetAttachment("eyes")
-          local eeye = enemy:EyePos() - Vector(0, 0, 5)
+          local sub = Vector(0, 0, 5)
+          if enemy:GetClass() == "npc_fastzombie" or enemy:GetClass() == "npc_poisonzombie" then
+            sub = Vector(0, 0, 15)
+          elseif enemy:GetClass() == "npc_cscanner" then
+            sub = Vector(0, 0, 0)
+          end
+          local eeye = enemy:EyePos() - sub
           debugoverlay.Line(teye, eeye)
           data.Dir = (eeye - teye):GetNormalized()
           data.Spread = Vector(0, 0, 0)

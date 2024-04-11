@@ -20,12 +20,9 @@ local WeaponModes = {
   [4] = "RPG Rocket Mode"
 }
 
-net.Receive(
-  "SCAP_ChangeMode",
-  function()
-    local newMode = net.ReadUInt(3)
-    if newMode > 4 then return end
-    notification.AddLegacy(WeaponModes[newMode], NOTIFY_UNDO, 2)
-    surface.PlaySound("buttons/button15.wav")
-  end
-)
+net.Receive("SCAP_ChangeMode", function()
+  local newMode = net.ReadUInt(3)
+  if newMode > 4 then return end
+  notification.AddLegacy(WeaponModes[newMode], NOTIFY_UNDO, 2)
+  surface.PlaySound("buttons/button15.wav")
+end)

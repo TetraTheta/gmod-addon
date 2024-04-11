@@ -3,5 +3,9 @@
   "type": "weapon",
   "tags": [
     "fun"
+  ],
+  "ignore": [
+    "models/.ignore/*",
+    "modelssrc/*"
   ]
 }

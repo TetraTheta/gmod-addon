@@ -79,17 +79,13 @@ function SWEP:Initialize()
   self:SetHoldType("Pistol")
 end
 
--- function SWEP:SetupDataTables()
---   self:NetworkVar("Int", self:GetMode(), "SecondaryMode")
---   --self:NetworkVarNotify("SecondaryMode", self.OnSecondaryModeChange)
--- end
 -- Allow NPC to pick up this SWEP
 function SWEP:CanBePickedUpByNPCs()
   return true
 end
 
 -- Disable Brass Shell Ejection
-function SWEP:FireAnimationEvent(pos, ang, event, options)
+function SWEP:FireAnimationEvent(_, _, event, _)
   if event == 6001 then return true end
 end
 
@@ -112,31 +108,32 @@ end
 --
 function SWEP:PrimaryAttack()
   if not self:CanPrimaryAttack() then return end
+  local owner = self:GetOwner()
   -- Fire bullet
   local bullet = {
+    ---@cast owner +Player
     Damage = self.Primary.Damage,
     Force = self.Primary.Force,
     Num = self.Primary.ShotCount,
     Tracer = 1,
     AmmoType = self.Primary.Ammo,
     TracerName = "Tracer",
-    Dir = self:GetOwner():GetAimVector(),
+    Dir = owner:GetAimVector(),
     Spread = Vector(self.Primary.Spread * 0.1, self.Primary.Spread * 0.1, 0),
-    Src = self:GetOwner():GetShootPos(),
+    Src = owner:GetShootPos(),
   }
 
-  self:GetOwner():FireBullets(bullet)
+  owner:FireBullets(bullet)
   self:ShootEffects()
-  EmitSound(Sound(self.Primary.Sound), self:GetOwner():GetPos(), self:EntIndex(), CHAN_WEAPON, self.Primary.Volume)
+  EmitSound(Sound(self.Primary.Sound), owner:GetPos(), self:EntIndex(), CHAN_WEAPON, self.Primary.Volume)
   -- Remove RPG missiles
   self:RemoveMissile()
   -- Recoil (Player)
-  --if not self:GetOwner():IsNPC() and not self:GetOwner():IsNextBot() then
-  if self:GetOwner():IsPlayer() then
+  if owner:IsPlayer() then
+    ---@cast owner +Player
     local r1 = self.Primary.Recoil * -1
     local r2 = self.Primary.Recoil * math.random(-1, 1)
-    --self:GetOwner():SendLua("LocalPlayer():ViewPunch(Angle(" .. r1 .. ", " .. r2 .. ", " .. r1 .. "))")
-    self:GetOwner():ViewPunch(Angle(r1, r2, r1))
+    owner:ViewPunch(Angle(r1, r2, r1))
   end
 
   -- Set delay
@@ -165,26 +162,28 @@ end
 
 -- Explosion
 function SWEP:SecondaryAttackExplosion()
+  local owner = self:GetOwner()
+  --- NPC cannot do secondary attack
+  ---@cast owner Player
   if SERVER then
-    local trace = self:GetOwner():GetEyeTrace()
+    local trace = owner:GetEyeTrace()
     local exp = ents.Create("env_explosion")
     exp:SetPos(trace.HitPos)
     exp:SetKeyValue("spawnflags", "892")
-    exp:SetOwner(self:GetOwner())
+    exp:SetOwner(owner)
     exp:Spawn()
-    exp:SetKeyValue("iMagnitude", self.Secondary.Explosion.Magnitude)
-    exp:Fire("Explode", 0, 0)
-    EmitSound(Sound(self.Secondary.Explosion.Sound), self:GetOwner():GetPos(), self:EntIndex(), CHAN_WEAPON, 0.25)
-    exp:Fire("Kill", 0, 0)
+    exp:SetKeyValue("iMagnitude", tostring(self.Secondary.Explosion.Magnitude))
+    exp:Fire("Explode", "0", 0)
+    EmitSound(Sound(self.Secondary.Explosion.Sound), owner:GetPos(), self:EntIndex(), CHAN_WEAPON, 0.25)
+    exp:Fire("Kill", "0", 0)
   end
 
   self:ShootEffects()
   -- Recoil (Player)
-  --if not self:GetOwner():IsNPC() and not self:GetOwner():IsNextBot() then
-  if self:GetOwner():IsPlayer() then
+  if owner:IsPlayer() then
     local r1 = self.Secondary.Recoil * -1
     local r2 = self.Secondary.Recoil * math.random(-1, 1)
-    self:GetOwner():ViewPunch(Angle(r1, r2, r1))
+    owner:ViewPunch(Angle(r1, r2, r1))
   end
 
   -- Set delay
@@ -194,9 +193,12 @@ end
 
 -- Airboat Gun
 function SWEP:SecondaryAttackAirbotGun()
+  local owner = self:GetOwner()
+  --- NPC cannot do secondary attack
+  ---@cast owner Player
   -- Fire bullet
   local bullet = {
-    Callback = function(attacker, trace, dmginfo)
+    Callback = function(_, _, dmginfo)
       local g = math.random(1, 2)
       if g == 1 then
         dmginfo:SetDamageType(DMG_AIRBOAT)
@@ -210,22 +212,21 @@ function SWEP:SecondaryAttackAirbotGun()
     Tracer = 1,
     AmmoType = self.Secondary.Ammo,
     TracerName = "AirboatGunTracer",
-    Dir = self:GetOwner():GetAimVector(),
+    Dir = owner:GetAimVector(),
     Spread = Vector(self.Secondary.Airboat.Spread * 0.1, self.Secondary.Airboat.Spread * 0.1, 0),
-    Src = self:GetOwner():GetShootPos(),
+    Src = owner:GetShootPos(),
   }
 
-  self:GetOwner():FireBullets(bullet)
+  owner:FireBullets(bullet)
   self:ShootEffects()
-  EmitSound(Sound(self.Secondary.Airboat.Sound), self:GetOwner():GetPos(), self:EntIndex(), CHAN_WEAPON, self.Secondary.Volume)
+  EmitSound(Sound(self.Secondary.Airboat.Sound), owner:GetPos(), self:EntIndex(), CHAN_WEAPON, self.Secondary.Volume)
   -- Remove RPG Missiles
   self:RemoveMissile()
   -- Recoil (Player)
-  --if not self:GetOwner():IsNPC() and not self:GetOwner():IsNextBot() then
-  if self:GetOwner():IsPlayer() then
+  if owner:IsPlayer() then
     local r1 = self.Secondary.Recoil * -1
     local r2 = self.Secondary.Recoil * math.random(-1, 1)
-    self:GetOwner():ViewPunch(Angle(r1, r2, r1))
+    owner:ViewPunch(Angle(r1, r2, r1))
   end
 
   -- Set delay
@@ -235,48 +236,48 @@ end
 
 -- Combine Ball
 function SWEP:SecondaryAttackCombineBall()
+  local owner = self:GetOwner()
+  --- NPC cannot do secondary attack
+  ---@cast owner Player
   -- Fire bullet
   if SERVER then
     local cblauncher = ents.Create("point_combine_ball_launcher")
-    cblauncher:SetAngles(self:GetOwner():GetAngles())
-    cblauncher:SetPos(self:GetOwner():GetShootPos() + self:GetOwner():GetAimVector() * 10)
-    cblauncher:SetKeyValue("minspeed", self.Secondary.CombineBall.Speed)
-    cblauncher:SetKeyValue("maxspeed", self.Secondary.CombineBall.Speed)
-    cblauncher:SetKeyValue("ballradius", 15)
-    cblauncher:SetKeyValue("ballcount", 1)
-    cblauncher:SetKeyValue("maxballbounces", 7)
-    cblauncher:SetKeyValue("launchconenoise", 0)
+    cblauncher:SetAngles(owner:GetAngles())
+    cblauncher:SetPos(owner:GetShootPos() + owner:GetAimVector() * 10)
+    cblauncher:SetKeyValue("minspeed", tostring(self.Secondary.CombineBall.Speed))
+    cblauncher:SetKeyValue("maxspeed", tostring(self.Secondary.CombineBall.Speed))
+    cblauncher:SetKeyValue("ballradius", "15")
+    cblauncher:SetKeyValue("ballcount", "1")
+    cblauncher:SetKeyValue("maxballbounces", "7")
+    cblauncher:SetKeyValue("launchconenoise", "0")
     cblauncher:SetNotSolid(true)
     cblauncher:SetMoveType(MOVETYPE_NONE)
     cblauncher:Spawn()
     cblauncher:Activate()
     cblauncher:Fire("LaunchBall")
-    cblauncher:Fire("Kill", 0, 0)
-    timer.Simple(
-      0.01,
-      function()
-        if IsValid(self) and IsValid(self:GetOwner()) then
-          for k, v in pairs(ents.FindInSphere(self:GetOwner():GetShootPos(), 85)) do
-            if IsValid(v) and v:GetClass() == "prop_combine_ball" and not IsValid(v:SetOwner()) then
-              v:SetOwner(self:GetOwner())
-              v:GetPhysicsObject():AddGameFlag(FVPHYSICS_WAS_THROWN)
-              v:Fire("Explode", 0, self.Secondary.CombineBall.Time)
-            end
+    cblauncher:Fire("Kill", "0", 0)
+    timer.Simple(0.01, function()
+      if IsValid(self) and IsValid(owner) then
+        for _, v in pairs(ents.FindInSphere(owner:GetShootPos(), 85)) do
+          ---@cast v Entity
+          if IsValid(v) and v:GetClass() == "prop_combine_ball" and not IsValid(v:GetOwner()) then
+            v:SetOwner(owner)
+            v:GetPhysicsObject():AddGameFlag(FVPHYSICS_WAS_THROWN)
+            v:Fire("Explode", "0", self.Secondary.CombineBall.Time)
           end
         end
       end
-    )
+    end)
   end
 
   self:ShootEffects()
-  EmitSound(Sound(self.Secondary.CombineBall.Sound1), self:GetOwner():GetPos(), self:EntIndex(), CHAN_WEAPON, self.Secondary.Volume)
-  EmitSound(Sound(self.Secondary.CombineBall.Sound2), self:GetOwner():GetPos(), self:EntIndex(), CHAN_WEAPON, self.Secondary.Volume)
+  EmitSound(Sound(self.Secondary.CombineBall.Sound1), owner:GetPos(), self:EntIndex(), CHAN_WEAPON, self.Secondary.Volume)
+  EmitSound(Sound(self.Secondary.CombineBall.Sound2), owner:GetPos(), self:EntIndex(), CHAN_WEAPON, self.Secondary.Volume)
   -- Recoil (Player)
-  --if not self:GetOwner():IsNPC() and not self:GetOwner():IsNextBot() then
-  if self:GetOwner():IsPlayer() then
+  if owner:IsPlayer() then
     local r1 = self.Secondary.Recoil * -1
     local r2 = self.Secondary.Recoil * math.random(-1, 1)
-    self:GetOwner():ViewPunch(Angle(r1, r2, r1))
+    owner:ViewPunch(Angle(r1, r2, r1))
   end
 
   self:SetNextPrimaryFire(CurTime() + (self.Secondary.CombineBall.Delay / 2))
@@ -285,33 +286,33 @@ end
 
 -- Grenade
 function SWEP:SecondaryAttackGrenade()
+  local owner = self:GetOwner()
+  --- NPC cannot do secondary attack
+  ---@cast owner Player
   if SERVER then
-    local forward = self:GetOwner():EyeAngles():Forward()
+    local forward = owner:EyeAngles():Forward()
     local grenade = ents.Create("npc_grenade_frag")
     if IsValid(grenade) then
-      grenade:SetPos(self:GetOwner():GetShootPos() + forward * 32)
-      grenade:SetAngles(self:GetOwner():EyeAngles())
-      grenade:SetOwner(self:GetOwner())
-      grenade:SetPhysicsAttacker(self:GetOwner())
+      grenade:SetPos(owner:GetShootPos() + forward * 32)
+      grenade:SetAngles(owner:EyeAngles())
+      grenade:SetOwner(owner)
+      grenade:SetPhysicsAttacker(owner)
       grenade:Spawn()
-      grenade:Fire("SetTimer", self.Secondary.Grenade.Time)
+      grenade:Fire("SetTimer", tostring(self.Secondary.Grenade.Time))
       grenade:SetName("scapg_" .. CreateRandomString())
-      grenade:SetSaveValue("m_hThrower", self:GetOwner())
+      grenade:SetSaveValue("m_hThrower", owner)
       local phys = grenade:GetPhysicsObject()
-      if IsValid(phys) then
-        phys:SetVelocity(self:GetOwner():GetAimVector() * self.Secondary.Grenade.Force)
-      end
+      if IsValid(phys) then phys:SetVelocity(owner:GetAimVector() * self.Secondary.Grenade.Force) end
     end
   end
 
   self:ShootEffects()
-  EmitSound(Sound(self.Secondary.Grenade.Sound), self:GetOwner():GetPos(), self:EntIndex(), CHAN_WEAPON, self.Secondary.Volume)
+  EmitSound(Sound(self.Secondary.Grenade.Sound), owner:GetPos(), self:EntIndex(), CHAN_WEAPON, self.Secondary.Volume)
   -- Recoil (Player)
-  --if not self:GetOwner():IsNPC() and not self:GetOwner():IsNextBot() then
-  if self:GetOwner():IsPlayer() then
+  if owner:IsPlayer() then
     local r1 = self.Secondary.Recoil * -1
     local r2 = self.Secondary.Recoil * math.random(-1, 1)
-    self:GetOwner():ViewPunch(Angle(r1, r2, r1))
+    owner:ViewPunch(Angle(r1, r2, r1))
   end
 
   self:SetNextPrimaryFire(CurTime() + (self.Secondary.Grenade.Delay / 2))
@@ -320,26 +321,25 @@ end
 
 -- RPG Rocket
 function SWEP:SecondaryAttackRPGRocket()
+  local owner = self:GetOwner()
+  --- NPC cannot do secondary attack
+  ---@cast owner Player
   if SERVER then
     local round = ents.Create("rpg_missile")
-    round:SetPos(self:GetOwner():GetShootPos())
-    round:SetOwner(self:GetOwner())
-    round.FlyAngle = self:GetOwner():GetAimVector():Angle()
+    round:SetPos(owner:GetShootPos())
+    round:SetOwner(owner)
     round:Spawn()
     local roundPhys = round:GetPhysicsObject()
-    if IsValid(roundPhys) then
-      roundPhys:SetVelocity(self:GetOwner():GetAimVector() * self.Secondary.RPGRocket.Speed)
-    end
+    if IsValid(roundPhys) then roundPhys:SetVelocity(owner:GetAimVector() * self.Secondary.RPGRocket.Speed) end
   end
 
   self:ShootEffects()
-  EmitSound(Sound(self.Secondary.RPGRocket.Sound), self:GetOwner():GetPos(), self:EntIndex(), CHAN_WEAPON, self.Secondary.Volume)
+  EmitSound(Sound(self.Secondary.RPGRocket.Sound), owner:GetPos(), self:EntIndex(), CHAN_WEAPON, self.Secondary.Volume)
   -- Recoil (Player)
-  --if not self:GetOwner():IsNPC() and not self:GetOwner():IsNextBot() then
-  if self:GetOwner():IsPlayer() then
+  if owner:IsPlayer() then
     local r1 = self.Secondary.Recoil * -1
     local r2 = self.Secondary.Recoil * math.random(-1, 1)
-    self:GetOwner():ViewPunch(Angle(r1, r2, r1))
+    owner:ViewPunch(Angle(r1, r2, r1))
   end
 
   self:SetNextPrimaryFire(CurTime() + (self.Secondary.RPGRocket.Delay / 2))
@@ -350,17 +350,17 @@ end
 -- Reload
 --
 function SWEP:Reload()
-  if not IsFirstTimePredicted() or not self:GetOwner():KeyPressed(IN_RELOAD) or self:GetNextPrimaryFire() > CurTime() then return end
+  local owner = self:GetOwner()
+  --- NPC cannot do secondary attack
+  ---@cast owner Player
+  if not IsFirstTimePredicted() or not owner:KeyPressed(IN_RELOAD) or self:GetNextPrimaryFire() > CurTime() then return end
   local val = self.Secondary.Mode + 1
-  if val > 4 or val < 0 then
-    val = 0
-  end
-
+  if val > 4 or val < 0 then val = 0 end
   self.Secondary.Mode = val
   if SERVER then
     net.Start("SCAP_ChangeMode")
     net.WriteUInt(val, 3)
-    net.Send(self:GetOwner())
+    net.Send(owner)
   end
 end
 
@@ -373,21 +373,20 @@ function CreateRandomString()
   for i = 0, length do
     result[i] = string.char(math.random(65, 90))
   end
-
   return table.concat(result)
 end
 
 function SWEP:RemoveMissile()
   local owner = self:GetOwner()
+  --- NPC cannot do secondary attack
+  ---@cast owner Player
   local missiles = ents.FindInCone(owner:GetPos(), owner:GetAimVector(), 8000, math.cos(math.rad(2.2)))
   local d = DamageInfo()
   d:SetDamage(9999)
   d:SetDamageType(DMG_MISSILEDEFENSE)
   d:SetAttacker(owner)
   d:SetInflictor(self)
-  for k, v in pairs(missiles) do
-    if v:GetClass():match("_missile") then
-      v:TakeDamageInfo(d)
-    end
+  for _, v in pairs(missiles) do
+    if v:GetClass():match("_missile") then v:TakeDamageInfo(d) end
   end
 end

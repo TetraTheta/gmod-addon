@@ -1,14 +1,25 @@
 #!/bin/bash
-gmad="E:/Program Files/Steam/steamapps/common/GarrysMod/bin/gmad.exe"
-dest="E:/Program Files/Steam/steamapps/common/GarrysMod/garrysmod/addons/test"
+addon() {
+  local gmad="E:/Program Files/Steam/steamapps/common/GarrysMod/bin/gmad.exe"
+  local dest="E:/Program Files/Steam/steamapps/common/GarrysMod/garrysmod/addons/test"
+
+  local small="$1"
+  small="${small// /_}"
+  small="${small,,}"
+  small="${small//[^a-zA-Z0-9_]/}"
+
+  "$gmad" create -folder "$1" -out ".build/${small}.gma"
+  cp -fv ".build/${small}.gma" "$dest" 2>/dev/null
+}
 rm -rf ".build"
 mkdir -p ".build"
 mkdir -p "$dest"
-#"$gmad" create -folder "Decrease Sound" -out ".build/decrease_sound.gma"; cp -fv ".build/decrease_sound.gma" "$dest" 2>/dev/null
-#"$gmad" create -folder "Fix Map" -out ".build/fixmap.gma"; cp -fv ".build/fixmap.gma" "$dest" 2>/dev/null
-#"$gmad" create -folder "NPC Invasion" -out ".build/npc_invasion.gma"; cp -fv ".build/npc_invasion.gma" "$dest" 2>/dev/null
-#"$gmad" create -folder "Sandbox Map Sort" -out ".build/sandbox_map_sort.gma"; cp -fv ".build/sandbox_map_sort.gma" "$dest" 2>/dev/null
-#"$gmad" create -folder "SC Admin Gun" -out ".build/sc_admin_gun.gma"; cp -fv ".build/sc_admin_gun.gma" "$dest" 2>/dev/null
-"$gmad" create -folder "SC Resistance Turrets" -out ".build/resistance_turrets.gma"; cp -fv ".build/resistance_turrets.gma" "$dest" 2>/dev/null
-#"$gmad" create -folder "SC Tools" -out ".build/sc_tools.gma"; cp -fv ".build/sc_tools.gma" "$dest" 2>/dev/null
+# Create and copy addons
+# addon "Decrease Sound"
+# addon "Fix Map"
+# addon "NPC Invasion"
+# addon "Sandbox Map Sort"
+addon "SC Admin Gun"
+addon "SC Resistance Turrets"
+addon "SC Tools"
 read -r -s -n 1 -p "Press any key to continue..."

@@ -1,5 +1,13 @@
 {
-  "code-runner.customCommand": "cmd /C \"C:/Program Files/Git/bin/sh.exe\" \"$workspaceRoot/build.sh\"",
-  "code-runner.preserveFocus": false,
+  "code-runner.clearPreviousOutput": true,
+  "code-runner.customCommand": "cmd /C \"C:/Program Files/Git/bin/sh.exe\" \"$workspaceRoot/build.sh\" && exit",
+  "code-runner.preserveFocus": true,
   "code-runner.runInTerminal": true,
+  "code-runner.saveAllFilesBeforeRun": true,
+  "code-runner.executorMap": {
+    "lua": "cmd /C \"C:/Program Files/Git/bin/sh.exe\" \"$workspaceRoot/build.sh\" && exit",
+    "powershell": "cmd /C \"C:/Program Files/Git/bin/sh.exe\" \"$workspaceRoot/build.sh\" && exit",
+    "bat": "cmd /C \"C:/Program Files/Git/bin/sh.exe\" \"$workspaceRoot/build.sh\" && exit",
+    "shellscript": "cmd /C \"C:/Program Files/Git/bin/sh.exe\" \"$workspaceRoot/build.sh\" && exit",
+  },
 }

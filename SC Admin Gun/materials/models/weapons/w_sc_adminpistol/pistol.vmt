@@ -1,5 +1,4 @@
 "VertexLitGeneric"
 {
-	// Original shader: VertexLitTexture
-	"$basetexture" "models/weapons/w_sc_adminpistol/pistol"
+  "$basetexture" "models/weapons/w_sc_adminpistol/pistol"
 }

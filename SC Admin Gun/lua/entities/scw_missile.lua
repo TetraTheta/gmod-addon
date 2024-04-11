@@ -1,2 +1,2 @@
-AddCSLuaFile()
-DEFINE_BASECLASS("base_anim")
+-- AddCSLuaFile()
+-- DEFINE_BASECLASS("base_anim")
