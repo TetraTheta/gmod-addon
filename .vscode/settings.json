@@ -5,9 +5,12 @@
   "code-runner.runInTerminal": true,
   "code-runner.saveAllFilesBeforeRun": true,
   "code-runner.executorMap": {
-    "lua": "cmd /C \"C:/Program Files/Git/bin/sh.exe\" \"$workspaceRoot/build.sh\" && exit",
-    "powershell": "cmd /C \"C:/Program Files/Git/bin/sh.exe\" \"$workspaceRoot/build.sh\" && exit",
-    "bat": "cmd /C \"C:/Program Files/Git/bin/sh.exe\" \"$workspaceRoot/build.sh\" && exit",
-    "shellscript": "cmd /C \"C:/Program Files/Git/bin/sh.exe\" \"$workspaceRoot/build.sh\" && exit",
+    "bash": "\"$workspaceRoot\\build.sh\" && exit",
+    "bat": "\"$workspaceRoot\\build.sh\" && exit",
+    "json": "\"$workspaceRoot\\build.sh\" && exit",
+    "lua": "\"$workspaceRoot\\build.sh\" && exit",
+    "powershell": "\"$workspaceRoot\\build.sh\" && exit",
+    "shellscript": "\"$workspaceRoot\\build.sh\" && exit",
   },
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
 }

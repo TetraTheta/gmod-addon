@@ -41,5 +41,3 @@ hook.Add("EntityTakeDamage", "SCAdminPistolCleanGrenadeBehavior", function(targe
     dmginfo:SetDamage(0)
   end
 end)
-
-PrintTable(SWEP)

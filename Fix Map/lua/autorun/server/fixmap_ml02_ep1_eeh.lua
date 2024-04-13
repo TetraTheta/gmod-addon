@@ -1,4 +1,4 @@
-local function fixmap_ml02_ep1_eeh(ply, _)
+hook.Add("PlayerSpawn", "FixMap_ML02_ep1_eeh", function(ply, _)
   if SERVER and (game.GetMap() == "ep1_eeh") then
     ply:Give("item_suit", false)
     ply:Give("weapon_pistol", false)
@@ -6,5 +6,4 @@ local function fixmap_ml02_ep1_eeh(ply, _)
     ply:Give("weapon_stunstick", false)
     ply:Give("weapon_physcannon", false)
   end
-end
-hook.Add("PlayerSpawn", "FixMap_ML02_ep1_eeh", fixmap_ml02_ep1_eeh)
+end)

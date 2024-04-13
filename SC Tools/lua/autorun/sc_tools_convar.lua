@@ -35,6 +35,11 @@ if not ConVarExists(scNoObstacle) then CreateConVar(scNoObstacle, "0", flags, "D
 local scNoPlayerCollision = "sc_no_player_collision"
 if not ConVarExists(scNoPlayerCollision) then CreateConVar(scNoPlayerCollision, "0", flags, "Disable player-to-player collision.", 0, 1) end
 --
+-- sc_reenable_disconnect <0|1> - Re-enable 'disconnect' console command implemented in map.
+--
+local scReenableDisconnect = "sc_reenable_disconnect"
+if not ConVarExists(scReenableDisconnect) then CreateConVar(scReenableDisconnect, "0", flags, "Re-enable 'disconnect' console command implemented in map.", 0, 1) end
+--
 -- sc_remove_effect <0|1> - Entity remove effect type. 0 = Remove, 1 = Dissolve.
 --
 local scRemoveEffect = "sc_remove_effect"
@@ -59,6 +64,8 @@ if SERVER then
       RunConsoleCommand(scIgnoreImportant, net.ReadInt(2))
     elseif cmd == scNoPlayerCollision then
       RunConsoleCommand(scNoPlayerCollision, net.ReadInt(2))
+    elseif cmd == scReenableDisconnect then
+      RunConsoleCommand(scReenableDisconnect, net.ReadInt(2))
     elseif cmd == scRemoveEffect then
       RunConsoleCommand(scRemoveEffect, net.ReadInt(2))
     end

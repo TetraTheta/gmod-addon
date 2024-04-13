@@ -34,7 +34,7 @@ SWEP.Secondary.DefaultClip = 1
 SWEP.Secondary.Recoil = 0.1
 SWEP.Secondary.Volume = 0.55
 -- SWEP Secondary Fire Mode
-SWEP.Secondary.Mode = GetConVar("sc_adminpistol_default"):GetInt()
+SWEP.Secondary.Mode = GetConVar("sc_adminpistol_default") ~= nil and GetConVar("sc_adminpistol_default"):GetInt() or 0
 -- SWEP Secondary Fire Mode 0: Explosion
 SWEP.Secondary.Explosion = {}
 SWEP.Secondary.Explosion.Damage = 9999999 -- Damage for explosion

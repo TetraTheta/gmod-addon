@@ -1,4 +1,4 @@
-local function fixmap_tfj_overflow()
+hook.Add("InitPostEntity", "FixMap_TFJ_overflow", function()
   if SERVER and game.GetMap() == "overflow" then
     local mathCounter = ents.FindByName("bridge_wave2_counter")[1]
     mathCounter:Input("AddOutput", mathCounter, nil, "OnHitMax apc01_bullseye,Break,,11,1")
@@ -15,5 +15,4 @@ local function fixmap_tfj_overflow()
     mathCounter:Input("AddOutput", mathCounter, nil, "OnHitMax sniper_tank,Kill,,11.1,1")
     mathCounter:Input("AddOutput", mathCounter, nil, "OnHitMax sniper_controlvolume,Kill,,11.1,1")
   end
-end
-hook.Add("InitPostEntity", "FixMap_TFJ_overflow", fixmap_tfj_overflow)
+end)

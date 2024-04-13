@@ -19,5 +19,3 @@ net.Receive("SCAPC_ChangeMode", function()
   notification.AddLegacy(WeaponModes[newMode], NOTIFY_UNDO, 2)
   surface.PlaySound("buttons/button15.wav")
 end)
-
-PrintTable(SWEP)
