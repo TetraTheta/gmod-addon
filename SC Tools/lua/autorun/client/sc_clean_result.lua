@@ -1,4 +1,4 @@
-net.Receive("SCCleanResult", function(len, ply)
+net.Receive("SCCleanResult", function(_, _)
   local resJsonCompLen = net.ReadUInt(16)
   local resJsonComp = net.ReadData(resJsonCompLen)
   local resTable = util.JSONToTable(util.Decompress(resJsonComp))
