@@ -1,4 +1,6 @@
-util.AddNetworkString("SCReplacerHudhintMessage")
+if SERVER then
+  util.AddNetworkString("SCReplacerHudhintMessage")
+end
 --
 ENT.Type = "point"
 ENT.Base = "base_point"
