@@ -1,7 +1,7 @@
 util.AddNetworkString("SCReplacerDisconnectMessage")
 hook.Add("AcceptInput", "SCReplacerDisconnect", function(ent, input, _, _, value)
   local msg = "MAP ENDED"
-  if (ent:GetClass() == "point_servercommand" or ent:GetClass() == "point_clientcommand") and input:lower() == "command" and string.find(value:lower(), "disconnect") then
+  if (ent:GetClass() == "point_servercommand" or ent:GetClass() == "point_clientcommand") and input:lower() == "command" and (string.find(value:lower(), "disconnect") or string.find(value:lower(), "startupmenu")) then
     if game.SinglePlayer() then
       -- Singleplayer environment
       local cv = GetConVar("sc_reenable_disconnect"):GetBool()

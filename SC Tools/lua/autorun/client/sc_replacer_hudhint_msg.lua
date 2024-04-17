@@ -1,21 +1,21 @@
 -- https://developer.valvesoftware.com/wiki/Env_hudhint
 -- https://wiki.facepunch.com/gmod/input.LookupBinding
 net.Receive("SCReplacerHudhintMessage", function(_, _)
-  local v = net.ReadString()
-  print(v)
-  if v:StartsWith("#") then
-    local phrase = language.GetPhrase(v)
-    local vbind, vmsg = phrase:match("%%(.-)%%(.*)")
-    local vkey = input.LookupBinding(vbind, true)
-    surface.PlaySound("garrysmod/ui_click.wav")
-    notification.AddLegacy(vkey:upper() .. " : " .. vmsg:upper(), NOTIFY_GENERIC, 10)
-  elseif v:StartsWith("%") then
-    local vbind, vmsg = v:match("%%(.-)%%(.*)")
-    local vkey = input.LookupBinding(vbind, true)
-    surface.PlaySound("garrysmod/ui_click.wav")
-    notification.AddLegacy(vkey:upper() .. " : " .. vmsg, NOTIFY_GENERIC, 10)
-  else
-    surface.PlaySound("garrysmod/ui_click.wav")
-    notification.AddLegacy(v, NOTIFY_GENERIC, 10)
+  local phrase = net.ReadString()
+  if phrase:StartsWith("#") then
+    phrase = language.GetPhrase(phrase)
   end
+
+  local function replaceKeybinds(keybind)
+    local vkey = input.LookupBinding(keybind, true)
+    if vkey then
+      return vkey:upper()
+    else
+      return keybind
+    end
+  end
+
+  local vmsg = phrase:gsub("%%(.-)%%", replaceKeybinds)
+  surface.PlaySound("garrysmod/ui_click.wav")
+  notification.AddLegacy(vmsg, NOTIFY_GENERIC, 10)
 end)
