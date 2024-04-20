@@ -117,6 +117,20 @@ local dissolver -- Reuse dissolver
 function RemoveEffectDissolve(ent)
   if not IsValid(ent) or ent:IsPlayer() then return false end
   if CLIENT then return true end
+  -- Use alternative effect for special classes which cannot be dissolved
+  local ent_class = ent:GetClass()
+  if ent_class == "func_breakable" then
+    ent:Fire("Break")
+    return
+  else
+    local just_remove_classes = {"func_door_rotating", "func_physbox"}
+    for _, v in ipairs(just_remove_classes) do
+      if v == ent_class then
+        RemoveEffectRemove(ent)
+        return
+      end
+    end
+  end
   -- https://developer.valvesoftware.com/wiki/Env_entity_dissolver
   local phys = ent:GetPhysicsObject()
   if IsValid(phys) then phys:EnableGravity(false) end
@@ -134,6 +148,7 @@ function RemoveEffectDissolve(ent)
   -- Disable collision
   ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
   ent:SetSolid(SOLID_NONE)
+  ent:SetRenderFX(kRenderFxFadeFast)
   -- Use timer.Create for updating 60 sec counter
   timer.Create("SCRemoveDissolveCleanup", 60, 1, function() if IsValid(dissolver) then dissolver:Remove() end end)
 end
