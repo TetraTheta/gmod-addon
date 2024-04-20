@@ -10,6 +10,11 @@ if not ConVarExists(scAutoGodNPC) then CreateConVar(scAutoGodNPC, "0", flags, "A
 local scAutoGodSAdmin = "sc_auto_god_sadmin"
 if not ConVarExists(scAutoGodSAdmin) then CreateConVar(scAutoGodSAdmin, "0", flags, "Automatically make users in 'superadmin' user group invulnerable.", 0, 1) end
 --
+-- sc_boost_speed_modifier <number> - Multiplier for boost speed
+--
+local scBoostSpeedModifier = "sc_boost_speed_modifier"
+if not ConVarExists(scBoostSpeedModifier) then CreateConVar(scBoostSpeedModifier, "1.0", flags, "Multiplier for boost speed", 1, 10) end
+--
 -- sc_connection_message <0|1> - Show connection message to chat.
 --
 local scConnectionMessage = "sc_connection_message"
@@ -56,6 +61,8 @@ if SERVER then
       RunConsoleCommand(scAutoGodNPC, net.ReadInt(2))
     elseif cmd == scAutoGodSAdmin then
       RunConsoleCommand(scAutoGodSAdmin, net.ReadInt(2))
+    elseif cmd == scBoostSpeedModifier then
+      RunConsoleCommand(scBoostSpeedModifier, net.ReadInt(2))
     elseif cmd == scConnectionMessage then
       RunConsoleCommand(scConnectionMessage, net.ReadInt(2))
     elseif cmd == scFlashlightAuto then

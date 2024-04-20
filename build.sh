@@ -11,10 +11,15 @@ addon() {
   "$gmad" create -folder "$1" -out ".build/${small}.gma"
   cp -fv ".build/${small}.gma" "$dest" 2>/dev/null
 }
+dark_mode() {
+  local dest="E:/Program Files/Steam/steamapps/common/GarrysMod/garrysmod/addons/"
+  cp -frv "Dark Mode" "$dest" 2>/dev/null
+}
 rm -rf ".build"
 mkdir -p ".build"
 mkdir -p "$dest"
 # Create and copy addons
+#dark_mode
 # addon "Decrease Sound"
 # addon "Fix Map"
 # addon "NPC Invasion"

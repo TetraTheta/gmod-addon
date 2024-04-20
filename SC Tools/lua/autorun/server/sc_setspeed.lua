@@ -1,6 +1,8 @@
 --[[
   Commands:
   * sc_setspeed <all|duck|run|slow|walk> <fast|reset> [player]
+  See Also:
+  * sc_boost_speed.lua
 ]]
 --
 include("autorun/sc_tools_shared.lua")
@@ -22,11 +24,17 @@ local function SetSpeed(ply, _, args, _)
       p:SetRunSpeed(600)
       p:SetSlowWalkSpeed(150)
       p:SetWalkSpeed(300)
+      -- Values for 'sc_boost_speed'
+      p.sc_default_crouch_speed = 0.8
+      p.sc_default_ladder_speed = 300
     elseif t == "reset" then
       p:SetCrouchedWalkSpeed(0.3)
       p:SetRunSpeed(400)
       p:SetSlowWalkSpeed(100)
       p:SetWalkSpeed(200)
+      -- Values for 'sc_boost_speed'
+      p.sc_default_crouch_speed = 0.3
+      p.sc_default_ladder_speed = 200
     else
       SendMessage(ply, HUD_PRINTCONSOLE, "[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.")
     end
@@ -35,8 +43,12 @@ local function SetSpeed(ply, _, args, _)
   argfunc["duck"] = function(t)
     if t == "fast" then
       p:SetCrouchedWalkSpeed(0.8)
+      -- Values for 'sc_boost_speed'
+      p.sc_default_crouch_speed = 0.8
     elseif t == "reset" then
       p:SetCrouchedWalkSpeed(0.3)
+      -- Values for 'sc_boost_speed'
+      p.sc_default_crouch_speed = 0.3
     else
       SendMessage(ply, HUD_PRINTCONSOLE, "[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.")
     end
