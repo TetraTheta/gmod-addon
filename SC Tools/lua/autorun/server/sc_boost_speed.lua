@@ -15,7 +15,7 @@ hook.Add("KeyPress", "SCBoostSpeedKeyPress", function(p, _)
   if p:Crouching() and p:KeyPressed(IN_SPEED) then
     p:SetCrouchedWalkSpeed(p:GetCrouchedWalkSpeed() * mult)
     return
-  elseif p:GetMoveType() == MOVETYPE_LADDER then
+  elseif p:GetMoveType() == MOVETYPE_LADDER and p:KeyPressed(IN_SPEED) then
     p:SetLadderClimbSpeed(p:GetLadderClimbSpeed() * mult)
     return
   end
@@ -33,7 +33,7 @@ hook.Add("KeyRelease", "SCBoostSpeedKeyRelease", function(p, _)
   if p:Crouching() and p:KeyReleased(IN_SPEED) then
     p:SetCrouchedWalkSpeed(p.sc_default_crouch_speed)
     return
-  elseif p:GetMoveType() == MOVETYPE_LADDER then
+  elseif p:GetMoveType() == MOVETYPE_LADDER and p:KeyReleased(IN_SPEED) then
     p:SetLadderClimbSpeed(p.sc_default_ladder_speed)
     return
   end
