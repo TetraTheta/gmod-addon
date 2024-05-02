@@ -1,7 +1,9 @@
 #!/bin/bash
 addon() {
   local gmad="E:/Program Files/Steam/steamapps/common/GarrysMod/bin/gmad.exe"
-  local dest="E:/Program Files/Steam/steamapps/common/GarrysMod/garrysmod/addons/test"
+  local dest="E:/Program Files/Steam/steamapps/common/GarrysMod/garrysmod/addons/test/"
+
+  mkdir -p "$dest"
 
   local small="$1"
   small="${small// /_}"
@@ -17,14 +19,13 @@ dark_mode() {
 }
 rm -rf ".build"
 mkdir -p ".build"
-mkdir -p "$dest"
 # Create and copy addons
 #dark_mode
 # addon "Decrease Sound"
 # addon "Fix Map"
 # addon "NPC Invasion"
 # addon "Sandbox Map Sort"
-# addon "SC Admin Gun"
-# addon "SC Resistance Turrets"
+addon "SC Admin Gun"
+addon "SC Resistance Turrets"
 addon "SC Tools"
 read -r -s -n 1 -p "Press any key to continue..."

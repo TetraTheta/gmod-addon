@@ -23,7 +23,7 @@ SWEP.Primary.Delay = 0.05
 SWEP.Primary.Force = 1000000
 SWEP.Primary.Recoil = 0.1
 SWEP.Primary.ShotCount = 75
-SWEP.Primary.Sound = "Weapon_M4A1.Silenced"
+SWEP.Primary.Sound = "SCAP.PrimaryFire"
 SWEP.Primary.Spread = 0.15
 SWEP.Primary.Volume = 0.75
 -- SWEP Secondary Fire (Shared)
@@ -42,7 +42,7 @@ SWEP.Secondary.Explosion.Delay = 0.05 -- Delay for explosion
 SWEP.Secondary.Explosion.Magnitude = 175 -- Explosion Magnitude of explosion
 SWEP.Secondary.Explosion.Force = 1000000 -- Force of explosion
 SWEP.Secondary.Explosion.ShotCount = 1 -- ShotCount for explosion. No need to set it.
-SWEP.Secondary.Explosion.Sound = "Weapon_AWP.Single" -- Sound for explosion
+SWEP.Secondary.Explosion.Sound = "SCAP.SecondaryFire.Explosion" -- Sound for explosion
 SWEP.Secondary.Explosion.Spread = 0.1 -- Spread of explosion
 -- SWEP Secondary Fire Mode 1 (Airboat Gun)
 SWEP.Secondary.Airboat = {}
@@ -50,12 +50,12 @@ SWEP.Secondary.Airboat.Damage = 35 -- Damage for airboat gun
 SWEP.Secondary.Airboat.Delay = 0.05 -- Delay for airboat gun
 SWEP.Secondary.Airboat.Force = 1000000 -- Force of airboat gun
 SWEP.Secondary.Airboat.ShotCount = 7 -- ShotCount for airboat gun
-SWEP.Secondary.Airboat.Sound = "Airboat.FireGunRevDown" -- Sound for airboat gun
+SWEP.Secondary.Airboat.Sound = "SCAP.SecondaryFire.Airboat" -- Sound for airboat gun
 SWEP.Secondary.Airboat.Spread = 0.2 -- Spread of airboat gun
 -- SWEP Secondary Fire Mode 2 (Combine Ball)
 SWEP.Secondary.CombineBall = {}
 SWEP.Secondary.CombineBall.Delay = 0.5
-SWEP.Secondary.CombineBall.Sound1 = "Weapon_AR2.Double"
+SWEP.Secondary.CombineBall.Sound1 = "SCAP.SecondaryFire.CombineBall"
 SWEP.Secondary.CombineBall.Sound2 = "weapons/physcannon/energy_bounce1.wav" -- This doesn't have corresponding soundscript!
 SWEP.Secondary.CombineBall.Speed = 5000
 SWEP.Secondary.CombineBall.Time = 5
@@ -68,11 +68,54 @@ SWEP.Secondary.Grenade.Time = 3
 -- SWEP Secondary Fire Mode 4 (RPG Rocket)
 SWEP.Secondary.RPGRocket = {}
 SWEP.Secondary.RPGRocket.Delay = 0.15
-SWEP.Secondary.RPGRocket.Sound = "Weapon_RPG.Single"
+SWEP.Secondary.RPGRocket.Sound = "SCAP.SecondaryFire.RPG"
 SWEP.Secondary.RPGRocket.Speed = 3000
 -- Precache models in case HL2 Pistol is not cached
 util.PrecacheModel(SWEP.ViewModel)
 util.PrecacheModel(SWEP.WorldModel)
+--
+--
+-- Initialize sound data
+sound.Add({
+  name = "SCAP.PrimaryFire",
+  channel = CHAN_WEAPON,
+  volume = 1.0,
+  level = SNDLVL_70dB,
+  pitch = {95, 110},
+  sound = ")weapons/m4a1/m4a1-1.wav"
+})
+sound.Add({
+  name = "SCAP.SecondaryFire.Explosion",
+  channel = CHAN_WEAPON,
+  volume = 1.0,
+  level = SNDLVL_GUNFIRE,
+  pitch = 100,
+  sound = ")weapons/awp/awp1.wav"
+})
+sound.Add({
+  name = "SCAP.SecondaryFire.Airboat",
+  channel = CHAN_WEAPON,
+  volume = 1.0,
+  level = SNDLVL_GUNFIRE,
+  pitch = 100,
+  sound = {")weapons/airboat/airboat_gun_lastshot1.wav", ")weapons/airboat/airboat_gun_lastshot2.wav"}
+})
+sound.Add({
+  name = "SCAP.SecondaryFire.CombineBall",
+  channel = CHAN_WEAPON,
+  volume = 0.7,
+  level = SNDLVL_GUNFIRE,
+  pitch = 100,
+  sound = ")weapons/ar2/ar2_altfire.wav"
+})
+sound.Add({
+  name = "SCAP.SecondaryFire.RPG",
+  channel = CHAN_WEAPON,
+  volume = 0.55,
+  level = SNDLVL_GUNFIRE,
+  pitch = 100,
+  sound = ")weapons/rpg/rocketfire1.wav"
+})
 --
 --
 function SWEP:Initialize()
@@ -125,6 +168,7 @@ function SWEP:PrimaryAttack()
 
   owner:FireBullets(bullet)
   self:ShootEffects()
+  --EmitSound(Sound(self.Primary.Sound), owner:GetPos(), self:EntIndex(), CHAN_WEAPON, self.Primary.Volume)
   EmitSound(Sound(self.Primary.Sound), owner:GetPos(), self:EntIndex(), CHAN_WEAPON, self.Primary.Volume)
   -- Remove RPG missiles
   self:RemoveMissile()

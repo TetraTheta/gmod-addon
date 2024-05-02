@@ -31,7 +31,8 @@ hook.Add("EntityFireBullets", "sc_turret_resistance_floor_firebullets", function
           elseif enemy:GetClass() == "npc_cscanner" then
             sub = Vector(0, 0, 0)
           end
-          local eeye = enemy:EyePos() - sub
+          local eeye = enemy:LookupAttachment("eyes") > 0 and enemy:GetAttachment(enemy:LookupAttachment("eyes")).Pos or enemy:EyePos()
+          eeye = eeye - sub
           debugoverlay.Line(teye, eeye)
           data.Dir = (eeye - teye):GetNormalized()
           data.Spread = Vector(0, 0, 0)
