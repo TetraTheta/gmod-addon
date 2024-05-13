@@ -1,8 +1,8 @@
 --[[
-  NOTE
+NOTE
 
-  If I declare local function/variable here, it won't be detected in other files even if this file is included via 'include()'.
-  Declare this file as module, or define function/variable as global to use them in other files.
+If I declare local function/variable here, it won't be detected in other files even if this file is included via 'include()'.
+Declare this file as module, or define function/variable as global to use them in other files.
 ]]
 --
 include("autorun/sc_tools_config.lua")
@@ -22,30 +22,13 @@ function CheckSAdminConsole(target)
   return target == NULL or CheckSAdmin(target)
 end
 
----Generate autocomplete table
----@param command string The concommand this autocompletion is for. (Same from concommand.AutoComplete)
----@param arguments string The arguments typed so far. (Same from concommand.AutoComplete)
----@param suggestPlayer boolean Should suggest player at the end of the autocompletion?
----@param ... table Subcommand of the command.
----@return table table Autocomplete Table
-function GenerateAutoComplete(command, arguments, suggestPlayer, ...)
-  local vargs = {...}
-  local cmd = command:lower()
-  local args = arguments:lower():Trim():Split(" ")
-  if #args == 0 then
-    local tbl = {}
-    for _, v in ipairs(vargs[1]) do
-      table.insert(cmd .. " " .. v)
-    end
-    return tbl
-    -- else
-    --   for i = 1, #args do
-    --     for _, v in ipairs(vargs[i]) do
-    --       ---TODO finish this
-    --     end
-    --   end
-  end
-  return {}
+function GenerateAutoComplete(cmd, arg, suggestPlayer, ...)
+  -- local vargs = {...}
+  -- local resultTable = {}
+  -- arg = arg:match("^%s*(.-)%s*$")
+  -- for _, sec in ipairs(vargs) do
+  --   local cmdStr = cmd .. " " ..
+  -- end
 end
 
 function SuggestPlayer(target, cmd, args)
@@ -131,6 +114,7 @@ function RemoveEffectDissolve(ent)
       end
     end
   end
+
   -- https://developer.valvesoftware.com/wiki/Env_entity_dissolver
   local phys = ent:GetPhysicsObject()
   if IsValid(phys) then phys:EnableGravity(false) end

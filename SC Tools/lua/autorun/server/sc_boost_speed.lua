@@ -19,6 +19,7 @@ hook.Add("KeyPress", "SCBoostSpeedKeyPress", function(p, _)
     p:SetLadderClimbSpeed(p:GetLadderClimbSpeed() * mult)
     return
   end
+
   -- Safe guard
   if p.sc_default_crouch_speed == nil then p.sc_default_crouch_speed = 0.3 end
   if p.sc_default_ladder_speed == nil then p.sc_default_ladder_speed = 200 end
@@ -37,6 +38,7 @@ hook.Add("KeyRelease", "SCBoostSpeedKeyRelease", function(p, _)
     p:SetLadderClimbSpeed(p.sc_default_ladder_speed)
     return
   end
+
   -- Safe guard
   p:SetCrouchedWalkSpeed(p.sc_default_crouch_speed)
   p:SetLadderClimbSpeed(p.sc_default_ladder_speed)

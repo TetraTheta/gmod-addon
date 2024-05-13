@@ -1,6 +1,4 @@
-if SERVER then
-  util.AddNetworkString("SCReplacerHudhintMessage")
-end
+if SERVER then util.AddNetworkString("SCReplacerHudhintMessage") end
 --
 ENT.Type = "point"
 ENT.Base = "base_point"
@@ -13,7 +11,6 @@ function ENT:AcceptInput(inputName, activator, _, _)
       return
     end
 
-    print(vmsg)
     net.Start("SCReplacerHudhintMessage")
     net.WriteString(vmsg)
     net.Send(activator)

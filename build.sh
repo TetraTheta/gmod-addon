@@ -1,6 +1,11 @@
 #!/bin/bash
 addon() {
-  local gmad="E:/Program Files/Steam/steamapps/common/GarrysMod/bin/gmad.exe"
+  local gmad
+  if [ -f '.bin/fastgmad.exe' ]; then
+    gmad=".bin/fastgmad.exe"
+  else
+    gmad="E:/Program Files/Steam/steamapps/common/GarrysMod/bin/gmad.exe"
+  fi
   local dest="E:/Program Files/Steam/steamapps/common/GarrysMod/garrysmod/addons/test/"
 
   mkdir -p "$dest"
@@ -25,7 +30,7 @@ mkdir -p ".build"
 # addon "Fix Map"
 # addon "NPC Invasion"
 # addon "Sandbox Map Sort"
-addon "SC Admin Gun"
-addon "SC Resistance Turrets"
+# addon "SC Admin Gun"
+# addon "SC Resistance Turrets"
 addon "SC Tools"
 read -r -s -n 1 -p "Press any key to continue..."

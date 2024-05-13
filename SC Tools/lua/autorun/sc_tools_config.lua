@@ -8,52 +8,55 @@ function ReadConfigFiles(overwrite)
   file.CreateDir("sc_tools")
   local comment = {"You can add comment using '#'.", "'#' can be either start of the line or middle of the line. Any character after '#' will be ignored."}
   if overwrite or table.IsEmpty(SC_SMALL_MODELS) then
-    local small_models_default = {}
-    small_models_default["models/combine_apc_destroyed_gib02.mdl"] = true
-    small_models_default["models/combine_apc_destroyed_gib03.mdl"] = true
-    small_models_default["models/combine_apc_destroyed_gib04.mdl"] = true
-    small_models_default["models/combine_apc_destroyed_gib05.mdl"] = true
-    small_models_default["models/combine_apc_destroyed_gib06.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p1.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p2.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p3.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p4.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p5.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p7.mdl"] = true
-    small_models_default["models/props/cs_office/trash_can_p8.mdl"] = true
-    small_models_default["models/props/cs_office/water_bottle.mdl"] = true
-    small_models_default["models/props_c17/chair02a.mdl"] = true
-    small_models_default["models/props_c17/chair02a.mdl"] = true
-    small_models_default["models/props_c17/tools_pliers01a.mdl"] = true
-    small_models_default["models/props_c17/tools_wrench01a.mdl"] = true
-    small_models_default["models/props_junk/garbage_metalcan001a.mdl"] = true
-    small_models_default["models/props_junk/garbage_metalcan002a.mdl"] = true
-    small_models_default["models/props_junk/garbage_milkcarton001a.mdl"] = true
-    small_models_default["models/props_junk/garbage_milkcarton002a.mdl"] = true
-    small_models_default["models/props_junk/garbage_plasticbottle001a.mdl"] = true
-    small_models_default["models/props_junk/garbage_plasticbottle003a.mdl"] = true
-    small_models_default["models/props_junk/metal_paintcan001a.mdl"] = true
-    small_models_default["models/props_junk/metal_paintcan001b.mdl"] = true
-    small_models_default["models/props_junk/popcan01a.mdl"] = true
-    small_models_default["models/props_junk/shoe001a.mdl"] = true
-    small_models_default["models/props_lab/binderblue.mdl"] = true
-    small_models_default["models/props_lab/binderbluelabel.mdl"] = true
-    small_models_default["models/props_lab/bindergraylabel01a.mdl"] = true
-    small_models_default["models/props_lab/bindergraylabel01b.mdl"] = true
-    small_models_default["models/props_lab/bindergreen.mdl"] = true
-    small_models_default["models/props_lab/bindergreenlabel.mdl"] = true
-    small_models_default["models/props_lab/binderredlabel.mdl"] = true
-    small_models_default["models/props_lab/box01a.mdl"] = true
-    small_models_default["models/props_lab/jar01a.mdl"] = true
-    small_models_default["models/props_wasteland/cafeteria_table001a.mdl"] = true
-    small_models_default["models/props_wasteland/controlroom_chair001a.mdl"] = true
+    local small_models_default = {
+      ["models/combine_apc_destroyed_gib02.mdl"] = true,
+      ["models/combine_apc_destroyed_gib03.mdl"] = true,
+      ["models/combine_apc_destroyed_gib04.mdl"] = true,
+      ["models/combine_apc_destroyed_gib05.mdl"] = true,
+      ["models/combine_apc_destroyed_gib06.mdl"] = true,
+      ["models/props/cs_office/trash_can_p1.mdl"] = true,
+      ["models/props/cs_office/trash_can_p2.mdl"] = true,
+      ["models/props/cs_office/trash_can_p3.mdl"] = true,
+      ["models/props/cs_office/trash_can_p4.mdl"] = true,
+      ["models/props/cs_office/trash_can_p5.mdl"] = true,
+      ["models/props/cs_office/trash_can_p7.mdl"] = true,
+      ["models/props/cs_office/trash_can_p8.mdl"] = true,
+      ["models/props/cs_office/water_bottle.mdl"] = true,
+      ["models/props_c17/chair02a.mdl"] = true,
+      ["models/props_c17/tools_pliers01a.mdl"] = true,
+      ["models/props_c17/tools_wrench01a.mdl"] = true,
+      ["models/props_junk/garbage_metalcan001a.mdl"] = true,
+      ["models/props_junk/garbage_metalcan002a.mdl"] = true,
+      ["models/props_junk/garbage_milkcarton001a.mdl"] = true,
+      ["models/props_junk/garbage_milkcarton002a.mdl"] = true,
+      ["models/props_junk/garbage_plasticbottle001a.mdl"] = true,
+      ["models/props_junk/garbage_plasticbottle003a.mdl"] = true,
+      ["models/props_junk/metal_paintcan001a.mdl"] = true,
+      ["models/props_junk/metal_paintcan001b.mdl"] = true,
+      ["models/props_junk/popcan01a.mdl"] = true,
+      ["models/props_junk/shoe001a.mdl"] = true,
+      ["models/props_lab/binderblue.mdl"] = true,
+      ["models/props_lab/binderbluelabel.mdl"] = true,
+      ["models/props_lab/bindergraylabel01a.mdl"] = true,
+      ["models/props_lab/bindergraylabel01b.mdl"] = true,
+      ["models/props_lab/bindergreen.mdl"] = true,
+      ["models/props_lab/bindergreenlabel.mdl"] = true,
+      ["models/props_lab/binderredlabel.mdl"] = true,
+      ["models/props_lab/box01a.mdl"] = true,
+      ["models/props_lab/jar01a.mdl"] = true,
+      ["models/props_wasteland/cafeteria_table001a.mdl"] = true,
+      ["models/props_wasteland/controlroom_chair001a.mdl"] = true
+    }
+
     SC_SMALL_MODELS = ReadConfigFile("sc_tools/small.txt", small_models_default, comment)
   end
 
   if overwrite or table.IsEmpty(SC_SMALL_MODELS_DIRS) then
-    local small_models_dirs_default = {}
-    small_models_dirs_default["models/gibs/"] = true
-    small_models_dirs_default["models/humans/"] = true
+    local small_models_dirs_default = {
+      ["models/gibs/"] = true,
+      ["models/humans/"] = true
+    }
+
     SC_SMALL_MODELS_DIRS = ReadConfigFile("sc_tools/smallDir.txt", small_models_dirs_default, comment)
   end
 end
