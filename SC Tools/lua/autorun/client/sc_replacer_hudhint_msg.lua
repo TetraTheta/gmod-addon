@@ -2,7 +2,7 @@
 -- https://wiki.facepunch.com/gmod/input.LookupBinding
 net.Receive("SCReplacerHudhintMessage", function(_, _)
   local phrase = net.ReadString()
-  if phrase:StartsWith("#") then phrase = language.GetPhrase(phrase) end
+  phrase = language.GetPhrase(phrase)
   local function replaceKeybinds(keybind)
     local vkey = input.LookupBinding(keybind, true)
     if vkey then
