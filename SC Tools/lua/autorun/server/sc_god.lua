@@ -14,7 +14,13 @@
   ks_: Mistake Of Pythagoras
   dw_: Dangerous World
 --]]
-include("autorun/sc_tools_shared.lua")
+require("sctools")
+local GetPlayerByName = sctools.GetPlayerByName
+local GetTraceEntity = sctools.GetTraceEntity
+local IsSuperAdmin = sctools.IsSuperAdmin
+local SendMessage = sctools.SendMessage
+local SuggestPlayer = sctools.SuggestPlayer
+--
 -- format: multiline
 local map_prefix = {
   "d1_",
@@ -82,28 +88,28 @@ local function ProcessDamage(victim, dmg)
 end
 
 local function SetGodNPC(ply, _, _, _)
-  if not CheckSAdmin(ply) then return end
-  local ent = GetTraceEntity(ply)
+  if not IsSuperAdmin(ply) then return end
+  local ent = GetTraceEntity(ply) ---@cast ent Entity
   if ent:IsNPC() or ent:IsNextBot() then
-    ent.important = true
+    ent.important = true ---@diagnostic disable-line: inject-field
     MsgN("[SC God NPC] The NPC (", ent:GetName(), ", ", ent:GetClass(), ") is set as important.")
   end
 end
 
 local function SetGodPlayer(ply, _, args, _)
-  if not CheckSAdminConsole(ply) then return end
+  if not IsSuperAdmin(ply) then return end
   if args[1] ~= nil then
-    if args[2] ~= nil then SendMessage(ply, HUD_PRINTCONSOLE, "[SC God Player] Only first player will be processed.") end
+    if args[2] ~= nil then SendMessage("[SC God Player] Only first player will be processed.", ply, HUD_PRINTCONSOLE) end
     local p = GetPlayerByName(args[1])
     if p ~= nil and IsValid(p) and p:IsPlayer() then
       -- Attempt 1: Set 'important' to the player
-      p.important = true
+      p.important = true ---@diagnostic disable-line: inject-field
       -- Attempt 2: Set God Mode to the player
       p:GodEnable()
-      SendMessage(ply, HUD_PRINTTALK, "[SC God Player] God Mode is enabled to " .. p:GetName() .. ".")
+      SendMessage("[SC God Player] God Mode is enabled to " .. p:GetName() .. ".", ply, HUD_PRINTTALK)
     end
   else
-    SendMessage(ply, HUD_PRINTCONSOLE, "[SC God Player] You must provide one player.")
+    SendMessage("[SC God Player] You must provide one player.", ply, HUD_PRINTCONSOLE)
   end
 end
 
@@ -113,7 +119,7 @@ end
 
 local function SetGodSAdmin(ply)
   if not GetConVar("sc_auto_god_sadmin"):GetBool() then return end
-  if CheckSAdmin(ply) then
+  if IsSuperAdmin(ply) then
     ply:GodEnable()
     ply:ChatPrint("[SC Auto God SAdmin] God Mode is automatically activated to you.")
     MsgN("[SC Auto God SAdmin] Automatically activated God Mode to ", ply:GetName())
@@ -121,10 +127,10 @@ local function SetGodSAdmin(ply)
 end
 
 local function UnsetGodNPC(ply, _, _, _)
-  if not CheckSAdmin(ply) then return end
-  local ent = GetTraceEntity(ply)
-  if ent.IsNPC() or ent.IsNextBot() then
-    ent.important = nil
+  if not IsSuperAdmin(ply) then return end
+  local ent = GetTraceEntity(ply) ---@cast ent Entity
+  if ent:IsNPC() or ent:IsNextBot() then
+    ent.important = nil ---@diagnostic disable-line: inject-field
     MsgN("[SC God NPC] The NPC (", ent:GetName(), ", ", ent:GetClass(), ") is no longer set as important.")
   end
 end

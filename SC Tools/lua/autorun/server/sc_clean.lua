@@ -5,7 +5,11 @@
   ConVars:
   * (Shared) sc_remove_effect <0|1> - Entity remove effect type. 0 = Remove, 1 = Dissolve.
 --]]
-include("autorun/sc_tools_shared.lua")
+require("sctools")
+local IsSuperAdmin = sctools.IsSuperAdmin
+local RemoveEffect = sctools.RemoveEffect
+local SendMessage = sctools.SendMessage
+--
 util.AddNetworkString("SCCleanResult")
 local function CleanAmmo()
   local clean = {
@@ -194,7 +198,7 @@ local function CleanAutoComplete(_, args)
 end
 
 local function Clean(ply, _, args, _)
-  if not CheckSAdminConsole(ply) then return end
+  if not IsSuperAdmin(ply) then return end
   -- Filter wrong arguments
   local arg = string.lower(args[1])
   local validArgs = {}
@@ -208,7 +212,7 @@ local function Clean(ply, _, args, _)
   validArgs["small"] = true
   validArgs["weapon"] = true
   if not validArgs[arg] then
-    SendMessage(ply, HUD_PRINTCONSOLE, "[SC Clean] You must specify one of these argument: all, ammo, debris, decal, gibs, powerups, ragdoll, small, weapon. Aborting...")
+    SendMessage("[SC Clean] You must specify one of these argument: all, ammo, debris, decal, gibs, powerups, ragdoll, small, weapon. Aborting...", ply, HUD_PRINTCONSOLE)
     return
   end
 

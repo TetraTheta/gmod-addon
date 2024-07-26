@@ -2,16 +2,15 @@
 hook.Add("PlayerSpawn", "SCBoostSpeedInitialValue", function(p, _)
   ---@cast p Player
   if IsValid(p) then
-    ---@diagnostic disable-next-line: inject-field
-    p.sc_default_crouch_speed = p:GetCrouchedWalkSpeed()
-    ---@diagnostic disable-next-line: inject-field
-    p.sc_default_ladder_speed = p:GetLadderClimbSpeed()
+    p.sc_default_crouch_speed = p:GetCrouchedWalkSpeed() ---@diagnostic disable-line: inject-field
+    p.sc_default_ladder_speed = p:GetLadderClimbSpeed() ---@diagnostic disable-line: inject-field
   end
 end)
 
 -- KeyPress
 hook.Add("KeyPress", "SCBoostSpeedKeyPress", function(p, _)
-  local mult = GetConVar("sc_boost_speed_modifier"):GetFloat() > 0 and GetConVar("sc_boost_speed_modifier"):GetFloat() or 1.0
+  local mult = GetConVar("sc_boost_speed_modifier"):GetFloat()
+  mult = mult > 0 and mult or 1.0
   if p:Crouching() and p:KeyPressed(IN_SPEED) then
     p:SetCrouchedWalkSpeed(p:GetCrouchedWalkSpeed() * mult)
     return

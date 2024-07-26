@@ -1,17 +1,10 @@
 -- Custom implementation of 'trigger_changelevel' that doesn't require 'info_landmark'
 --
-ENT.Base = "base_point"
-ENT.DoNotDuplicate = true
-ENT.PhysgunDisabled = true
+DEFINE_BASECLASS("sc_point")
+ENT.Base = "sc_point"
 ENT.Type = "point"
 --
-function ENT:AcceptInput(inputName, _, _, _)
-  if SERVER and inputName == "ChangeLevel" then
-    self:ChangeLevel()
-  end
-end
-
-function ENT:ChangeLevel()
+function ENT:InputChangeLevel(_, _, _)
   local nmap = self.Map
   if nmap then
     print("[sc_changelevel] Changing level to " .. nmap .. "...")
@@ -19,12 +12,6 @@ function ENT:ChangeLevel()
   else
     print("[sc_changelevel] 'map' of 'sc_changelevel' is empty!")
   end
-end
-
-function ENT:Draw()
-end
-
-function ENT:Initialize()
 end
 
 function ENT:KeyValue(key, value)

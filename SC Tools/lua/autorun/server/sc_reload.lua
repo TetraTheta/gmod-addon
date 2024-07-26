@@ -3,7 +3,7 @@
   * sc_reload - Reload configurations
 ]]
 --
-include("autorun/sc_tools_shared.lua")
+include("autorun/sc_tools_config.lua")
 local function Reload(_, _, _, _)
   ReadConfigFiles(true)
 end
