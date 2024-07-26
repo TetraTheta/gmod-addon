@@ -35,6 +35,7 @@ SWEP.Secondary.Recoil = 0.1
 SWEP.Secondary.Volume = 0.55
 -- SWEP Secondary Fire Mode
 SWEP.Secondary.Mode = GetConVar("sc_adminpistol_default") ~= nil and GetConVar("sc_adminpistol_default"):GetInt() or 0
+SWEP.Secondary.ModeMax = 3
 -- SWEP Secondary Fire Mode 0: Explosion
 SWEP.Secondary.Explosion = {}
 SWEP.Secondary.Explosion.Damage = 9999999 -- Damage for explosion
@@ -199,8 +200,8 @@ function SWEP:SecondaryAttack()
     self:SecondaryAttackCombineBall()
   elseif mode == 3 then
     self:SecondaryAttackGrenade()
-  elseif mode == 4 then
-    self:SecondaryAttackRPGRocket()
+  -- elseif mode == 4 then
+  --   self:SecondaryAttackRPGRocket()
   end
 end
 
@@ -343,7 +344,7 @@ function SWEP:SecondaryAttackGrenade()
       grenade:SetPhysicsAttacker(owner)
       grenade:Spawn()
       grenade:Fire("SetTimer", tostring(self.Secondary.Grenade.Time))
-      grenade:SetName("scapg_" .. CreateRandomString())
+      grenade:SetName("scapg_" .. self:CreateRandomString())
       grenade:SetSaveValue("m_hThrower", owner)
       local phys = grenade:GetPhysicsObject()
       if IsValid(phys) then phys:SetVelocity(owner:GetAimVector() * self.Secondary.Grenade.Force) end
@@ -398,15 +399,19 @@ end
 -- Reload
 --
 function SWEP:Reload()
+  self:ChangeSecondaryMode("SCAP_ChangeMode")
+end
+
+function SWEP:ChangeSecondaryMode(identifier)
   local owner = self:GetOwner()
   --- NPC cannot do secondary attack
   ---@cast owner Player
   if not IsFirstTimePredicted() or not owner:KeyPressed(IN_RELOAD) or self:GetNextPrimaryFire() > CurTime() then return end
   local val = self.Secondary.Mode + 1
-  if val > 4 or val < 0 then val = 0 end
+  if val > self.Secondary.ModeMax or val < 0 then val = 0 end
   self.Secondary.Mode = val
   if SERVER then
-    net.Start("SCAP_ChangeMode")
+    net.Start(identifier)
     net.WriteUInt(val, 3)
     net.Send(owner)
   end
@@ -415,7 +420,7 @@ end
 --
 -- Helper function
 --
-function CreateRandomString()
+function SWEP:CreateRandomString()
   local length = 6
   local result = {}
   for i = 0, length do

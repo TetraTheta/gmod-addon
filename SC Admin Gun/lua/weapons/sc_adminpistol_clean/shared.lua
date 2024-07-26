@@ -16,16 +16,5 @@ end
 -- Reload
 --
 function SWEP:Reload()
-  local owner = self:GetOwner()
-  --- NPC cannot do secondary attack
-  ---@cast owner Player
-  if not IsFirstTimePredicted() or not owner:KeyPressed(IN_RELOAD) or self:GetNextPrimaryFire() > CurTime() then return end
-  local val = self.Secondary.Mode + 1
-  if val > 4 or val < 0 then val = 0 end
-  self.Secondary.Mode = val
-  if SERVER then
-    net.Start("SCAPC_ChangeMode")
-    net.WriteUInt(val, 3)
-    net.Send(owner)
-  end
+  self:ChangeSecondaryMode("SCAPC_ChangeMode")
 end
