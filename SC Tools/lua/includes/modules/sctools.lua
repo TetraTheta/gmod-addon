@@ -1,6 +1,8 @@
 local b_bor = bit.bor
 local MsgN = MsgN
 local p_GetHumans = player.GetHumans
+local s_explode = string.Explode
+local s_find = string.find
 local s_sub = string.sub
 local u_GetPlayerTrace = util.GetPlayerTrace
 local u_TraceLine = util.TraceLine
@@ -11,10 +13,152 @@ module("sctools", package.seeall)
 --
 -- Clients don't need this module
 if CLIENT then return end
--- Config
+--[[
+##################
+#     CONFIG     #
+##################
+]]
+--
+--
 sctools.SMALL_MODELS = {}
 sctools.SMALL_MODELS_DIRS = {}
+--[[
+#################
+#     LOCAL     #
+#################
+]]
 --
+local _dissolveCounter = 0
+local _dissolver ---@cast _dissolver Entity
+--
+--
+local function _CreateDissolver(ent)
+  _dissolver = ents.Create("env_entity_dissolver") ---@diagnostic disable-line: lowercase-global
+  _dissolver:SetPos(ent:GetPos())
+  _dissolver:Spawn()
+  _dissolver:Activate()
+  _dissolver:SetKeyValue("magnitude", "100")
+  _dissolver:SetKeyValue("dissolvetype", "0")
+end
+
+local function dissolve(counter)
+  timer.Simple(0, function() _dissolver:Fire("Dissolve", "sc_dissolve_" .. counter) end)
+end
+
+---Dissolve entity with `env_entity_dissolver`.
+---@param ent Entity
+local function _EntityDissolve(ent)
+  if IsValid(ent) then
+    -- Disable collision
+    ent:SetCollisionGroup(COLLISION_GROUP_VEHICLE_CLIP)
+    --ent:SetSolid(SOLID_NONE)
+    ent:SetRenderFX(kRenderFxFadeFast)
+    -- Disable physics
+    local phys = ent:GetPhysicsObject()
+    if IsValid(phys) then phys:EnableGravity(false) end
+    -- Set targetname for dissolving
+    _dissolveCounter = _dissolveCounter + 1
+    ent:SetName("sc_dissolve_" .. _dissolveCounter)
+    -- Create dissolver if not exists
+    if not IsValid(_dissolver) then _CreateDissolver(ent) end
+    -- Dissolve it in next tick
+    dissolve(_dissolveCounter)
+    timer.Simple(1.1, function() if IsValid(ent) then ent:Remove() end end)
+    -- Use timer.Create for updating 60 sec counter
+    timer.Create("SCRemoveDissolveCleanup", 60, 1, function() if IsValid(_dissolver) then _dissolver:Remove() end end)
+  end
+end
+
+---Remove entity like 'Remove' mode of Toolgun.
+---@param ent Entity
+local function _EntityRemove(ent)
+  if IsValid(ent) and not ent:IsPlayer() then
+    -- Remove all constraints to stop ropes from hanging around
+    constraint.RemoveAll(ent)
+    -- Disable collision
+    ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
+    ent:SetSolid(SOLID_NONE)
+    -- Remove the entity after 0.1 second
+    timer.Simple(0.1, function() if IsValid(ent) then ent:Remove() end end)
+    -- Make the entity not solid
+    ent:SetNotSolid(true)
+    ent:SetMoveType(MOVETYPE_NONE)
+    ent:SetNoDraw(true)
+    -- Show effect
+    local ed = EffectData()
+    ed:SetOrigin(ent:GetPos())
+    ed:SetEntity(ent)
+    util.Effect("entity_remove", ed, true, true)
+  end
+end
+
+---'Disable' entity. (e.g., stop moving, stop attacking)
+---@param ent NPC
+local function _NPCDisable(ent)
+  local npcs = {
+    combine_mine = {"Disarm"},
+    npc_alyx = {"HolsterWeapon"},
+    npc_antlion = {"DisableJump", "StopFightToPosition"},
+    npc_antlionguard = {"ClearChargeTarget", "DisableBark", "DisablePreferPhysicsAttack", "StopInvestigating"},
+    npc_apcdriver = {"StopFiring", "Stop"},
+    npc_barnacle = {"LetGo"},
+    npc_barney = {"HolsterWeapon"},
+    npc_breen = {"HolsterWeapon"},
+    npc_citizen = {"HolsterWeapon"},
+    npc_clawscanner = {"ClearFollowTarget", "DisableSpotlight"},
+    npc_combine_camera = {"Disable", "SetIdle"},
+    npc_combine_s = {"HolsterWeapon", "StopPatrolling"},
+    npc_combinedropship = {"StopPatrol", "SetGunRange 1"},
+    npc_combinegunship = {"BlindfireOff", "OmniscientOff", "StopPatrol"},
+    npc_cscanner = {"ClearFollowTarget", "DisableSpotlight"},
+    npc_eli = {"HolsterWeapon"},
+    npc_fisherman = {"HolsterWeapon"},
+    npc_gman = {"HolsterWeapon"},
+    npc_helicopter = {"DisableDeadlyShooting", "GunOff", "MissileOff", "StopPatrol"},
+    npc_hunter = {"Crouch", "DisableShooting"},
+    npc_kleiner = {"HolsterWeapon"},
+    npc_magnusson = {"HolsterWeapon"},
+    npc_manhack = {"InteractivePowerDown"},
+    npc_metropolice = {"HolsterWeapon"},
+    npc_missiledefense = {"HolsterWeapon"},
+    npc_monk = {"HolsterWeapon"},
+    npc_mossman = {"HolsterWeapon"},
+    npc_rollermine = {"InteractivePowerDown", "TurnOff"},
+    npc_sniper = {"DisableSniper", "StopSweeping"},
+    npc_stalker = {"HolsterWeapon"},
+    npc_strider = {"DisableAggressiveBehavior", "StopPatrol"},
+    npc_turret_ceiling = {"Disable"},
+    npc_turret_floor = {"Disable"},
+    npc_turret_ground = {"Disable", "InteractivePowerDown"},
+    npc_vehicledriver = {"StopFiring", "Stop"},
+    npc_vortigaunt = {"HolsterWeapon"},
+  }
+
+  local class = ent:GetClass()
+  if npcs[class] then
+    for _, v in ipairs(npcs[class]) do
+      local f, _, _ = s_find(v, " ")
+      if f ~= nil and f > 0 then
+        local t = s_explode(" ", v)
+        ent:Fire(t[1], t[2])
+      else
+        ent:Fire(v)
+      end
+    end
+  end
+end
+
+--[[
+##################
+#     PUBLIC     #
+##################
+]]
+--
+--
+---Dissolve entity
+function sctools.DissolveEntity(ent)
+end
+
 ---Get player by his (nick)name.<br>
 ---The player must be inside of the server.
 ---@param name string (nick)name.
@@ -101,74 +245,29 @@ end
 function sctools.RemoveEffect(ent)
   local removeType = GetConVar("sc_remove_effect"):GetInt()
   if removeType == 0 then
-    sctools.RemoveEffectRemove(ent)
+    _NPCDisable(ent)
+    _EntityRemove(ent)
   elseif removeType == 1 then
-    sctools.RemoveEffectDissolve(ent)
-  end
-end
-
-local _dissolveCounter = 0
-local _dissolver ---@cast _dissolver Entity
-function sctools.RemoveEffectDissolve(ent)
-  if not IsValid(ent) or ent:IsPlayer() then return false end
-  -- Use alternative effect for special classes which cannot be dissolved
-  local just_break_classes = {"func_breakable", "func_breakable_surf"}
-  local just_remove_classes = {"func_brush", "func_door", "func_door_rotating", "func_physbox"}
-  local ent_class = ent:GetClass()
-  for _, v in ipairs(just_break_classes) do
-    if v == ent_class then
-      ent:Fire("Break")
-      return
+    _NPCDisable(ent)
+    local class = ent:GetClass()
+    local break_class = {"func_breakable", "func_breakable_surf"}
+    local remove_class = {"func_brush", "func_door", "func_door_rotating", "func_movelinear", "func_physbox"}
+    for _, v in ipairs(break_class) do
+      if v == class then
+        ent:Fire("Break")
+        return
+      end
     end
-  end
-  for _, v in ipairs(just_remove_classes) do
-    if v == ent_class then
-      sctools.RemoveEffectRemove(ent)
-      return
+
+    for _, v in ipairs(remove_class) do
+      if v == class then
+        _EntityRemove(ent)
+        return
+      end
     end
+
+    _EntityDissolve(ent)
   end
-
-  -- https://developer.valvesoftware.com/wiki/Env_entity_dissolver
-  local phys = ent:GetPhysicsObject()
-  if IsValid(phys) then phys:EnableGravity(false) end
-  ent:SetName("sc_dissolve_" .. _dissolveCounter)
-  if not IsValid(_dissolver) then
-    _dissolver = ents.Create("env_entity_dissolver") ---@diagnostic disable-line: lowercase-global
-    _dissolver:SetPos(ent:GetPos())
-    _dissolver:Spawn()
-    _dissolver:Activate()
-    _dissolver:SetKeyValue("magnitude", "100")
-    _dissolver:SetKeyValue("dissolvetype", "0")
-  end
-
-  _dissolver:Fire("Dissolve", "sc_dissolve_" .. _dissolveCounter)
-  -- Disable collision
-  ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
-  ent:SetSolid(SOLID_NONE)
-  ent:SetRenderFX(kRenderFxFadeFast)
-  -- Use timer.Create for updating 60 sec counter
-  timer.Create("SCRemoveDissolveCleanup", 60, 1, function() if IsValid(_dissolver) then _dissolver:Remove() end end)
 end
-
-function sctools.RemoveEffectRemove(ent)
-  if not IsValid(ent) or ent:IsPlayer() then return false end
-  -- Remove all constraints to stop ropes from hanging around
-  constraint.RemoveAll(ent)
-  -- Disable collision
-  ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
-  ent:SetSolid(SOLID_NONE)
-  -- Remove the entity after 0.1 second
-  timer.Simple(0.1, function() if IsValid(ent) then ent:Remove() end end)
-  -- Make the entity not solid
-  ent:SetNotSolid(true)
-  ent:SetMoveType(MOVETYPE_NONE)
-  ent:SetNoDraw(true)
-  -- Show effect
-  local ed = EffectData()
-  ed:SetOrigin(ent:GetPos())
-  ed:SetEntity(ent)
-  util.Effect("entity_remove", ed, true, true)
-  return true
-end
-
+--
 return sctools

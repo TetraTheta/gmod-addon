@@ -8,11 +8,6 @@ net.Receive("SCCleanResult", function(_, _)
     playSound = true
   end
 
-  if resTable.vitality and math.floor(resTable.vitality) > 0 then
-    notification.AddLegacy("Cleaned " .. resTable.vitality .. " Batteries and Healthkits", NOTIFY_GENERIC, 2)
-    playSound = true
-  end
-
   if resTable.debris and math.floor(resTable.debris) > 0 then
     notification.AddLegacy("Cleaned " .. resTable.debris .. " Debris", NOTIFY_GENERIC, 2)
     playSound = true
@@ -20,6 +15,11 @@ net.Receive("SCCleanResult", function(_, _)
 
   if resTable.gibs and math.floor(resTable.gibs) > 0 then
     notification.AddLegacy("Cleaned " .. resTable.gibs .. " Gibs", NOTIFY_GENERIC, 2)
+    playSound = true
+  end
+
+  if resTable.powerups and math.floor(resTable.powerups) > 0 then
+    notification.AddLegacy("Cleaned " .. resTable.powerups .. " Batteries and Healthkits", NOTIFY_GENERIC, 2)
     playSound = true
   end
 
