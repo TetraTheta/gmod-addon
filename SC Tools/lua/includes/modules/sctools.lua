@@ -20,8 +20,109 @@ if CLIENT then return end
 ]]
 --
 --
+local function _ReadFile(fileName, default, topComment)
+  -- Check file exists
+  if file.Exists(fileName, "DATA") then
+    -- File exists
+    local c = file.Read(fileName, "DATA")
+    if c == nil then
+      print("[SC Tools] Content of '" .. fileName .. "' is empty. Is this intended?")
+      return {}
+    else
+      local tbl = string.Split(c, "\n")
+      local t = {}
+      for _, v in ipairs(tbl) do
+        local row = string.Split(v, "#")
+        local item = row[1]
+        if #item > 0 then t[string.Trim(item)] = true end
+      end
+      return t
+    end
+  else
+    -- File not exists
+    ---@diagnostic disable-next-line: cast-type-mismatch
+    local f = file.Open(fileName, "w", "DATA") ---@cast f File
+    if topComment ~= nil and not table.IsEmpty(topComment) then
+      for k, v in ipairs(topComment) do
+        f:Write("# " .. topComment[k] .. "\n")
+      end
+    end
+
+    if default ~= nil and table.Count(default) > 0 then
+      for k, v in SortedPairs(default) do
+        if v then f:Write(tostring(k) .. "\n") end
+      end
+
+      f:Flush()
+      f:Close()
+      return default
+    end
+
+    -- Close file anyway
+    f:Flush()
+    f:Close()
+    return {}
+  end
+end
 sctools.SMALL_MODELS = {}
 sctools.SMALL_MODELS_DIRS = {}
+
+function sctools.ReloadConfig(overwrite)
+  -- Directory must be created first. This won't throw any exception, so this is fine.
+  file.CreateDir("sc_tools")
+  local comment = {"You can add comment using '#'.", "'#' can be either start of the line or middle of the line. Any character after '#' will be ignored."}
+  if overwrite or table.IsEmpty(sctools.SMALL_MODELS) then
+    local sm_default = {
+      ["models/combine_apc_destroyed_gib02.mdl"] = true,
+      ["models/combine_apc_destroyed_gib03.mdl"] = true,
+      ["models/combine_apc_destroyed_gib04.mdl"] = true,
+      ["models/combine_apc_destroyed_gib05.mdl"] = true,
+      ["models/combine_apc_destroyed_gib06.mdl"] = true,
+      ["models/props/cs_office/trash_can_p1.mdl"] = true,
+      ["models/props/cs_office/trash_can_p2.mdl"] = true,
+      ["models/props/cs_office/trash_can_p3.mdl"] = true,
+      ["models/props/cs_office/trash_can_p4.mdl"] = true,
+      ["models/props/cs_office/trash_can_p5.mdl"] = true,
+      ["models/props/cs_office/trash_can_p7.mdl"] = true,
+      ["models/props/cs_office/trash_can_p8.mdl"] = true,
+      ["models/props/cs_office/water_bottle.mdl"] = true,
+      ["models/props_c17/chair02a.mdl"] = true,
+      ["models/props_c17/tools_pliers01a.mdl"] = true,
+      ["models/props_c17/tools_wrench01a.mdl"] = true,
+      ["models/props_junk/garbage_metalcan001a.mdl"] = true,
+      ["models/props_junk/garbage_metalcan002a.mdl"] = true,
+      ["models/props_junk/garbage_milkcarton001a.mdl"] = true,
+      ["models/props_junk/garbage_milkcarton002a.mdl"] = true,
+      ["models/props_junk/garbage_plasticbottle001a.mdl"] = true,
+      ["models/props_junk/garbage_plasticbottle003a.mdl"] = true,
+      ["models/props_junk/metal_paintcan001a.mdl"] = true,
+      ["models/props_junk/metal_paintcan001b.mdl"] = true,
+      ["models/props_junk/popcan01a.mdl"] = true,
+      ["models/props_junk/shoe001a.mdl"] = true,
+      ["models/props_lab/binderblue.mdl"] = true,
+      ["models/props_lab/binderbluelabel.mdl"] = true,
+      ["models/props_lab/bindergraylabel01a.mdl"] = true,
+      ["models/props_lab/bindergraylabel01b.mdl"] = true,
+      ["models/props_lab/bindergreen.mdl"] = true,
+      ["models/props_lab/bindergreenlabel.mdl"] = true,
+      ["models/props_lab/binderredlabel.mdl"] = true,
+      ["models/props_lab/box01a.mdl"] = true,
+      ["models/props_lab/jar01a.mdl"] = true,
+      ["models/props_wasteland/cafeteria_table001a.mdl"] = true,
+      ["models/props_wasteland/controlroom_chair001a.mdl"] = true
+    }
+    sctools.SMALL_MODELS = _ReadFile("sc_tools/small.txt", sm_default, comment)
+  end
+
+  if overwrite or table.IsEmpty(sctools.SMALL_MODELS_DIRS) then
+    local smd_default = {
+      ["models/gibs/"] = true,
+      ["models/humans/"] = true
+    }
+    sctools.SMALL_MODELS_DIRS = _ReadFile("sc_tools/smallDir.txt", smd_default, comment)
+  end
+end
+
 --[[
 #################
 #     LOCAL     #
@@ -76,8 +177,7 @@ local function _EntityRemove(ent)
     -- Remove all constraints to stop ropes from hanging around
     constraint.RemoveAll(ent)
     -- Disable collision
-    ent:SetCollisionGroup(COLLISION_GROUP_WORLD)
-    ent:SetSolid(SOLID_NONE)
+    ent:SetCollisionGroup(COLLISION_GROUP_VEHICLE_CLIP)
     -- Remove the entity after 0.1 second
     timer.Simple(0.1, function() if IsValid(ent) then ent:Remove() end end)
     -- Make the entity not solid
@@ -154,10 +254,6 @@ end
 ##################
 ]]
 --
---
----Dissolve entity
-function sctools.DissolveEntity(ent)
-end
 
 ---Get player by his (nick)name.<br>
 ---The player must be inside of the server.

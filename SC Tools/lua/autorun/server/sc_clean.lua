@@ -9,9 +9,12 @@ require("sctools")
 local IsSuperAdmin = sctools.IsSuperAdmin
 local RemoveEffect = sctools.RemoveEffect
 local SendMessage = sctools.SendMessage
+local SM = sctools.SMALL_MODELS
+local SMD = sctools.SMALL_MODELS_DIRS
 --
 util.AddNetworkString("SCCleanResult")
 local function CleanAmmo()
+  if CLIENT then return end
   local clean = {
     item_ammo_357 = true,
     item_ammo_357_large = true,
@@ -41,8 +44,10 @@ local function CleanAmmo()
 end
 
 local function CleanDebris()
+  if CLIENT then return end
   local result = 0
   for _, v in ipairs(ents.GetAll()) do
+    if not IsValid(v:GetPhysicsObject()) then continue end
     if v:GetClass() == "prop_physics" and bit.band(v:GetSpawnFlags(), SF_PHYSPROP_IS_GIB) > 0 then
       RemoveEffect(v)
       result = result + 1
@@ -52,14 +57,17 @@ local function CleanDebris()
 end
 
 local function CleanDecals()
+  if CLIENT then return end
   for _, v in ipairs(player.GetHumans()) do
     v:ConCommand("r_cleardecals")
   end
 end
 
 local function CleanGibs()
+  if CLIENT then return end
   local result = 0
   for _, v in ipairs(ents.GetAll()) do
+    if not IsValid(v:GetPhysicsObject()) then continue end
     if v:GetClass() == "gib" then
       RemoveEffect(v)
       result = result + 1
@@ -69,8 +77,10 @@ local function CleanGibs()
 end
 
 local function CleanPowerups()
+  if CLIENT then return end
   local result = 0
   for _, v in ipairs(ents.GetAll()) do
+    if not IsValid(v:GetPhysicsObject()) then continue end
     local c = v:GetClass()
     if c == "item_healthkit" or c == "item_healthvial" or c == "item_battery" then
       RemoveEffect(v)
@@ -81,9 +91,11 @@ local function CleanPowerups()
 end
 
 local function CleanRagdoll()
+  if CLIENT then return end
   local result = 0
   -- Server-sided ragdoll
   for _, v in ipairs(ents.GetAll()) do
+    if not IsValid(v:GetPhysicsObject()) then continue end
     if v:GetClass() == "prop_ragdoll" and v:GetName() == "" then
       RemoveEffect(v)
       result = result + 1
@@ -100,16 +112,20 @@ local function CleanRagdoll()
 end
 
 local function CleanSmall()
+  if CLIENT then return end
   local result = 0
-  for _, v in ipairs(ents.GetAll()) do
+  for _, v in ipairs(ents.GetAll()) do ---@cast v Entity
+    if not IsValid(v:GetPhysicsObject()) then continue end
     if v:GetClass() == "prop_physics" then
-      if SC_SMALL_MODELS[v:GetModel()] and v:GetName() == "" then
+      if SM[v:GetModel()] and v:GetName() == "" then
+        print("Removing \"" .. v:GetModel() .. "\" (small)")
         RemoveEffect(v)
         result = result + 1
       end
 
-      for d, _ in pairs(SC_SMALL_MODELS_DIRS) do
+      for d, _ in pairs(SMD) do
         if string.StartsWith(v:GetModel(), d) and v:GetName() == "" then
+          print("Removing \"" .. v:GetModel() .. "\" (small_dir)")
           RemoveEffect(v)
           result = result + 1
         end
@@ -120,6 +136,7 @@ local function CleanSmall()
 end
 
 local function CleanWeapon()
+  if CLIENT then return end
   local clean = {
     grenade_ar2 = true,
     weapon_357 = true,
@@ -201,16 +218,17 @@ local function Clean(ply, _, args, _)
   if not IsSuperAdmin(ply) then return end
   -- Filter wrong arguments
   local arg = string.lower(args[1])
-  local validArgs = {}
-  validArgs["all"] = true
-  validArgs["ammo"] = true
-  validArgs["debris"] = true
-  validArgs["decal"] = true
-  validArgs["gibs"] = true
-  validArgs["powerups"] = true
-  validArgs["ragdoll"] = true
-  validArgs["small"] = true
-  validArgs["weapon"] = true
+  local validArgs = {
+    all = true,
+    ammo = true,
+    debris = true,
+    decal = true,
+    gibs = true,
+    powerups = true,
+    ragdoll = true,
+    small = true,
+    weapon = true,
+  }
   if not validArgs[arg] then
     SendMessage("[SC Clean] You must specify one of these argument: all, ammo, debris, decal, gibs, powerups, ragdoll, small, weapon. Aborting...", ply, HUD_PRINTCONSOLE)
     return

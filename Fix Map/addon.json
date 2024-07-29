@@ -3,5 +3,8 @@
   "type": "tool",
   "tags": [
     "fun"
+  ],
+  "ignore": [
+    "README.md"
   ]
 }
