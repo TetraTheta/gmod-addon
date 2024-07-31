@@ -10,7 +10,12 @@ function ENT:InputChangeLevel(_, _, _)
     print("[sc_changelevel] Changing level to " .. nmap .. "...")
     game.ConsoleCommand("map " .. nmap .. "\n")
   else
-    print("[sc_changelevel] 'map' of 'sc_changelevel' is empty!")
+    local name = self:GetName()
+    if name == nil or name == "" then
+      ErrorNoHalt("[ERROR] [sc_changelevel] Value of the 'map' key is empty!\n")
+    else
+      ErrorNoHalt("[ERROR] [sc_changelevel: ", name, "] Value of the 'map' key is empty!\n")
+    end
   end
 end
 

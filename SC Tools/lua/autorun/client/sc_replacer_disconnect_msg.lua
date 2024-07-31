@@ -1,5 +1,0 @@
-net.Receive("SCReplacerDisconnectMessage", function(_, _)
-  local str = net.ReadString()
-  surface.PlaySound("garrysmod/content_downloaded.wav")
-  notification.AddLegacy(str, NOTIFY_HINT, 5)
-end)

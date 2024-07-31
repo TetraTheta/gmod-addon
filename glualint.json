@@ -1,3 +1,6 @@
 {
-  "lint_maxScopeDepth": 8
+  "lint_maxScopeDepth": 8,
+  "lint_spaceBeforeComma": true,
+  "lint_unusedLoopVars": true,
+  "lint_unusedParameters": true
 }

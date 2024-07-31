@@ -11,6 +11,10 @@ local s_split = string.Split
 local s_upper = string.upper
 local t_concat = table.concat
 --
+---@param inputName string
+---@param activator Entity
+---@param caller Entity
+---@param data string
 function ENT:AcceptInput(inputName, activator, caller, data)
   -- All inputs must be named as 'InputInputName' (e.g., 'InputUse')
   local strInputFuncName = Format("Input%s", s_gsub(inputName, "^%l", s_upper))
@@ -21,7 +25,13 @@ function ENT:AcceptInput(inputName, activator, caller, data)
     local d = s_split(data, " ")
     self:SetKeyValue(d[1], t_concat(d, "", 2):gsub(":", ","))
   else
-    print(self, Format("Unhandled AcceptInput: %s", inputName), activator, caller, data)
+    local name = self:GetName()
+    local detail = Format("Unhandled AcceptInput: %s %s %s %s", inputName, tostring(activator), tostring(caller), data)
+    if name == nil or name == "" then
+      ErrorNoHalt("[ERROR] [", self.ClassName, "] ", detail)
+    else
+      ErrorNoHalt("[ERROR] [", self.ClassName, ": ", name, "] ", detail)
+    end
   end
 end
 

@@ -2,7 +2,8 @@
   "title": "SC Tools",
   "type": "tool",
   "tags": [
-    "fun"
+    "fun",
+    "roleplay"
   ],
   "ignore": [
     "lua/.ignore/*"

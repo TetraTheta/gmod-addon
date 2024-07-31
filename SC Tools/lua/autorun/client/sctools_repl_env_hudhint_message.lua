@@ -1,9 +1,8 @@
--- https://developer.valvesoftware.com/wiki/Env_hudhint
--- https://wiki.facepunch.com/gmod/input.LookupBinding
-net.Receive("SCReplacerHudhintMessage", function(_, _)
+net.Receive("SCTOOLS_env_hudhint_message", function(_, _)
   local phrase = net.ReadString()
   phrase = language.GetPhrase(phrase)
-  local function replaceKeybinds(keybind)
+  --
+  local function _ReplaceKeybind(keybind)
     local vkey = input.LookupBinding(keybind, true)
     if vkey then
       return vkey:upper()
@@ -12,7 +11,7 @@ net.Receive("SCReplacerHudhintMessage", function(_, _)
     end
   end
 
-  local vmsg = phrase:gsub("%%(.-)%%", replaceKeybinds)
+  local vmsg = phrase:gsub("%%(.-)%%", _ReplaceKeybind)
   surface.PlaySound("garrysmod/ui_click.wav")
   notification.AddLegacy(vmsg, NOTIFY_GENERIC, 10)
 end)
