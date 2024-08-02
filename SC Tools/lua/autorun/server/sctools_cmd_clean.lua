@@ -146,7 +146,6 @@ end
 ---@return integer
 local function CleanWeapons()
   local target = {
-    grenade_ar2 = true,
     weapon_357 = true,
     weapon_ar2 = true,
     weapon_bugbait = true,

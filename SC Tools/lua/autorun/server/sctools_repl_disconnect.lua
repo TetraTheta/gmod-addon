@@ -1,4 +1,5 @@
 local nw = "SCTOOLS_DisconnectMessage"
+local msg = "MAP ENDED"
 local g_SinglePlayer = game.SinglePlayer
 local g_IsDedicated = game.IsDedicated
 local p_GetHumans = player.GetHumans
@@ -19,20 +20,30 @@ hook.Add("AcceptInput", "SCTOOLS_DisconnectInput", function(ent, input, _, _, va
         RunConsoleCommand("disconnect")
       else
         net.Start(nw)
+        net.WriteString(msg)
         net.Send(Entity(1)) ---@diagnostic disable-line: param-type-mismatch
       end
     elseif not g_IsDedicated() then
       -- Multiplayer environment
       for _, p in ipairs(p_GetHumans()) do ---@cast p Player
-        net.Start(nw)
-        net.Send(p)
+        if cv and not p:IsListenServerHost() then
+          p:Kick(msg)
+        else
+          net.Start(nw)
+          net.WriteString(msg)
+          net.Send(p)
+        end
       end
     else
       -- Dedicated environment
-      -- (Same with above, but reserved for later use)
       for _, p in ipairs(p_GetHumans()) do ---@cast p Player
-        net.Start(nw)
-        net.Send(p)
+        if cv then
+          p:Kick(msg)
+        else
+          net.Start(nw)
+          net.WriteString(msg)
+          net.Send(p)
+        end
       end
     end
   end

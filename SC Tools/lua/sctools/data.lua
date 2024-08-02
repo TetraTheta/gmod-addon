@@ -4,7 +4,7 @@ local f_Write = file.Write
 --
 local files = {}
 files["auto_god_map.txt"] = [[
-# Part of the 'NPC Auto God Mode' configuration. 'NPC Auto God Mode' will only be triggered on these maps.
+# Part of the 'NPC Auto GodMode' configuration. 'NPC Auto GodMode' will only be triggered on these maps.
 # You can add a comment using '#'.
 # '#' can be either the start of the line or the middle of the line. Any character after '#' will be ignored.
 # Half-Life 2
@@ -115,7 +115,7 @@ ep2_outland_12a
 d2_lostcoast
 ]]
 files["auto_god_npc.txt"] = [[
-# Part of the 'NPC Auto God Mode' configuration. 'NPC Auto God Mode' will only be triggered on these NPCs.
+# Part of the 'NPC Auto GodMode' configuration. 'NPC Auto GodMode' will only be triggered on these NPCs.
 # You can add a comment using '#'.
 # '#' can be either the start of the line or the middle of the line. Any character after '#' will be ignored.
 # Don't add 'npc_citizen' in here! Colonel Odessa Cubbage will be handled automatically.

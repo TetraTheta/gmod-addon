@@ -107,6 +107,7 @@ end
 ---@param ply Player
 ---@return Entity
 function sctools.GetTraceEntity(ply)
+  if not IsValid(ply) then return NULL end
   local tr = u_GetPlayerTrace(ply)
   -- MASK_SOLID(33570827): CONTENTS_SOLID(1) + CONTENTS_WINDOW(2) + CONTENTS_GRATE(8) + CONTENTS_MOVEABLE(16384) + CONTENTS_MONSTER(33554432)
   tr.mask = b_bor(MASK_SOLID, CONTENTS_AUX, CONTENTS_DEBRIS)
