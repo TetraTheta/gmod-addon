@@ -1,0 +1,12 @@
+{
+  "title": "SC Admin Weapon",
+  "type": "weapon",
+  "tags": [
+    "fun"
+  ],
+  "ignore": [
+    "lua/weapons/.ignore/*",
+    "models/.ignore/*",
+    "modelssrc/*"
+  ]
+}
