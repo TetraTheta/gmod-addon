@@ -151,16 +151,18 @@ function sctools.RemoveEntity(ent)
     -- Dissolve effect
     local class = ent:GetClass()
     local class_break = {
+      ["func_breakable_surf"] = true,
       ["func_breakable"] = true,
-      ["func_breakable_surf"] = true
     }
 
     local class_remove = {
       ["func_brush"] = true,
-      ["func_door"] = true,
       ["func_door_rotating"] = true,
+      ["func_door"] = true,
       ["func_movelinear"] = true,
-      ["func_physbox"] = true
+      ["func_physbox"] = true,
+      ["func_rotating"] = true,
+      ["func_tracktrain"] = true,
     }
 
     if class_break[class] then

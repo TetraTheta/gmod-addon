@@ -10,6 +10,7 @@ local RemoveEntity = sctools.RemoveEntity
 #     REMOVE ALL     #
 ######################
 ]]
+---@param p Player
 local function RemoveAll(p, _, _, _)
   if not IsSuperAdmin(p) then return end
   local e = GetTraceEntity(p)
@@ -29,6 +30,7 @@ concommand.Add("sc_remove_all", RemoveAll, nil, "Remove every entities that are 
 #     REMOVE CONSTRAINTS     #
 ##############################
 ]]
+---@param p Player
 local function RemoveConstraints(p, _, _, _)
   if not IsSuperAdmin(p) then return end
   local e = GetTraceEntity(p)
@@ -41,6 +43,7 @@ concommand.Add("sc_remove_constraints", RemoveConstraints, nil, "Remove constrai
 #     REMOVE ONE     #
 ######################
 ]]
+---@param p Player
 local function RemoveOne(p, _, _, _)
   if not IsSuperAdmin(p) then return end
   local e = GetTraceEntity(p)

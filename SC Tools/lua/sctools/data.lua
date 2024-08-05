@@ -113,6 +113,17 @@ ep2_outland_12
 ep2_outland_12a
 # Half-Life 2: Lost Coast
 d2_lostcoast
+# Mistake of Pythagoras
+ks_mop_ledoux1
+ks_mop_ledoux2
+ks_mop_pita1
+ks_mop_pita2
+ks_mop_pita3
+ks_mop_pita4
+ks_mop_pita5
+ks_mop_vill1
+ks_mop_vill2
+ks_mop_vill3
 ]]
 files["auto_god_npc.txt"] = [[
 # Part of the 'NPC Auto GodMode' configuration. 'NPC Auto GodMode' will only be triggered on these NPCs.
@@ -181,6 +192,9 @@ models/combine_apc_destroyed_gib06.mdl
 models/props_c17/chair02a.mdl
 models/props_c17/tools_pliers01a.mdl
 models/props_c17/tools_wrench01a.mdl
+models/props_junk/garbage_glassbottle001a.mdl
+models/props_junk/garbage_glassbottle002a.mdl
+models/props_junk/garbage_glassbottle003a.mdl
 models/props_junk/garbage_metalcan001a.mdl
 models/props_junk/garbage_metalcan002a.mdl
 models/props_junk/garbage_milkcarton001a.mdl
