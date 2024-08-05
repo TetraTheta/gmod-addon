@@ -12,10 +12,20 @@ local function _NetMessage(className)
     surface.PlaySound("buttons/button15.wav")
   end)
 end
+surface.CreateFont("CSD", {
+  font = "csd",
+  size = 64,
+  additive = true
+})
 --
 killicon.AddFont("env_explosion", "HL2MPTypeDeath", "7", Color(255, 80, 0, 255), 0.35)
 killicon.AddFont("npc_grenade_frag", "HL2MPTypeDeath", "4", Color(255, 80, 0, 255), 0.56)
 --
 killicon.AddFont("scaw_pistol", "HL2MPTypeDeath", "-", Color(255, 80, 0, 255), 0.52)
+killicon.AddFont("scaw_pistol_clean", "HL2MPTypeDeath", "-", Color(255, 80, 0, 255), 0.52)
+killicon.AddFont("scaw_mp5sd", "CSD", "x", Color(255, 80, 0, 255), 0.52)
+killicon.AddFont("scaw_mp5sd_clean", "CSD", "x", Color(255, 80, 0, 255), 0.52)
 _NetMessage("scaw_pistol")
-
+_NetMessage("scaw_pistol_clean")
+_NetMessage("scaw_mp5sd")
+_NetMessage("scaw_mp5sd_clean")

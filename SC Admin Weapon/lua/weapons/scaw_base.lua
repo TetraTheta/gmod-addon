@@ -1,17 +1,24 @@
+AddCSLuaFile()
+--
 SWEP.AdminOnly = true
 SWEP.Author = "TetraTheta"
 SWEP.AutoSwitchFrom = false
 SWEP.AutoSwitchTo = false
+SWEP.BounceWeaponIcon = false
 SWEP.Category = "SC Admin Weapon"
+SWEP.DrawAmmo = false
+SWEP.IconOverride = "" -- [!!!!] Override this from child SWEPs!
 SWEP.Instructions = "" -- [!!!!] Override this from child SWEPs!
 SWEP.PrintName = "" -- [!!!!] Override this from child SWEPs!
 SWEP.Purpose = "" -- [!!!!] Override this from child SWEPs!
+SWEP.Slot = 0 -- [!!!!] Override this from child SWEPs!
+SWEP.SlotPos = 0 -- [!!!!] Override this from child SWEPs!
 SWEP.Spawnable = false -- [!!!!] Override this from child SWEPs!
 SWEP.UseHands = true
 SWEP.ViewModel = "" -- [!!!!] Override this from child SWEPs!
 SWEP.Weight = 999
 SWEP.WorldModel = "" -- [!!!!] Override this from child SWEPs!
-SWEP.Config_HoldType = "pistol" -- [!!!!] Override this from child SWEPs!
+SWEP.Config_HoldType = "" -- [!!!!] Override this from child SWEPs!
 -- SWEP Primary Fire
 SWEP.Primary.Ammo = "Pistol"
 SWEP.Primary.Automatic = true
@@ -53,7 +60,7 @@ SWEP.Secondary.MOD_CMB_Speed = 3000
 SWEP.Secondary.MOD_GRN_Delay = 0.25
 SWEP.Secondary.MOD_GRN_Force = 1000
 SWEP.Secondary.MOD_GRN_Lifespan = 3
-SWEP.Secondary.MOD_GRN_Sound = "weapons/grenade/tick1.wav" -- no corresponding soundscript
+SWEP.Secondary.MOD_GRN_Sound = "SCAW.Base.Grenade"
 --
 -- [!!!!] Precache ViewModel and WorldModel!
 --util.PrecacheModel(SWEP.ViewModel)
@@ -67,7 +74,7 @@ SWEP.Secondary.MOD_GRN_Sound = "weapons/grenade/tick1.wav" -- no corresponding s
 sound.Add({
   name = "SCAW.Base.Explosion",
   channel = CHAN_WEAPON,
-  volume = 0.25,
+  volume = 0.15,
   level = SNDLVL_GUNFIRE,
   pitch = 100,
   sound = ")weapons/awp/awp1.wav"
@@ -76,7 +83,7 @@ sound.Add({
 sound.Add({
   name = "SCAW.Base.Airboat",
   channel = CHAN_WEAPON,
-  volume = 1.0,
+  volume = 0.35,
   level = SNDLVL_GUNFIRE,
   pitch = 100,
   sound = {")weapons/airboat/airboat_gun_lastshot1.wav", ")weapons/airboat/airboat_gun_lastshot2.wav"}
@@ -85,7 +92,7 @@ sound.Add({
 sound.Add({
   name = "SCAW.Base.CombineBall1",
   channel = CHAN_WEAPON,
-  volume = 0.7,
+  volume = 0.35,
   level = SNDLVL_GUNFIRE,
   pitch = 100,
   sound = ")weapons/ar2/ar2_altfire.wav"
@@ -94,10 +101,19 @@ sound.Add({
 sound.Add({
   name = "SCAW.Base.CombineBall2",
   channel = CHAN_WEAPON,
-  volume = 0.7,
+  volume = 0.35,
   level = SNDLVL_GUNFIRE,
   pitch = 100,
   sound = ")weapons/physcannon/energy_bounce1.wav"
+})
+
+sound.Add({
+  name = "SCAW.Base.Grenade",
+  channel = CHAN_WEAPON,
+  volume = 0.15,
+  level = SNDLVL_GUNFIRE,
+  pitch = 100,
+  sound = ")weapons/grenade/tick1.wav"
 })
 
 --[[
@@ -291,8 +307,8 @@ function SWEP:_SA_CombineBall()
     local cbl = ents.Create("point_combine_ball_launcher")
     cbl:SetAngles(owner:GetAngles())
     cbl:SetPos(owner:GetShootPos() + owner:GetAimVector() * 10)
-    cbl:SetKeyValue("MinSpeed", tostring(self.Secondary.MOD_CMB_Speed)) -- This is not at SDK2013 source or FGD
-    cbl:SetKeyValue("MaxSpeed", tostring(self.Secondary.MOD_CMB_Speed)) -- This is not at SDK2013 source or FGD
+    cbl:SetKeyValue("MinSpeed", tostring(self.Secondary.MOD_CMB_Speed)) -- This is defined in its parent
+    cbl:SetKeyValue("MaxSpeed", tostring(self.Secondary.MOD_CMB_Speed)) -- This is defined in its parent
     cbl:SetKeyValue("MaxBallBounces", "10") -- Max number of bounces (def: 8)
     cbl:SetNotSolid(true)
     cbl:SetMoveType(MOVETYPE_NONE)

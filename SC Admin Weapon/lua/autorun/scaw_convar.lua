@@ -9,3 +9,4 @@ local function _CreateConVar(convar, description, def, min, max)
 end
 --
 _CreateConVar("scaw_pistol_default", "Default secondary fire mode of SC Admin Pistol", "1", 1, 4)
+_CreateConVar("scaw_mp5sd_default", "Default secondary fire mode of SC Admin MP5SD", "1", 1, 4)

@@ -41,7 +41,6 @@ $bbox -6.034 -1.557 -6.14 5.777 2.54 2.149
 $definebone "ValveBiped.Bip01_R_Hand" "" 1.783728 -5.776747 -3.330453 4.618727 90.659287 -171.24832 0 0 0 0 0 0
 $definebone "ValveBiped.Weapon_bone" "ValveBiped.Bip01_R_Hand" 5 -1.5 -5 0 0 0.000001 0 0 0 0 0 0
 
-
 $sequence "idle" {
 	"w_scaw_pistol_anims/idle.smd"
 	activity "ACT_VM_IDLE" 1
@@ -54,8 +53,8 @@ $sequence "idle" {
 $sequence "attack1" {
 	"w_scaw_pistol_anims/attack1.smd"
 	activity "ACT_RANGE_ATTACK_PISTOL" 1
-	{ event 3014 1 "" }
 	{ event AE_NPC_MUZZLEFLASH 0 "PISTOL MUZZLE" }
+	{ event 3014 1 "" }
 	{ event 6001 0 "0" }
 	fadein 0.2
 	fadeout 0.2
