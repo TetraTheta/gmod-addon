@@ -55,9 +55,13 @@ local function ProcessDamage(target, dmg)
   ---@cast target NPC
   if target.SCTOOLS_GODMODE_ENABLED then ---@diagnostic disable-line: undefined-field
     if target.SCTOOLS_GODMODE_MANUAL then ---@diagnostic disable-line: undefined-field
+      DevEntMsgN(target, "is in GodMode (manual)")
       return true
     else
-      if target:Disposition(att) ~= D_HT then return true end
+      if target:Disposition(att) ~= D_HT then
+        DevEntMsgN(target, "is in GodMode (automatic)")
+        return true
+      end
     end
   end
 end
