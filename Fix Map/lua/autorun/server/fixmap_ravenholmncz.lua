@@ -64,6 +64,7 @@ hook.Add("InitPostEntity", "FixMap_RavenholmNCZ_IO", function()
       if lg ~= nil then ---@cast lg Entity
         lg:Remove()
       end
+
       local sc9 = FindByClassAndOrigin("logic_choreographed_scene", Vector(1241.04, 1421, -250.596), "sc9")
       if sc9 ~= nil then ---@cast sc9 Entity
         sc9:ClearAllOutputs()

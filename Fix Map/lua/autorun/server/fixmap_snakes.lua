@@ -26,9 +26,7 @@ hook.Add("InitPostEntity", "FixMap_Snakes_ChangeLevel", function()
     elseif cmap == "beta2f" then
       CreateChangeLevel("beta2f", "beta3f", Vector(846, 2984.69, -510.09))
       local t = ents.FindByName("ftrigger")[1]
-      if t ~= nil then
-        t:Input("AddOutput", t, nil, "OnStartTouch lever,Unlock,,0,1")
-      end
+      if t ~= nil then t:Input("AddOutput", t, nil, "OnStartTouch lever,Unlock,,0,1") end
     elseif cmap == "beta3f" then
       CreateChangeLevel("beta3f", "beta4f", Vector(3587.27, 296.04, 255.09))
     elseif cmap == "beta4f" then

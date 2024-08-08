@@ -39,6 +39,7 @@ hook.Add("InitPostEntity", "FixMap_ML05_ml05_werepullingout_IO", function()
     if to ~= nil then ---@cast to Entity
       to:Input("AddOutput", to, nil, "OnTrigger FixMapCD01,SetAnimation,Open,7,1")
     end
+
     local cd = FindByClassAndOrigin("prop_dynamic", Vector(-468, 1912, 504))
     if cd ~= nil and cd:GetModel() == "models/props_combine/combine_door01.mdl" then ---@cast cd Entity
       cd:SetName("FixMapCD01")

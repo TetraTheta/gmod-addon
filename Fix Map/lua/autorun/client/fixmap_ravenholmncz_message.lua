@@ -21,9 +21,7 @@ net.Receive("FixMap_RavenholmNCZ", function(_, _)
   txt:AppendText(language.GetPhrase(resLangKey))
   ---@diagnostic disable-next-line: inject-field
   function txt:PerformLayout()
-    if (self:GetFont() ~= "RavenholmNCZ_MessageFont") then
-      self:SetFontInternal("RavenholmNCZ_MessageFont")
-    end
+    if self:GetFont() ~= "RavenholmNCZ_MessageFont" then self:SetFontInternal("RavenholmNCZ_MessageFont") end
   end
 
   --
