@@ -39,9 +39,9 @@ surface.CreateFont("rb655_MapList", {
 surface.CreateFont("rb655_MapSubCat", {
   size = 30,
   font = "Tahoma",
-  --weight = 900
 })
 
+--weight = 900
 local noise = Material("gui/noise.png", "nocull noclamp smooth")
 local function DrawHUDBox(x, y, w, h, mat, clr)
   surface.SetDrawColor(clr or Color(255, 255, 255, 255))
