@@ -169,9 +169,11 @@ div.centermessage {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  background: #111; /* white */
+  background: #111;
+  /* white */
   border-radius: 5px;
-  border: 2px solid #333; /* added */
+  border: 2px solid #333;
+  /* added */
   padding: 20px;
   max-width: 500px;
   text-align: center;
@@ -179,11 +181,13 @@ div.centermessage {
 
 div.centermessage.left {
   text-align: left;
-  color: #DDD; /* added */
+  color: #DDD;
+  /* added */
 }
 
 div.centermessage span {
-  color: #DDD; /* black */
+  color: #DDD;
+  /* black */
   display: block;
   font-size: 20px;
   margin-bottom: 20px;
@@ -198,26 +202,33 @@ div.centermessage label {
 
 div.centermessage a {
   display: block;
-  color: #DDD; /* black */
+  color: #DDD;
+  /* black */
   font-size: 16px;
   border-radius: 4px;
-  background: #333; /* #DDD */
+  background: #333;
+  /* #DDD */
   padding: 5px 10px;
   text-align: center;
   cursor: default;
 }
 
 div.centermessage a:hover {
-  background: #666; /* #CCC */
-  color: #FFF; /* added */
+  background: #666;
+  /* #CCC */
+  color: #FFF;
+  /* added */
 }
 
 div.centermessage a.big {
-  background: #633; /* added */
-  color: #DDD; /* added */
+  background: #633;
+  /* added */
+  color: #DDD;
+  /* added */
   padding: 10px 20px;
   font-size: 32px;
-  margin-bottom: 10px; /* added */
+  margin-bottom: 10px;
+  /* added */
 }
 
 div.centermessage a:not(:last-child) {
@@ -251,12 +262,18 @@ div.centermessage a.create.disabled {
 input.preset_name {
   width: 100%;
   padding: 3px 5px;
-  background: #222; /* added */
-  color: #DDD; /* added */
-  border-width: 2px; /* added */
-  border-style: solid; /* added */
-  border-radius: 2px; /* added */
-  border-color: #222 #666 #666 #222; /* added */
+  background: #222;
+  /* added */
+  color: #DDD;
+  /* added */
+  border-width: 2px;
+  /* added */
+  border-style: solid;
+  /* added */
+  border-radius: 2px;
+  /* added */
+  border-color: #222 #666 #666 #222;
+  /* added */
 }
 
 div.centermessage .button {

@@ -72,7 +72,8 @@
 ul.popup li,
 #NavBar .button {
   display: inline-block;
-  background-color: #111; /* #FFF */
+  background-color: #111;
+  /* #FFF */
   border-radius: 4px;
   height: 40px;
   padding-left: 35px;
@@ -104,7 +105,8 @@ ul.popup li,
   position: relative;
   top: -12px;
   padding: 0px 10px;
-  color: #DDD; /* #333 */
+  color: #DDD;
+  /* #333 */
 }
 
 #NavBar li {
@@ -115,7 +117,8 @@ ul.popup li,
 #NavBar li span,
 ul.gamemode_list li span,
 ul.language_list li span {
-  color: #DDD; /* #333 */
+  color: #DDD;
+  /* #333 */
   position: relative;
   top: 13px;
   padding-left: 10px;
@@ -169,7 +172,8 @@ ul.games_list li {
   margin-right: 2px;
   margin-bottom: 2px;
   position: relative;
-  color: #DDD; /* added */
+  color: #DDD;
+  /* added */
 }
 
 ul.games_list li:last-child {
@@ -209,12 +213,14 @@ ul.gamemode_list li {
   display: inherit;
   margin: 3px;
   border-radius: 0;
-  background-color: #222; /* #EEE */
+  background-color: #222;
+  /* #EEE */
   margin: 0 2px 2px 0;
 }
 
 ul.gamemode_list li:hover {
-  background-color: #444; /* #FFF */
+  background-color: #444;
+  /* #FFF */
 }
 
 ul.gamemode_list li:first-child {
@@ -228,7 +234,8 @@ ul.gamemode_list li:last-child {
 
 ul.language_list {
   right: 100px;
-  background-color: #222; /* #EEE */
+  background-color: #222;
+  /* #EEE */
   text-align: center;
   border: 3px solid #333;
 }
@@ -242,11 +249,13 @@ ul.language_list li {
 }
 
 ul.language_list li img {
-  border: 1px solid #444; /* 1px solid #888 */
+  border: 1px solid #444;
+  /* 1px solid #888 */
 }
 
 ul.language_list li:hover {
-  background-color: #444; /* #FFF */
+  background-color: #444;
+  /* #FFF */
 }
 
 ::-webkit-scrollbar {

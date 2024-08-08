@@ -20,7 +20,8 @@ input.gm_search {
   /* border: 1px solid #ABADB3; */
   border-width: 1px;
   border-style: solid;
-  border-color: #222 #666 #666 #222; /* #ABADB3 */
+  border-color: #222 #666 #666 #222;
+  /* #ABADB3 */
   border-radius: 3px;
   height: 24px;
   margin-top: 6px;
@@ -43,7 +44,8 @@ input[type="number"] {
   /* border: 1px solid #ABADB3; */
   border-width: 1px;
   border-style: solid;
-  border-color: #222 #666 #666 #222; /* #ABADB3 */
+  border-color: #222 #666 #666 #222;
+  /* #ABADB3 */
   border-radius: 2px;
   outline-color: #08F;
 }
@@ -91,13 +93,16 @@ ul.category li:first-child {
   list-style: none;
   padding: 5px;
   font-size: 32px;
-  color: #DDD; /* #444 */
+  color: #DDD;
+  /* #444 */
 }
 
 ul.category li:first-child small {
   font-size: 14px;
-  color: #AAA; /* #999 */
-  font-style: italic; /* added */
+  color: #AAA;
+  /* #999 */
+  font-style: italic;
+  /* added */
 }
 
 ul.category li.icon {
@@ -115,15 +120,20 @@ ul.category li.icon {
 
 .btn-primary,
 .btn-primary-disabled {
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#666), to(#222)); /* -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#05C)) */
-  border: 1px solid #222; /* 1px solid #CCC */
-  border-color: #222; /* #05C #05C #003580 */
-  color: #DDD; /* white */
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#666), to(#222));
+  /* -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#05C)) */
+  border: 1px solid #222;
+  /* 1px solid #CCC */
+  border-color: #222;
+  /* #05C #05C #003580 */
+  color: #DDD;
+  /* white */
   text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
   border-radius: 6px;
   cursor: pointer;
   vertical-align: middle;
-  -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); /* inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05) */
+  -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  /* inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05) */
 }
 
 .btn-primary-disabled {
@@ -191,7 +201,8 @@ div.disabled {
 }
 
 .topnav a {
-  color: #000; /* #FFF */
+  color: #000;
+  /* #FFF */
   margin: 0px 2px;
   background-color: #0af;
   padding: 1px 5px;
