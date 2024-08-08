@@ -33,14 +33,6 @@ local function PlaySound(snd, vol)
   DevMsgN(Format("Playing '%s'", snd))
 end
 
----@param snd string
----@param vol number
-local function PlaySoundStatic(snd, vol)
-  local r = math.random(90, 110)
-  LocalPlayer():EmitSound(snd, SNDLVL_NORM, r, vol, CHAN_STATIC)
-  DevMsgN(Format("Playing '%s'", snd))
-end
-
 ---@param cat integer
 ---@param armor boolean
 ---@param death boolean
@@ -87,10 +79,10 @@ end
 --
 net.Receive(msgBS, function(_, _)
   -- This is non-sense that CLIENT can't read its own cvar
-  local cat, cv, armor, death, vol = net.ReadUInt(3), net.ReadUInt(3), net.ReadBool(), net.ReadBool(), net.ReadFloat()
+  local cat, cv, armor, death, vol, class = net.ReadUInt(3), net.ReadUInt(3), net.ReadBool(), net.ReadBool(), net.ReadFloat(), net.ReadString()
   local eff_snd = bit.band(cv, EFF_SND) > 0
   local eff_ui = bit.band(cv, EFF_UI) > 0
-  DevMsgN(Format("cat: %s | eff_snd: %s | eff_ui: %s | armor: %s | death: %s | vol: %f", _GetCategory(cat), tostring(eff_snd), tostring(eff_ui), tostring(armor), tostring(death), vol))
+  DevMsgN(Format("cat: %s (%s) | eff_snd: %s | eff_ui: %s | armor: %s | death: %s | vol: %f", _GetCategory(cat), class, tostring(eff_snd), tostring(eff_ui), tostring(armor), tostring(death), vol))
   --
   if eff_snd then PlayBodySound(cat, armor, death, vol) end
   if eff_ui then DevMsgN("Not implemented yet.") end
@@ -99,10 +91,10 @@ end)
 net.Receive(msgHS, function(_, _)
   -- This is non-sense that CLIENT can't read its own cvar
   -- Headshot is only available in Humanoid, so checking NPC type isn't necessary.
-  local cat, cv, armor, death, vol = net.ReadUInt(3), net.ReadUInt(3), net.ReadBool(), net.ReadBool(), net.ReadFloat()
+  local cat, cv, armor, death, vol, class = net.ReadUInt(3), net.ReadUInt(3), net.ReadBool(), net.ReadBool(), net.ReadFloat(), net.ReadString()
   local eff_snd = bit.band(cv, EFF_SND) > 0
   local eff_ui = bit.band(cv, EFF_UI) > 0
-  DevMsgN(Format("cat: %s | eff_snd: %s | eff_ui: %s | armor: %s | death: %s | vol: %f", _GetCategory(cat), tostring(eff_snd), tostring(eff_ui), tostring(armor), tostring(death), vol))
+  DevMsgN(Format("cat: %s (%s) | eff_snd: %s | eff_ui: %s | armor: %s | death: %s | vol: %f", _GetCategory(cat), class, tostring(eff_snd), tostring(eff_ui), tostring(armor), tostring(death), vol))
   --
   if eff_snd then PlayHeadSound(armor, death, vol) end
   if eff_ui then DevMsgN("Not implemented yet.") end

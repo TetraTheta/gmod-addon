@@ -10,7 +10,7 @@ timer.Create("SCTOOLS_DisableObstacle", 0.1, 0, function()
     for _, e in Iterator() do
       ---@cast e Entity
       --if e.SCTOOLS_OBSTACLE or not IsValid(e:GetPhysicsObject()) then continue end ---@diagnostic disable-line: undefined-field
-      if not IsValid(e:GetPhysicsObject()) then continue end ---@diagnostic disable-line: undefined-field
+      if not IsValid(e:GetPhysicsObject()) then continue end
       local class = e:GetClass()
       local model = e:GetModel()
       if class == "prop_physics" then

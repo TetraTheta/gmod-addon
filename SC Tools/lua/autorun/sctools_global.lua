@@ -3,9 +3,7 @@ local level = 3
 ---`MsgN()` but only if `developer` is above 3
 ---@param ... any
 function DevMsgN(...)
-  if GetConVar("developer"):GetInt() >= level then
-    MsgN(...)
-  end
+  if GetConVar("developer"):GetInt() >= level then MsgN(...) end
 end
 
 ---`DevMsgN()` but for Entity
@@ -18,15 +16,14 @@ function DevEntMsgN(ent, ...)
   else
     entity = Format("%s (#%s, %s) ", ent:GetClass(), ent:EntIndex(), ent:GetName())
   end
+
   DevMsgN(entity, ...)
 end
 
 ---`ErrorNoHalt()` but only if `developer` is above 3
 ---@param ... any
 function DevError(...)
-  if GetConVar("developer"):GetInt() >= level then
-    ErrorNoHalt("[ERROR] ", ...)
-  end
+  if GetConVar("developer"):GetInt() >= level then ErrorNoHalt("[ERROR] ", ...) end
 end
 
 ---`MsgN()` but for Entity
@@ -38,5 +35,6 @@ function EntMsgN(ent, ...)
   else
     entity = Format("%s (#%s, %s) ", ent:GetClass(), ent:EntIndex(), ent:GetName())
   end
+
   MsgN(entity, ...)
 end

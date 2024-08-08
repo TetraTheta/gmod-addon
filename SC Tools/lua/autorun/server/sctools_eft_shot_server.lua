@@ -95,7 +95,7 @@ hook.Add("ScaleNPCDamage", "SCTOOLS_ShotEffect_Humanoid", function(npc, hg, _) n
 ---@param di CTakeDamageInfo
 hook.Add("PostEntityTakeDamage", "SCTOOLS_ShotEffect", function(ent, di, _)
   -- Ignore GodMode NPC or already processing NPC
-  if ent.SCTOOLS_GODMODE_ENABLED or ent.SCTOOLS_SHOTEFFECT_CD or not ent:IsNPC() then return end
+  if ent.SCTOOLS_GODMODE_ENABLED or ent.SCTOOLS_SHOTEFFECT_CD or ent.SCTOOLS_SHOTEFFECT_DEAD or not ent:IsNPC() then return end
   --
   local class = ent:GetClass()
   local att = di:GetAttacker()
@@ -132,8 +132,14 @@ hook.Add("PostEntityTakeDamage", "SCTOOLS_ShotEffect", function(ent, di, _)
     net.WriteUInt(cv, 3)
     -- 3. Armor/Helmet status
     net.WriteBool(hasArmor[class] and true or false)
-    -- 4. NPC Death (Will this NPC die from this damage?)
-    net.WriteBool(ent:Health() <= 0)
+    -- 4. NPC Death (Is this NPC dead from this damage?)
+    if ent:Health() <= 0 then
+      ent.SCTOOLS_SHOTEFFECT_DEAD = true
+      net.WriteBool(true)
+    else
+      net.WriteBool(false)
+    end
+
     -- 5. Volume (CLIENT can't read its own cvar)
     if hg == HITGROUP_HEAD then
       net.WriteFloat(att:GetInfoNum("snd_hshotvolume", 1.0))
@@ -141,6 +147,8 @@ hook.Add("PostEntityTakeDamage", "SCTOOLS_ShotEffect", function(ent, di, _)
       net.WriteFloat(att:GetInfoNum("snd_bshotvolume", 1.0))
     end
 
+    -- 6. NPC Class (for debugging)
+    net.WriteString(ent:GetClass())
     -- Send
     net.Send(att)
     timer.Simple(0.1, function() if ent.SCTOOLS_SHOTEFFECT_CD then ent.SCTOOLS_SHOTEFFECT_CD = false end end)

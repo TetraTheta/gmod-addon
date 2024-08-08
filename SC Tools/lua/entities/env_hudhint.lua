@@ -6,7 +6,6 @@ DEFINE_BASECLASS("sc_point")
 ENT.Base = "sc_point"
 ENT.Type = "point"
 --
-
 function ENT:InputHideHudHint(_, _, _)
   -- There is no way to hide notification.AddLegacy() message early
 end
