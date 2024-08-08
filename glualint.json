@@ -1,6 +1,10 @@
 {
   "lint_maxScopeDepth": 8,
   "lint_spaceBeforeComma": true,
-  "lint_unusedLoopVars": true,
-  "lint_unusedParameters": true
+  "lint_unusedVars": false,
+  "comment": {
+    "lint_unusedVars": "This will be handled by LuaLS",
+    "lint_unusedParameters": "Removed because lint_unusedVars is false",
+    "lint_unusedLoopVars": "Removed because lint_unusedVars is false"
+  }
 }
