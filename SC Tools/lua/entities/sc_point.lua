@@ -35,6 +35,17 @@ function ENT:AcceptInput(inputName, activator, caller, data)
   end
 end
 
+function ENT:InputKill(_, _, _)
+  self:Remove()
+end
+
+function ENT:InputKillHierarchy(_, _, _)
+  for _, v in pairs(self:GetChildren()) do
+    v:Remove()
+  end
+  self:Remove()
+end
+
 function ENT:Initialize()
 end
 
