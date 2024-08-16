@@ -9,7 +9,7 @@ local function FindByClassAndOrigin(class, origin, name)
       end
     end
   end
-  return nil
+  return NULL
 end
 
 hook.Add("PlayerSpawn", "FixMap_ML05_ml05_bmi", function(ply, _)
@@ -23,6 +23,13 @@ hook.Add("PlayerSpawn", "FixMap_ML05_ml05_grigoriswildride", function(ply, _)
   if SERVER and (game.GetMap() == "ml05_grigoriswildride") then
     ply:SetPos(Vector(-956, 592, 17))
     ply:SetEyeAngles(Angle(0, 0, 0))
+  end
+end)
+
+hook.Add("PlayerSpawn", "FixMap_ML05_ml05_training_facilitea", function(ply, _)
+  if SERVER and (game.GetMap() == "ml05_training_facilitea") then
+    ply:SetPos(Vector(-256, 472, 80))
+    ply:SetEyeAngles(Angle(0, 270, 0))
   end
 end)
 
@@ -41,7 +48,8 @@ hook.Add("InitPostEntity", "FixMap_ML05_ml05_werepullingout_IO", function()
     end
 
     local cd = FindByClassAndOrigin("prop_dynamic", Vector(-468, 1912, 504))
-    if cd ~= nil and cd:GetModel() == "models/props_combine/combine_door01.mdl" then ---@cast cd Entity
+    ---@cast cd Entity
+    if cd ~= nil and cd:GetModel() == "models/props_combine/combine_door01.mdl" then
       cd:SetName("FixMapCD01")
       cd:SetKeyValue("HoldAnimation", "1")
     end
