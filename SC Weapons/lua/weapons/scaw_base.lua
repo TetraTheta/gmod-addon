@@ -38,7 +38,7 @@ SWEP.Secondary.ClipSize = 1
 SWEP.Secondary.DefaultClip = 10
 SWEP.Secondary.CFG_Recoil = 0.1
 SWEP.Secondary.MOD_Max = 4
-SWEP.Secondary.MOD_Current = IsValid(GetConVar("scaw_pistol_default")) and GetConVar("scaw_pistol_default"):GetInt() or 1
+SWEP.Secondary.MOD_Current = ConVarExists("scaw_pistol_default") and GetConVar("scaw_pistol_default"):GetInt() or 1
 -- SWEP Secondary Fire | Mode 1 - Explosion
 SWEP.Secondary.MOD_EXP_Delay = 0.05
 SWEP.Secondary.MOD_EXP_Magnitude = 175
