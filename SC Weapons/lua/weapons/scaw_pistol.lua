@@ -13,7 +13,7 @@ SWEP.Spawnable = true
 SWEP.ViewModel = "models/weapons/c_scaw_pistol.mdl"
 SWEP.WepSelectIcon = CLIENT and surface.GetTextureID("weapons/scaw_pistol") or ""
 SWEP.WorldModel = "models/weapons/w_scaw_pistol.mdl"
-SWEP.Config_HoldType = "pistol"
+SWEP.CFG_HoldType = "pistol"
 SWEP.Primary.CFG_Sound = "SCAW.Pistol.Primary"
 --
 util.PrecacheModel(SWEP.ViewModel)

@@ -13,7 +13,7 @@ SWEP.Spawnable = true
 SWEP.ViewModel = "models/weapons/c_scaw_mp5sd.mdl"
 SWEP.WepSelectIcon = CLIENT and surface.GetTextureID("weapons/scaw_mp5sd") or ""
 SWEP.WorldModel = "models/weapons/w_scaw_mp5sd.mdl"
-SWEP.Config_HoldType = "ar2"
+SWEP.CFG_HoldType = "ar2"
 SWEP.Primary.CFG_Sound = "SCAW.MP5SD.Primary"
 SWEP.Secondary.MOD_Current = ConVarExists("scaw_mp5sd_default") and GetConVar("scaw_mp5sd_default"):GetInt() or 1
 --

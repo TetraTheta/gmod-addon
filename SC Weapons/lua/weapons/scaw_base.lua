@@ -18,7 +18,7 @@ SWEP.UseHands = true
 SWEP.ViewModel = "" -- [!!!!] Override this from child SWEPs!
 SWEP.Weight = 999
 SWEP.WorldModel = "" -- [!!!!] Override this from child SWEPs!
-SWEP.Config_HoldType = "" -- [!!!!] Override this from child SWEPs!
+SWEP.CFG_HoldType = "" -- [!!!!] Override this from child SWEPs!
 -- SWEP Primary Fire
 SWEP.Primary.Ammo = "Pistol"
 SWEP.Primary.Automatic = true
@@ -180,7 +180,7 @@ end
 -- If anyone suggests it, just reply to him, "I'm so fed up with NetworkVar that doesn't work."
 
 function SWEP:Initialize()
-  self:SetHoldType(self.Config_HoldType)
+  self:SetHoldType(self.CFG_HoldType)
 end
 
 function SWEP:CanBePickedUpByNPCs()
