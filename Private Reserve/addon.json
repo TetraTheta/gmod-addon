@@ -1,0 +1,11 @@
+{
+  "title": "SC Tools",
+  "type": "tool",
+  "tags": [
+    "fun",
+    "roleplay"
+  ],
+  "ignore": [
+    "lua/.ignore/*"
+  ]
+}
