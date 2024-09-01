@@ -29,8 +29,8 @@ hook.Add("PlayerLoadout", "CustomLoadout", function(p)
     -- Weapon
     p:Give("gmod_tool")
     p:Give("weapon_physgun")
-    p:Give("weapon_emptyhands")
-    p:SetActiveWeapon(NULL)
+    p:Give("scw_empty")
+    p:SelectWeapon("scw_empty")
     return true
   end
 end)
