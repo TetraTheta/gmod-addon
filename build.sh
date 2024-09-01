@@ -25,7 +25,7 @@ dark_mode() {
 rm -rf ".build"
 mkdir -p ".build"
 # Create and copy addons
-#dark_mode
+# dark_mode
 # addon "Decrease Sound"
 # addon "Fix Map"
 # addon "NPC Invasion"

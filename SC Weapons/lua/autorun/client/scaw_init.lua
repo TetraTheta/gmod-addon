@@ -25,6 +25,8 @@ killicon.AddFont("scaw_pistol", "HL2MPTypeDeath", "-", Color(255, 80, 0, 255), 0
 killicon.AddFont("scaw_pistol_clean", "HL2MPTypeDeath", "-", Color(255, 80, 0, 255), 0.52)
 killicon.AddFont("scaw_mp5sd", "CSD", "x", Color(255, 80, 0, 255), 0.52)
 killicon.AddFont("scaw_mp5sd_clean", "CSD", "x", Color(255, 80, 0, 255), 0.52)
+killicon.AddFont("scw_mp5sd", "CSD", "x", Color(255, 80, 0, 255), 0.52)
+killicon.AddFont("scw_fastcrowbar", "HL2MPTypeDeath", "6", Color(255, 80, 0, 255), 0.52)
 _NetMessage("scaw_pistol")
 _NetMessage("scaw_pistol_clean")
 _NetMessage("scaw_mp5sd")

@@ -1,6 +1,6 @@
 AddCSLuaFile()
 --
-SWEP.AdminOnly = true
+SWEP.AdminOnly = false
 SWEP.Author = "TetraTheta"
 SWEP.AutoSwitchFrom = true
 SWEP.AutoSwitchTo = true
@@ -12,7 +12,7 @@ SWEP.Instructions = "Kind of reskin of SMG1"
 SWEP.PrintName = "MP5SD"
 SWEP.Purpose = "Yet Another MP5SD"
 SWEP.Slot = 2
-SWEP.SlotPos = 2
+SWEP.SlotPos = 0
 SWEP.Spawnable = true
 SWEP.UseHands = true
 SWEP.ViewModel = "models/weapons/c_scaw_mp5sd.mdl"
@@ -26,9 +26,9 @@ SWEP.Primary.Ammo = "SMG1"
 SWEP.Primary.Automatic = true
 SWEP.Primary.ClipSize = 50
 SWEP.Primary.DefaultClip = 100
-SWEP.Primary.CFG_Damage = 10
+SWEP.Primary.CFG_Damage = ConVarExists("sk_plr_dmg_smg1") and GetConVar("sk_plr_dmg_smg1"):GetInt() * 2 or 8
 SWEP.Primary.CFG_Delay = 0.05
-SWEP.Primary.CFG_Force = 1000000
+SWEP.Primary.CFG_Force = 10000
 SWEP.Primary.CFG_Recoil = 0.1
 SWEP.Primary.CFG_Sound = "SCW.MP5SD.Primary"
 SWEP.Primary.CFG_Spread = 0.015
@@ -194,6 +194,14 @@ end
 ##################
 ]]
 function SWEP:Reload()
-  if self:Clip1() < self:GetMaxClip1() then self:EmitSound("SCW.MP5SD.Reload") end
+  -- Convert Pistol ammo to SMG1 ammo
+  if self:Ammo1() == 0 then
+    local owner = self:GetOwner()
+    ---@cast owner Player
+    local ammoPistol = owner:GetAmmoCount("Pistol")
+    owner:SetAmmo(0, "Pistol")
+    owner:SetAmmo(ammoPistol, "SMG1")
+  end
+  if self:Clip1() < self:GetMaxClip1() and self:Ammo1() > 0 then self:EmitSound("SCW.MP5SD.Reload") end
   self:DefaultReload(ACT_VM_RELOAD)
 end
