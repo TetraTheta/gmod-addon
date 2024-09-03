@@ -27,10 +27,10 @@ hook.Add("PlayerLoadout", "CustomLoadout", function(p)
   else
     p:RemoveAllAmmo()
     -- Weapon
-    p:Give("gmod_tool")
-    p:Give("weapon_physgun")
-    p:Give("scw_empty")
-    p:SelectWeapon("scw_empty")
+    --p:Give("gmod_tool")
+    --p:Give("weapon_physgun")
+    --p:Give("scw_empty")
+    --p:SelectWeapon("scw_empty")
     return true
   end
 end)
