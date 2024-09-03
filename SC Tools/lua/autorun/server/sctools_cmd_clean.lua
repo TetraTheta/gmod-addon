@@ -164,7 +164,7 @@ local function CleanWeapons()
   for _, v in ipairs(e_GetAll()) do
     if IsValid(v) and IsValid(v:GetPhysicsObject()) then
       local c = v:GetClass()
-      if target[c] then
+      if target[c] and not v:CreatedByMap() then
         RemoveEntity(v)
         result = result + 1
       end
