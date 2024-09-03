@@ -7,9 +7,9 @@ end)
 local PANEL = {}
 language.Add("achievements", "Achievements")
 surface.CreateFont("MenuButton", {
-  font = "Helvetica",
-  size = 24,
-  weight = 600
+  font = "Malgun Gothic",
+  size = 32,
+  weight = 900
 })
 
 local DLabel = baseclass.Get("DLabel")
@@ -64,7 +64,7 @@ function PANEL:Init()
     self:SetPos(ScrW() / 20, math.max(ScrH() / 2 - self:GetTall() / 2, 150))
   end
 
-  mainButtons:SetSize(250, 350)
+  mainButtons:SetSize(350, 550) -- 250, 350
   self.MenuButtons = mainButtons
   local Resume = vgui.Create("MenuButton", mainButtons)
   Resume:Dock(TOP)

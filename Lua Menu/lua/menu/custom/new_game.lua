@@ -12,33 +12,33 @@ Allow people to create their own categories?
 Figure out fonts? The current ones look neat but blurry
 ]]
 surface.CreateFont("StartNewGameFont", {
-  font = "Tahoma",
+  font = "Malgun Gothic",
   size = 18,
 })
 
 surface.CreateFont("SingleMultiPlayer", {
-  font = "Tahoma",
-  size = 17,
+  font = "Malgun Gothic",
+  size = 18,
 })
 
 surface.CreateFont("DermaRobotoDefault", {
-  font = "Tahoma",
-  size = 13
+  font = "Malgun Gothic",
+  size = 14
 })
 
 surface.CreateFont("StartNewGame", {
-  font = "Tahoma",
-  size = 30,
+  font = "Malgun Gothic",
+  size = 32,
 })
 
 surface.CreateFont("rb655_MapList", {
-  size = 12,
-  font = "Tahoma"
+  size = 14,
+  font = "Malgun Gothic"
 })
 
 surface.CreateFont("rb655_MapSubCat", {
-  size = 30,
-  font = "Tahoma",
+  size = 32,
+  font = "Malgun Gothic",
 })
 
 --weight = 900
