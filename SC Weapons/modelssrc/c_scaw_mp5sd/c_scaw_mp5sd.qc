@@ -29,7 +29,7 @@ $contents "solid"
 $illumposition 2.822 -1.758 -12.756
 
 $cdmaterials "models/weapons/cw_scaw_mp5sd/"
-//$cdmaterials "models\Weapons\V_hand\"
+//$cdmaterials "models/weapons/v_hand/"
 
 // This list shows the VMT file names used in the SMD files.
 // "smg_mp5sd.vmt"
