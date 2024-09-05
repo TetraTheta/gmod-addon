@@ -69,25 +69,22 @@ function SWEP:PrimaryAttack()
   ---@type TraceResult
   local tr = util.TraceHull({
     start = owner:GetShootPos(),
-    endpos = owner:GetShootPos() + (owner:GetAimVector() * 80),
+    endpos = owner:GetShootPos() + (owner:GetAimVector() * 100),
     filter = owner,
-    mins = Vector(-10, -10, -10),
-    maxs = Vector(10, 10, 10),
+    mins = Vector(-22, -22, -22),
+    maxs = Vector(22, 22, 22),
     mask = MASK_SHOT_HULL
   })
   if tr.Hit then
     local e = tr.Entity
     self:SendWeaponAnim(ACT_VM_HITCENTER)
-    ---@type Bullet
-    self:FireBullets({
-      Attacker = owner,
-      Src = owner:GetShootPos(),
-      Distance = 90,
-      Dir = tr.Normal,
-      Tracer = 0,
-      Force = self.Primary.CFG_Force,
-      Damage = (IsValid(e) and string.find(e:GetClass(), "npc_headcrab")) and 10000 or self.Primary.CFG_Damage
-    })
+    local dmg = DamageInfo()
+    dmg:SetAttacker(owner)
+    dmg:SetInflictor(self)
+    dmg:SetDamage(e:GetClass():match("npc_headcrab") and 10000 or self.Primary.CFG_Damage)
+    dmg:SetDamageType(DMG_CLUB)
+    dmg:SetDamageForce(owner:GetAimVector():GetNormalized() * 1000)
+    e:TakeDamageInfo(dmg)
     if not (e:IsPlayer() or string.find(e:GetClass(), "npc") or e:GetClass() == "prop_ragdoll") then
       self:EmitSound(self.Primary.CFG_Sound_MeleeHit)
     end
