@@ -30,49 +30,24 @@ function Write-Message {
 
 function Show-Prompt {
   Write-Host 'What do you want to build?'
-  Write-Host '[D] Dark Mode'
-  Write-Host '[F] Fix Map'
-  Write-Host '[L] Lua Menu'
-  Write-Host '[P] Private Reserve'
-  Write-Host '[R] SC Resistance Turrets'
-  Write-Host '[T] SC Tools'
-  Write-Host '[W] SC Weapons'
+  Write-Host '[1] Dark Mode'
+  Write-Host '[2] Dynamic Fire'
+  Write-Host '[3] Fix Map'
+  Write-Host '[4] Lua Menu'
+  Write-Host '[5] Private Reserve'
+  Write-Host '[6] SC Resistance Turrets'
+  Write-Host '[7] SC Tools'
+  Write-Host '[8] SC Weapons'
   $choice = Read-Host 'Choice'
-  return $choice
-}
-
-function Resolve-Target {
-  param([string]$i)
-  switch ($i.ToUpper()) {
+  switch ($choice.ToUpper()) {
     "1" { return 'Dark Mode' }
-    "2" { return 'Fix Map' }
-    "3" { return 'Lua Menu' }
-    "4" { return 'Private Reserve' }
-    "5" { return 'SC Resistance Turrets' }
-    "6" { return 'SC Tools' }
-    "7" { return 'SC Weapons' }
-    "D" { return 'Dark Mode' }
-    "DARKMODE" { return 'Dark Mode' }
-    "DM" { return 'Dark Mode' }
-    "F" { return 'Fix Map' }
-    "FIXMAP" { return 'Fix Map' }
-    "FM" { return 'Fix Map' }
-    "L" { return 'Lua Menu' }
-    "LM" { return 'Lua Menu' }
-    "LUAMENU" { return 'Lua Menu' }
-    "P" { return 'Private Reserve' }
-    "PR" { return 'Private Reserve' }
-    "PRIVATERESERVE" { return 'Private Reserve' }
-    "R" { return 'SC Resistance Turrets' }
-    "RESISTANCETURRET" { return 'SC Resistance Turrets' }
-    "RESISTANCETURRETS" { return 'SC Resistance Turrets' }
-    "RT" { return 'SC Resistance Turrets' }
-    "T" { return 'SC Tools' }
-    "TOOL" { return 'SC Tools' }
-    "TOOLS" { return 'SC Tools' }
-    "W" { return 'SC Weapons' }
-    "WEAPON" { return 'SC Weapons' }
-    "WEAPONS" { return 'SC Weapons' }
+    "2" { return 'Dynamic Fire' }
+    "3" { return 'Fix Map' }
+    "4" { return 'Lua Menu' }
+    "5" { return 'Private Reserve' }
+    "6" { return 'SC Resistance Turrets' }
+    "7" { return 'SC Tools' }
+    "8" { return 'SC Weapons' }
     default { return $null }
   }
 }
@@ -116,8 +91,7 @@ if (-Not (Test-Path -Path $root)) {
 }
 
 if ([string]::IsNullOrEmpty($Argument)) {
-  $choice = Show-Prompt
-  $target = Resolve-Target $choice
+  $target = Show-Prompt
 } else {
   $target = Resolve-Target $Argument
 }
