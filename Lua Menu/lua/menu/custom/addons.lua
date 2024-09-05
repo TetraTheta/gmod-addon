@@ -275,6 +275,7 @@ function PANEL:Init()
   for id, group in pairs(Grouping) do
     Groups:AddChoice("Group by: " .. group.label, id, not Groups:GetSelectedID())
   end
+  Groups:ChooseOption("Group by: Enabled", 2)
 
   Groups.OnSelect = function(index, value, data) self:RefreshAddons() end
   self.Groups = Groups
