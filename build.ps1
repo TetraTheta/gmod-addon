@@ -31,23 +31,21 @@ function Write-Message {
 function Show-Prompt {
   Write-Host 'What do you want to build?'
   Write-Host '[1] Dark Mode'
-  Write-Host '[2] Dynamic Fire'
-  Write-Host '[3] Fix Map'
-  Write-Host '[4] Lua Menu'
-  Write-Host '[5] Private Reserve'
-  Write-Host '[6] SC Resistance Turrets'
-  Write-Host '[7] SC Tools'
-  Write-Host '[8] SC Weapons'
+  Write-Host '[2] Fix Map'
+  Write-Host '[3] Lua Menu'
+  Write-Host '[4] Private Reserve'
+  Write-Host '[5] SC Resistance Turrets'
+  Write-Host '[6] SC Tools'
+  Write-Host '[7] SC Weapons'
   $choice = Read-Host 'Choice'
   switch ($choice.ToUpper()) {
     "1" { return 'Dark Mode' }
-    "2" { return 'Dynamic Fire' }
-    "3" { return 'Fix Map' }
-    "4" { return 'Lua Menu' }
-    "5" { return 'Private Reserve' }
-    "6" { return 'SC Resistance Turrets' }
-    "7" { return 'SC Tools' }
-    "8" { return 'SC Weapons' }
+    "2" { return 'Fix Map' }
+    "3" { return 'Lua Menu' }
+    "4" { return 'Private Reserve' }
+    "5" { return 'SC Resistance Turrets' }
+    "6" { return 'SC Tools' }
+    "7" { return 'SC Weapons' }
     default { return $null }
   }
 }

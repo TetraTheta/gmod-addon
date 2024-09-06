@@ -49,12 +49,14 @@ Client ConVar
 
 sc_bshot_effect <0|1|2|3> - Enable bodyshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.
 sc_disable_red_death <0|1> - Remove red overlay from death screen.
+sc_dynamic_fire <0|1> - Enable dynamic fire.
 sc_hshot_effect <0|1|2|3> - Enable headshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.
 snd_bshotvolume <float> - Volume of bodyshot sound effect.
 snd_hshotvolume <float> - Volume of headshot sound effect.
 ]]
 _CreateClientConVar("sc_bshot_effect", "Enable bodyshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.", "0", 0, 3)
 _CreateClientConVar("sc_disable_red_death", "Remove red overlay from death screen.", "0", 0, 1)
+_CreateClientConVar("sc_dynamic_fire", "Enable dynamic fire.", "0", 0, 1)
 _CreateClientConVar("sc_hshot_effect", "Enable headshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.", "0", 0, 3)
 _CreateClientConVar("snd_bshotvolume", "Volume of bodyshot sound effect.", "1.0", 0, 1)
 _CreateClientConVar("snd_hshotvolume", "Volume of headshot sound effect.", "1.0", 0, 1)
