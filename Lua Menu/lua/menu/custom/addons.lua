@@ -15,7 +15,7 @@ function PANEL:Init()
   self.Selected = false
   local DermaCheckbox = vgui.Create("DCheckBox", self)
   DermaCheckbox:SetPos(10, 10)
-  DermaCheckbox:SetValue(0)
+  DermaCheckbox:SetValue(false)
   self.DermaCheckbox = DermaCheckbox
 end
 
@@ -63,6 +63,7 @@ function PANEL:GetSelected()
   return self.DermaCheckbox:GetChecked()
 end
 
+---@diagnostic disable-next-line: lowercase-global
 gDataTable = gDataTable or {}
 function PANEL:SetAddon(data)
   self.Addon = data
@@ -84,7 +85,8 @@ local missingMat = Material("../html/img/addonpreview.png", "nocull smooth")
 local lastBuild = 0
 local imageCache = {}
 function PANEL:Paint(w, h)
-  if IsValid(self.DermaCheckbox) then self.DermaCheckbox:SetVisible(self.Hovered or self.DermaCheckbox.Hovered or self:GetSelected()) end
+  --if IsValid(self.DermaCheckbox) then self.DermaCheckbox:SetVisible(self.Hovered or self.DermaCheckbox.Hovered or self:GetSelected()) end
+  if IsValid(self.DermaCheckbox) then self.DermaCheckbox:SetVisible(self.Hovered or self.DermaCheckbox:IsHovered() or self:GetSelected()) end
   if self.AdditionalData and imageCache[self.AdditionalData.previewid] then self.Image = imageCache[self.AdditionalData.previewid] end
   if not self.Image and self.AdditionalData and file.Exists("cache/workshop/" .. self.AdditionalData.previewid .. ".cache", "MOD") and CurTime() - lastBuild > 0.1 then
     self.Image = AddonMaterial("cache/workshop/" .. self.AdditionalData.previewid .. ".cache")
@@ -370,11 +372,11 @@ function PANEL:Think()
     if pnl.Addon and steamworks.ShouldMountAddon(pnl.Addon.wsid) then onlyDisabled = false end
   end
 
-  self.ToggleMounted:SetDisabled(not anySelected)
-  self.EnableSelection:SetDisabled(not anySelected or onlyEnabled)
-  self.DisableSelection:SetDisabled(not anySelected or onlyDisabled)
-  self.SelectAllButton:SetDisabled(allSelected)
-  self.DeselectAllButton:SetDisabled(not anySelected)
+  self.ToggleMounted:SetEnabled(anySelected)
+  self.EnableSelection:SetEnabled(anySelected and not onlyEnabled)
+  self.DisableSelection:SetEnabled(anySelected and not onlyDisabled)
+  self.SelectAllButton:SetEnabled(not allSelected)
+  self.DeselectAllButton:SetEnabled(anySelected)
 end
 
 function PANEL:ToggleSelected()

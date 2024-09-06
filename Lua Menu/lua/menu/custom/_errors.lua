@@ -1,14 +1,14 @@
 local Errors = {}
 local matAlert = Material("icon16/error.png")
 hook.Add("DrawOverlay", "MenuErrors", function()
-  if GetConVarNumber("mat_dxlevel") < 90 then
+  if GetConVar("mat_dxlevel"):GetInt() < 90 then
     table.insert(Errors, {
       last = SysTime(),
       text = "mat_dxlevel is less than 90!"
     })
   end
 
-  if GetConVarNumber("lookstrafe") >= 1 or GetConVarNumber("lookstrafe") <= -1 then
+  if GetConVar("lookstrafe"):GetInt() >= 1 or GetConVar("lookstrafe"):GetInt() <= -1 then
     table.insert(Errors, {
       last = SysTime(),
       text = "Console varible \"lookstrafe\" is not 0, expect movement oddities!"
