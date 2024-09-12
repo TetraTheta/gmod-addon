@@ -63,6 +63,35 @@ end
 #     PRIMARY FIRE     #
 ########################
 ]]
+---@param weapon SWEP
+---@param owner Entity|Player
+---@param target Entity
+local function _HitEntity(weapon, owner, target)
+  local dmg = DamageInfo()
+  dmg:SetAttacker(owner)
+  dmg:SetInflictor(weapon)
+  dmg:SetDamage(target:GetClass():match("npc_headcrab") and 10000 or weapon.Primary.CFG_Damage)
+  dmg:SetDamageType(DMG_CLUB)
+  dmg:SetDamageForce(owner:GetAimVector():GetNormalized() * 1000)
+  target:TakeDamageInfo(dmg)
+end
+
+---@param weapon SWEP
+---@param owner Entity|Player
+local function _FireBullet(weapon, owner)
+  ---@type Bullet
+  local bullet = {
+    Attacker = owner,
+    Damage = weapon.Primary.CFG_Damage,
+    Force = weapon.Primary.CFG_Force,
+    Distance = 100,
+    Tracer = 0,
+    Dir = owner:GetAimVector(),
+    Src = owner:GetShootPos()
+  }
+  weapon:FireBullets(bullet)
+end
+
 function SWEP:PrimaryAttack()
   local owner = self:GetOwner()
   ---@cast owner Player
@@ -71,23 +100,25 @@ function SWEP:PrimaryAttack()
     start = owner:GetShootPos(),
     endpos = owner:GetShootPos() + (owner:GetAimVector() * 100),
     filter = owner,
-    mins = Vector(-22, -22, -22),
-    maxs = Vector(22, 22, 22),
+    mins = Vector(-18, -18, -18),
+    maxs = Vector(18, 18, 18),
     mask = MASK_SHOT_HULL
   })
+
   if tr.Hit then
     local e = tr.Entity
     self:SendWeaponAnim(ACT_VM_HITCENTER)
-    local dmg = DamageInfo()
-    dmg:SetAttacker(owner)
-    dmg:SetInflictor(self)
-    dmg:SetDamage(e:GetClass():match("npc_headcrab") and 10000 or self.Primary.CFG_Damage)
-    dmg:SetDamageType(DMG_CLUB)
-    dmg:SetDamageForce(owner:GetAimVector():GetNormalized() * 1000)
-    e:TakeDamageInfo(dmg)
-    if not (e:IsPlayer() or string.find(e:GetClass(), "npc") or e:GetClass() == "prop_ragdoll") then
-      self:EmitSound(self.Primary.CFG_Sound_MeleeHit)
+    if IsValid(e) then
+      local cls = e:GetClass()
+      if string.find(cls, "npc") or cls == "prop_ragdoll" or e:IsPlayer() then
+        _HitEntity(self, owner, e)
+      else
+        _FireBullet(self, owner)
+      end
+    else
+      _FireBullet(self, owner)
     end
+    self:EmitSound(self.Primary.CFG_Sound_MeleeHit)
   else
     self:SendWeaponAnim(ACT_VM_MISSCENTER)
     self:EmitSound(self.Primary.CFG_Sound_Single)
