@@ -34,7 +34,7 @@ hook.Add("EntityTakeDamage", "SpecialDamage", function(e, dmg)
   local attacker = _CheckPlayer(dmg)
   local weapon = _CheckWeapon(attacker)
   -- Process damage
-  if weapon:IsValid() and weapon:GetClass() == "scw_mp5sd" then
+  if weapon:IsValid() and (weapon:GetClass() == "scw_mp5sd" or weapon:GetClass() == "scw_scar20") then
     -- MP5SD
     local cls = e:GetClass()
     if cls == "npc_manhack" or headcrabs[cls] then
