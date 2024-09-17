@@ -10,21 +10,13 @@ SWEP.Purpose = "Yet Another Admin MP5SD"
 SWEP.Slot = 2
 SWEP.SlotPos = 2
 SWEP.Spawnable = true
-SWEP.ViewModel = "models/weapons/c_scaw_mp5sd.mdl"
-SWEP.WepSelectIcon = CLIENT and surface.GetTextureID("weapons/scaw_mp5sd") or ""
-SWEP.WorldModel = "models/weapons/w_scaw_mp5sd.mdl"
+SWEP.ViewModel = "models/weapons/c_scw_mp5sd.mdl"
+SWEP.WepSelectIcon = CLIENT and surface.GetTextureID("weapons/scw_mp5sd") or ""
+SWEP.WorldModel = "models/weapons/w_scw_mp5sd.mdl"
 SWEP.CFG_HoldType = "ar2"
-SWEP.Primary.CFG_Sound = "SCAW.MP5SD.Primary"
+SWEP.Primary.CFG_Sound = "SCW.MP5SD.Primary"
 SWEP.Secondary.MOD_Current = ConVarExists("scaw_mp5sd_default") and GetConVar("scaw_mp5sd_default"):GetInt() or 1
 --
 util.PrecacheModel(SWEP.ViewModel)
 util.PrecacheModel(SWEP.WorldModel)
 --
-sound.Add({
-  name = "SCAW.MP5SD.Primary",
-  channel = CHAN_WEAPON,
-  volume = 0.4,
-  level = SNDLVL_70dB,
-  pitch = {95, 105},
-  sound = ")weapons/scaw_mp5sd/fire.mp3"
-})

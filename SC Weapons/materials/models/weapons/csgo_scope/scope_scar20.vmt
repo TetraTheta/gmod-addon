@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+  "$baseTexture" "models/weapons/csgo_scope/scope"
+  "$bumpMap" "models/weapons/csgo_scope/scope_normal"
+  "$envmap" "env_cubemap"
+  "$envmapfresnel" "1"
+  "$envmaptint" "[.3 .2 .16]"
+  "$phong" "1"
+  "$phongBoost" "1"
+  "$phongExponent" "200"
+  "$phongFresnelRanges" "[.2 .2 1]"
+  "$phongTint" "[ .8 1 .9 ]"
+  "$phongdisablehalflambert" "1"
+}

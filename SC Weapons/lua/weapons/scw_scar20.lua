@@ -7,40 +7,39 @@ SWEP.AutoSwitchTo = true
 SWEP.BounceWeaponIcon = false
 SWEP.Category = "SC Weapon"
 SWEP.DrawAmmo = true
-SWEP.IconOverride = "materials/entities/scw_mp5sd.png"
-SWEP.Instructions = "Kind of reskin of SMG1"
-SWEP.PrintName = "MP5SD"
-SWEP.Purpose = "Yet Another MP5SD"
-SWEP.Slot = 2
+SWEP.IconOverride = "materials/entities/scw_scar20.png"
+SWEP.Instructions = "SCAR20"
+SWEP.PrintName = "SCAR20"
+SWEP.Purpose = "Yet Another SCAR20"
+SWEP.Slot = 3
 SWEP.SlotPos = 0
 SWEP.Spawnable = true
 SWEP.UseHands = true
-SWEP.ViewModel = "models/weapons/c_scw_mp5sd.mdl"
+SWEP.ViewModel = "models/weapons/c_scw_scar20.mdl"
 SWEP.Weight = 999
-SWEP.WepSelectIcon = CLIENT and surface.GetTextureID("weapons/scw_mp5sd") or ""
-SWEP.WorldModel = "models/weapons/w_scw_mp5sd.mdl"
+SWEP.WepSelectIcon = CLIENT and surface.GetTextureID("weapons/scaw_scar20") or ""
+SWEP.WorldModel = "models/weapons/w_scw_scar20.mdl"
 SWEP.CFG_HoldType = "ar2"
-SWEP.CFG_ReloadSound = "SCW.MP5SD.Reload"
+SWEP.CFG_ReloadSound = "SCW.SCAR20.Reload"
 -- SWEP Primary Fire
-SWEP.Primary.Ammo = "SMG1"
+SWEP.Primary.Ammo = "SniperRound"
 SWEP.Primary.Automatic = true
-SWEP.Primary.ClipSize = 50
+SWEP.Primary.ClipSize = 20
 SWEP.Primary.DefaultClip = 100
-SWEP.Primary.CFG_Damage = ConVarExists("sk_plr_dmg_smg1") and GetConVar("sk_plr_dmg_smg1"):GetInt() * 2 or 8
-SWEP.Primary.CFG_Delay = 0.05
+SWEP.Primary.CFG_Damage = ConVarExists("sk_plr_dmg_scar20") and GetConVar("sk_plr_dmg_scar20"):GetInt() or 100
+SWEP.Primary.CFG_Delay = 0.25
 SWEP.Primary.CFG_Force = 10000
 SWEP.Primary.CFG_Recoil = 0.1
-SWEP.Primary.CFG_Sound = "SCW.MP5SD.Primary"
-SWEP.Primary.CFG_Spread = 0.015
+SWEP.Primary.CFG_Sound = "SCW.SCAR20.Primary"
+SWEP.Primary.CFG_Spread = 0.0
 -- SWEP Secondary Fire
-SWEP.Secondary.Ammo = "SMG1_Grenade"
-SWEP.Secondary.Automatic = true
+SWEP.Secondary.Ammo = ""
+SWEP.Secondary.Automatic = false
 SWEP.Secondary.ClipSize = 1
-SWEP.Secondary.DefaultClip = 10
-SWEP.Secondary.CFG_Delay = 0.5
-SWEP.Secondary.CFG_Force = 1000
-SWEP.Secondary.CFG_Recoil = 0.1
-SWEP.Secondary.CFG_Sound = "SCW.MP5SD.Secondary"
+SWEP.Secondary.DefaultClip = 1
+SWEP.Secondary.CFG_Delay = 0.1
+SWEP.Secondary.CFG_Sound = "SCW.SCAR20.Zoom"
+SWEP.Secondary.CFG_Zoom = 0
 --
 util.PrecacheModel(SWEP.ViewModel)
 util.PrecacheModel(SWEP.WorldModel)
@@ -75,6 +74,25 @@ end
 -- If anyone suggests it, just reply to him, "I'm so fed up with NetworkVar that doesn't work."
 function SWEP:Initialize()
   self:SetHoldType(self.CFG_HoldType)
+  self:SetNWFloat("MouseSensitivity", 1.0)
+end
+
+function SWEP:Deploy()
+  local owner = self:GetOwner()
+  ---@cast owner Player
+  self:SendWeaponAnim(ACT_VM_DRAW)
+  self:SetNextPrimaryFire(CurTime() + owner:GetViewModel():SequenceDuration())
+  self:SetNextSecondaryFire(CurTime() + owner:GetViewModel():SequenceDuration())
+  self:SetNWFloat("MouseSensitivity", 1.0)
+end
+
+function SWEP:Holster()
+  self:SetNWFloat("MouseSensitivity", 1.0)
+  return true
+end
+
+function SWEP:AdjustMouseSensitivity()
+  return self:GetNWFloat("MouseSensitivity", 1.0)
 end
 
 function SWEP:CanBePickedUpByNPCs()
@@ -125,39 +143,23 @@ end
 ]]
 function SWEP:SecondaryAttack()
   if game.SinglePlayer() then self:CallOnClient("SecondaryAttack") end
-  if not (IsFirstTimePredicted() and self:CanSecondaryAttack()) then return end
+  if not IsFirstTimePredicted() then return end
   local owner = self:GetOwner()
   ---@cast owner Player
-  if self:Ammo2() > 0 then
-    self:EmitSound(self.Secondary.CFG_Sound)
-    if SERVER then
-      local g = ents.Create("grenade_ar2")
-      if IsValid(g) then
-        local fwd = owner:EyeAngles():Forward()
-        g:SetPos(owner:GetShootPos() + fwd * 32)
-        g:SetAngles(owner:EyeAngles())
-        g:SetMoveType(MOVETYPE_FLYGRAVITY)
-        g:SetMoveCollide(MOVECOLLIDE_FLY_BOUNCE)
-        g:Spawn()
-        g:Activate()
-        g:SetVelocity(fwd * 1000)
-        g:SetLocalAngularVelocity(Angle(math.random(-400, 400), math.random(-400, 400), math.random(-400, 400)))
-        g:SetSaveValue("m_flDamage", 100)
-        g:SetOwner(owner)
-        g:SetPhysicsAttacker(owner)
-      end
-    end
-    if owner:IsPlayer() then
-      local r1 = self.Secondary.CFG_Recoil * -1
-      local r2 = self.Secondary.CFG_Recoil * math.Rand(-1, 1)
-      owner:ViewPunch(Angle(r1, r2, r1))
-    end
-    self:SetNextSecondaryFire(CurTime() + self.Secondary.CFG_Delay)
-    self:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
-    owner:RemoveAmmo(1, self.Secondary.Ammo)
-  else
-    self:EmitSound("Weapon_Pistol.Empty")
-    self:SetNextSecondaryFire(CurTime() + self.Secondary.CFG_Delay)
+  local zoom = self.Secondary.CFG_Zoom
+  self:EmitSound(self.Secondary.CFG_Sound)
+  if zoom == 0 then
+    self.Secondary.CFG_Zoom = 1
+    self:SetNWFloat("MouseSensitivity", 0.44)
+    owner:SetFOV(owner:GetFOV() / 2.25, 0.1)
+  elseif zoom == 1 then
+    self.Secondary.CFG_Zoom = 2
+    self:SetNWFloat("MouseSensitivity", 0.17)
+    owner:SetFOV(owner:GetFOV() / 2.67, 0.1)
+  elseif zoom == 2 then
+    self.Secondary.CFG_Zoom = 0
+    self:SetNWFloat("MouseSensitivity", 1)
+    owner:SetFOV(0, 0.1)
   end
 end
 
@@ -167,14 +169,22 @@ end
 ##################
 ]]
 function SWEP:Reload()
-  -- Convert Pistol ammo to SMG1 ammo
+  local owner = self:GetOwner()
+  ---@cast owner Player
+  -- Convert XBow ammo to SniperRound ammo
   if self:Ammo1() == 0 then
-    local owner = self:GetOwner()
-    ---@cast owner Player
-    local ammoPistol = owner:GetAmmoCount("Pistol")
-    owner:SetAmmo(0, "Pistol")
-    owner:SetAmmo(ammoPistol, "SMG1")
+    local ammoXBow = owner:GetAmmoCount("XBowBolt")
+    owner:SetAmmo(0, "XBowBolt")
+    owner:SetAmmo(ammoXBow, "SniperRound")
   end
-  if self:Clip1() < self:GetMaxClip1() and self:Ammo1() > 0 then self:EmitSound("SCW.MP5SD.Reload") end
+
+  if self:Clip1() < self:GetMaxClip1() and self:Ammo1() > 0 then
+    self:EmitSound("SCW.SCAR20.Reload")
+    -- Reset zoom
+    self.Secondary.CFG_Zoom = 0
+    self:SetNWFloat("MouseSensitivity", 1)
+    owner:SetFOV(0, 0.1)
+  end
+
   self:DefaultReload(ACT_VM_RELOAD)
 end

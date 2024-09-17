@@ -1,0 +1,16 @@
+"vertexlitgeneric"
+{
+  "$basealphaenvmapmask" "1"
+  "$basemapalphaphongmask" "1"
+  "$basetexture" "models/weapons/cw_scw_mp5sd/mp5sd"
+  "$envmap" "env_cubemap"
+  "$envmapfresnel" "1"
+  "$envmaptint" "0.5"
+  "$phong" "1"
+  "$phongalbedoboost" "2"
+  "$phongalbedotint" "1"
+  "$phongboost" "0.1"
+  "$phongdisablehalflambert" "1"
+  "$phongexponenttexture" "models/weapons/cw_scw_mp5sd/mp5sd_exponent"
+  "$phongfresnelranges" "[.83 .83 1]"
+}
