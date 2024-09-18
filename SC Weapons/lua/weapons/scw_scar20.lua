@@ -17,12 +17,12 @@ SWEP.Spawnable = true
 SWEP.UseHands = true
 SWEP.ViewModel = "models/weapons/c_scw_scar20.mdl"
 SWEP.Weight = 999
-SWEP.WepSelectIcon = CLIENT and surface.GetTextureID("weapons/scaw_scar20") or ""
+SWEP.WepSelectIcon = CLIENT and surface.GetTextureID("weapons/scw_scar20") or ""
 SWEP.WorldModel = "models/weapons/w_scw_scar20.mdl"
 SWEP.CFG_HoldType = "ar2"
 SWEP.CFG_ReloadSound = "SCW.SCAR20.Reload"
 -- SWEP Primary Fire
-SWEP.Primary.Ammo = "SniperRound"
+SWEP.Primary.Ammo = "XBowBolt"
 SWEP.Primary.Automatic = true
 SWEP.Primary.ClipSize = 20
 SWEP.Primary.DefaultClip = 100
@@ -89,6 +89,22 @@ end
 function SWEP:Holster()
   self:SetNWFloat("MouseSensitivity", 1.0)
   return true
+end
+
+function SWEP:DrawHUD()
+  if not CLIENT or self.Secondary.CFG_Zoom == 0 then return end
+  local scrw, scrh = ScrW(), ScrH()
+  local diameter = scrh * 0.85
+  local radius = diameter / 2
+  local centerX, centerY = scrw / 2, scrh / 2
+  surface.SetDrawColor(0, 0, 0)
+  -- surface.DrawRect(0, 0, centerX - radius, scrh)
+  -- surface.DrawRect(centerX + radius, 0, scrw - (centerX + radius), scrh)
+  -- surface.DrawRect(centerX - radius, 0, diameter, centerY - radius)
+  -- surface.DrawRect(centerX - radius, centerY + radius, diameter, scrh - (centerY + radius))
+  local lineWidth = 2
+  surface.DrawLine(0, centerY - lineWidth / 2, scrw, centerY + lineWidth / 2)
+  surface.DrawLine(centerX - lineWidth / 2, 0, centerY + lineWidth / 2, scrh)
 end
 
 function SWEP:AdjustMouseSensitivity()
@@ -171,11 +187,11 @@ end
 function SWEP:Reload()
   local owner = self:GetOwner()
   ---@cast owner Player
-  -- Convert XBow ammo to SniperRound ammo
+  -- Convert AR2 ammo to XBowBolt ammo
   if self:Ammo1() == 0 then
-    local ammoXBow = owner:GetAmmoCount("XBowBolt")
-    owner:SetAmmo(0, "XBowBolt")
-    owner:SetAmmo(ammoXBow, "SniperRound")
+    local ammoAR2 = owner:GetAmmoCount("AR2")
+    owner:SetAmmo(0, "AR2")
+    owner:SetAmmo(ammoAR2, "XBowBolt")
   end
 
   if self:Clip1() < self:GetMaxClip1() and self:Ammo1() > 0 then
