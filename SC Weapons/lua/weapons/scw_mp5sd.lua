@@ -115,6 +115,7 @@ function SWEP:PrimaryAttack()
     owner:ViewPunch(Angle(r1, r2, r1))
   end
 
+  if self:Clip1() == 0 then timer.Simple(0.01, function() self:Reload() end) end
   self:SetNextPrimaryFire(CurTime() + self.Primary.CFG_Delay)
 end
 
@@ -147,11 +148,13 @@ function SWEP:SecondaryAttack()
         g:SetPhysicsAttacker(owner)
       end
     end
+
     if owner:IsPlayer() then
       local r1 = self.Secondary.CFG_Recoil * -1
       local r2 = self.Secondary.CFG_Recoil * math.Rand(-1, 1)
       owner:ViewPunch(Angle(r1, r2, r1))
     end
+
     self:SetNextSecondaryFire(CurTime() + self.Secondary.CFG_Delay)
     self:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
     owner:RemoveAmmo(1, self.Secondary.Ammo)
@@ -175,6 +178,7 @@ function SWEP:Reload()
     owner:SetAmmo(0, "Pistol")
     owner:SetAmmo(ammoPistol, "SMG1")
   end
+
   if self:Clip1() < self:GetMaxClip1() and self:Ammo1() > 0 then self:EmitSound("SCW.MP5SD.Reload") end
   self:DefaultReload(ACT_VM_RELOAD)
 end

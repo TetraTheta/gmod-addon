@@ -149,6 +149,7 @@ function SWEP:PrimaryAttack()
     owner:ViewPunch(Angle(r1, r2, r1))
   end
 
+  if self:Clip1() == 0 then timer.Simple(0.01, function() self:Reload() end) end
   self:SetNextPrimaryFire(CurTime() + self.Primary.CFG_Delay)
 end
 
