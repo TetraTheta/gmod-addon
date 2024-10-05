@@ -170,6 +170,8 @@ $bonemerge "v_weapon.Bip01_R_Finger41"
 $bonemerge "v_weapon.Bip01_R_Finger42"
 $bonemerge "v_weapon.Bip01_R_ForeTwist"
 
+$include "csgo_glove_gmod.qci"
+
 $sectionframes 30 29
 
 $sequence "idle" {
