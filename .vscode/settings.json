@@ -1,3 +1,13 @@
 {
   "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "Lua.workspace.library": [
+    "${addons}/garrysmod/module/library"
+  ],
+  "Lua.runtime.nonstandardSymbol": [
+    "continue"
+  ],
+  "Lua.diagnostics.disable": [
+    "duplicate-set-field"
+  ],
+  "Lua.runtime.version": "LuaJIT",
 }

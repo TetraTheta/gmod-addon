@@ -7,7 +7,8 @@ $root = "E:/Program Files/Steam/steamapps/common/GarrysMod"
 $addons = "$root/garrysmod/addons"
 $addons_test = "$addons/test"
 $addons_private = "$addons/private"
-$gmad = "$root/bin/win64/gmad.exe"
+#$gmad = "$root/bin/win64/gmad.exe"
+$gmad = "$root/bin/gmad.exe"
 $build = "./.build"
 
 ############

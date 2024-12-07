@@ -34,3 +34,21 @@ hook.Add("PlayerLoadout", "CustomLoadout", function(p)
     return true
   end
 end)
+
+concommand.Add("pr_loadout", function(p)
+  -- Strip
+  p:StripWeapons()
+  -- GMod Weapons
+  p:Give("weapon_physgun")
+  p:Give("gmod_tool")
+  -- HL2 Weapons
+  p:Give("weapon_crowbar")
+  p:Give("weapon_physcannon")
+  -- SC Weapons
+  p:Give("scw_mp5sd")
+  p:Give("scw_scar20")
+  -- Ammo
+  p:GiveAmmo(9999, "SMG1", true)
+  p:GiveAmmo(9999, "SMG1_Grenade", true)
+  p:GiveAmmo(9999, "XBowBolt", true)
+end, nil, "My Loadout", FCVAR_NONE)
