@@ -10,7 +10,7 @@ local npc = {
   OnFloor = true,
   Rotate = Angle(0, 180, 0),
   Skin = 2, -- TODO: Add hook for NPC creation for assigning skin to it
-  TotalSpawnFlags = 640
+  TotalSpawnFlags = SF_FLOOR_TURRET_CITIZEN
 }
 list.Set("NPC", "sc_turret_resistance_floor", npc)
 -- Register 'Resistance Turret' end
@@ -20,11 +20,10 @@ hook.Add("EntityFireBullets", "sc_turret_resistance_floor_firebullets", function
     local t = util.KeyValuesToTablePreserveOrder(util.GetModelInfo(entity:GetModel())["ModelKeyValues"])
     for _, v in ipairs(t) do
       if (v["Key"] == "custom_turret" and v["Value"] == 1) then
+        -- This turret is SC Resistance Turret
         local enemy = entity:GetEnemy()
         if IsValid(enemy) then
           local teye = entity:EyePos() -- or use 'eyes' attachment position
-          -- entity:LookupAttachment("eyes") > 0
-          -- entity:GetAttachment("eyes")
           local sub = Vector(0, 0, 5)
           if enemy:GetClass() == "npc_fastzombie" or enemy:GetClass() == "npc_poisonzombie" then
             sub = Vector(0, 0, 15)
