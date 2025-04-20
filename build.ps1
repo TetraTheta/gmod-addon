@@ -7,9 +7,9 @@ $root = "E:/Program Files/Steam/steamapps/common/GarrysMod"
 $addons = "$root/garrysmod/addons"
 $addons_test = "$addons/test"
 $addons_private = "$addons/private"
-#$gmad = "$root/bin/win64/gmad.exe"
-$gmad = "$root/bin/gmad.exe"
 $build = "./.build"
+
+# gmad will be decided later!
 
 ############
 # Function #
@@ -93,6 +93,18 @@ if (-Not (Test-Path -Path $root)) {
   Write-Message 'GMod is not installed.' -Color Red -Header ERROR
   [void][System.Console]::ReadKey($false)
   exit 1
+}
+
+$gmad_64 = "$root/bin/win64/gmad.exe"
+$gmad_32 = "$root/bin/gmad.exe"
+
+$gmad = $gmad_32
+if (Test-Path $gmad_64) {
+  $gmad = $gmad_64
+  Write-Message "This script will use 64bit version of gmad.exe"
+} else {
+  $gmad = $gmad_32
+  Write-Message "This script will use 32bit version of gmad.exe"
 }
 
 if ([string]::IsNullOrEmpty($Argument)) {

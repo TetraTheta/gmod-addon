@@ -127,7 +127,7 @@ end
 ]]
 -- No DataTables. It just doesn't work. Fuck it. I'm so fed up with this.
 -- If anyone suggests it, just reply to him, "I'm so fed up with NetworkVar that doesn't work."
-
+--
 function SWEP:Initialize()
   self:SetHoldType(self.CFG_HoldType)
 end
@@ -173,7 +173,22 @@ function SWEP:PrimaryAttack()
     Spread = Vector(self.Primary.CFG_Spread, self.Primary.CFG_Spread, 0),
     Src = owner:GetShootPos(),
     Tracer = 1,
-    TracerName = "Tracer"
+    TracerName = "Tracer",
+    Callback = function(attacker, tr, dmgInfo)
+      local ent = tr.Entity
+      if IsValid(ent) and ent:GetClass() == "npc_turret_floor" then
+        local pushDir = tr.Normal
+        local phys = ent:GetPhysicsObject()
+        if IsValid(phys) then
+          phys:ApplyForceOffset(pushDir * self.Primary.CFG_Force, tr.HitPos)
+        else
+          ent:SetVelocity(pushDir * self.Primary.CFG_Force)
+        end
+        return { damage = false, effects = true }
+      else
+        return { damage = true, effects = true }
+      end
+    end
   }
 
   owner:FireBullets(bullet)
