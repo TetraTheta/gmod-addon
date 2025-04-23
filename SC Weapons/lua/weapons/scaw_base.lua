@@ -130,6 +130,22 @@ end
 --
 function SWEP:Initialize()
   self:SetHoldType(self.CFG_HoldType)
+
+  if SERVER then
+    self.ExpPool = {}
+    self.NxtExpNum = 1
+
+    for _ = 1, 7 do
+      local e = ents.Create("env_explosion")
+      e:SetKeyValue("iMagnitude", tostring(self.Secondary.MOD_EXP_Magnitude))
+      -- Repeatable(2) + No Fireball(4) + No Smoke(8) + No Decal(16) + No Sparks(32) + No Sound(64) + No Fireball Smoke(256) + No Particles(512)
+      e:SetKeyValue("spawnflags", "894")
+      e:Spawn()
+      e:Activate()
+      table.insert(self.ExpPool, e)
+      self:DeleteOnRemove(e)
+    end
+  end
 end
 
 function SWEP:CanBePickedUpByNPCs()
@@ -217,20 +233,28 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:_SA_Explosion()
-  local owner = self:GetOwner()
+  -- NPC cannot do secondary attack
+  local owner = self:GetOwner() ---@cast owner Player
+  if not IsValid(owner) then return end
   if SERVER then
-    -- NPC cannot do secondary attack
-    ---@cast owner Player
-    local trace = owner:GetEyeTrace() ---@cast trace TraceResult
-    local exp = ents.Create("env_explosion")
-    exp:SetPos(trace.HitPos)
-    exp:SetKeyValue("iMagnitude", tostring(self.Secondary.MOD_EXP_Magnitude))
-    -- No Fireball(4) + No Smoke(8) + No Decal(16) + No Sparks(32) + No Sound(64) + No Fireball Smoke(256) + No Particles(512)
-    exp:SetKeyValue("spawnflags", "892")
-    exp:SetOwner(owner)
-    exp:Spawn()
-    exp:Fire("Explode")
-    exp:Fire("Kill")
+    local hitpos = owner:GetEyeTrace().HitPos
+    local idx = self.NxtExpNum
+    local e = self.ExpPool[idx]
+    if not IsValid(e) then
+      e = ents.Create("env_explosion")
+      e:SetKeyValue("iMagnitude", tostring(self.Secondary.MOD_EXP_Magnitude))
+      -- Repeatable(2) + No Fireball(4) + No Smoke(8) + No Decal(16) + No Sparks(32) + No Sound(64) + No Fireball Smoke(256) + No Particles(512)
+      e:SetKeyValue("spawnflags", "894")
+      e:Spawn()
+      e:Activate()
+      self.ExpPool[idx] = e
+      self:DeleteOnRemove(e)
+    end
+    e:SetOwner(owner)
+    e:SetPos(hitpos)
+    e:Fire("Explode")
+
+    self.NxtExpNum = idx % #self.ExpPool + 1
   end
 
   self:EmitSound(self.Secondary.MOD_EXP_Sound)
