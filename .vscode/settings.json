@@ -4,10 +4,16 @@
     "${addons}/garrysmod/module/library"
   ],
   "Lua.runtime.nonstandardSymbol": [
-    "continue"
+    "continue",
+    "/**/"
   ],
   "Lua.diagnostics.disable": [
     "duplicate-set-field"
   ],
   "Lua.runtime.version": "LuaJIT",
+  "Lua.workspace.checkThirdParty": false,
+  "Lua.runtime.special": {
+    "include": "dofile",
+    "IncludeCS": "dofile"
+  },
 }

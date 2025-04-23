@@ -94,7 +94,7 @@ ul.popup li,
   padding: 4px 5px 0px 5px;
   height: 36px;
   margin-left: 5px;
-  vertical-align: top;
+  /* vertical-align: top; */
 }
 
 #NavBar .button:hover {

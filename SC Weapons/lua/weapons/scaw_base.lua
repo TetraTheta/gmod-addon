@@ -9,15 +9,15 @@ SWEP.Category = "SC Admin Weapon"
 SWEP.DrawAmmo = false
 SWEP.IconOverride = "" -- [!!!!] Override this from child SWEPs!
 SWEP.Instructions = "" -- [!!!!] Override this from child SWEPs!
-SWEP.PrintName = "" -- [!!!!] Override this from child SWEPs!
-SWEP.Purpose = "" -- [!!!!] Override this from child SWEPs!
-SWEP.Slot = 0 -- [!!!!] Override this from child SWEPs!
-SWEP.SlotPos = 0 -- [!!!!] Override this from child SWEPs!
+SWEP.PrintName = ""    -- [!!!!] Override this from child SWEPs!
+SWEP.Purpose = ""      -- [!!!!] Override this from child SWEPs!
+SWEP.Slot = 0          -- [!!!!] Override this from child SWEPs!
+SWEP.SlotPos = 0       -- [!!!!] Override this from child SWEPs!
 SWEP.Spawnable = false -- [!!!!] Override this from child SWEPs!
 SWEP.UseHands = true
-SWEP.ViewModel = "" -- [!!!!] Override this from child SWEPs!
+SWEP.ViewModel = ""    -- [!!!!] Override this from child SWEPs!
 SWEP.Weight = 999
-SWEP.WorldModel = "" -- [!!!!] Override this from child SWEPs!
+SWEP.WorldModel = ""   -- [!!!!] Override this from child SWEPs!
 SWEP.CFG_HoldType = "" -- [!!!!] Override this from child SWEPs!
 -- SWEP Primary Fire
 SWEP.Primary.Ammo = "Pistol"
@@ -164,6 +164,7 @@ function SWEP:PrimaryAttack()
   if not self:CanPrimaryAttack() then return end
   local owner = self:GetOwner() ---@cast owner NPC
   ---@type Bullet
+  ---@diagnostic disable-next-line: missing-fields
   local bullet = {
     AmmoType = self.Primary.Ammo,
     Damage = self.Primary.CFG_Damage,
@@ -174,7 +175,7 @@ function SWEP:PrimaryAttack()
     Src = owner:GetShootPos(),
     Tracer = 1,
     TracerName = "Tracer",
-    Callback = function(attacker, tr, dmgInfo)
+    Callback = function(_, tr, _)
       local ent = tr.Entity
       if IsValid(ent) and ent:GetClass() == "npc_turret_floor" then
         local pushDir = tr.Normal
@@ -239,6 +240,7 @@ end
 function SWEP:_SA_AirboatGun()
   local owner = self:GetOwner() ---@cast owner NPC
   ---@type Bullet
+  ---@diagnostic disable-next-line: missing-fields
   local bullet = {
     AmmoType = self.Secondary.Ammo,
     ---@param di CTakeDamageInfo
@@ -273,7 +275,7 @@ function SWEP:_SA_CombineBall()
     cbl:SetPos(owner:GetShootPos() + owner:GetAimVector() * 10)
     cbl:SetKeyValue("MinSpeed", tostring(self.Secondary.MOD_CMB_Speed)) -- This is defined in its parent
     cbl:SetKeyValue("MaxSpeed", tostring(self.Secondary.MOD_CMB_Speed)) -- This is defined in its parent
-    cbl:SetKeyValue("MaxBallBounces", "10") -- Max number of bounces (def: 8)
+    cbl:SetKeyValue("MaxBallBounces", "10")                             -- Max number of bounces (def: 8)
     cbl:SetNotSolid(true)
     cbl:SetMoveType(MOVETYPE_NONE)
     cbl:Spawn()

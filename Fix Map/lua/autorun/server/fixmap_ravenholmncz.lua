@@ -53,7 +53,8 @@ hook.Add("InitPostEntity", "FixMap_RavenholmNCZ_IO", function()
 
       -- Fourth message button
       local b4 = FindByClassAndOrigin("func_button", Vector(2223.43, -625.54, -525))
-      if b4 ~= nil then ---@cast b4 Entity
+      if b4 ~= nil then
+        ---@cast b4 Entity
         print("Processing fourth message button")
         b4:ClearAllOutputs()
         b4:Input("AddOutput", b4, nil, "OnPressed luarun,RunPassedCode,net.Start('FixMap_RavenholmNCZ') net.WriteString('Message') net.WriteString('ravenholm_papv_04') net.Send(ACTIVATOR),0,1")

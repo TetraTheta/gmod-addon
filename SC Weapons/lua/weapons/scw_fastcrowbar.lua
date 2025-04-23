@@ -80,6 +80,7 @@ end
 ---@param owner Entity|Player
 local function _FireBullet(weapon, owner)
   ---@type Bullet
+  ---@diagnostic disable-next-line: missing-fields
   local bullet = {
     Attacker = owner,
     Damage = weapon.Primary.CFG_Damage,

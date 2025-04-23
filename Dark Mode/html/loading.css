@@ -58,13 +58,23 @@ body {
   50% { -webkit-transform: rotateZ(180deg); }
   100% { -webkit-transform: rotateZ(360deg); }
 }
+@keyframes walk {
+  0% { -webkit-transform: rotateZ(0deg); }
+  50% { -webkit-transform: rotateZ(180deg); }
+  100% { -webkit-transform: rotateZ(360deg); }
+}
 
 .walk {
   -webkit-animation-name: walk;
+  animation-name: walk;
   -webkit-animation-duration: 10.0s;
+  animation-duration: 10.0s;
   -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
   -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
   -webkit-perspective: 6000px;
+  perspective: 6000px;
   text-align: center;
   background-color: #111; /* #FE7*/
   width: 24px;

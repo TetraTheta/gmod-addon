@@ -16,7 +16,7 @@ sound.Add({
   volume = 0.35,
   level = SNDLVL_GUNFIRE,
   pitch = 100,
-  sound = {")weapons/airboat/airboat_gun_lastshot1.wav", ")weapons/airboat/airboat_gun_lastshot2.wav"}
+  sound = { ")weapons/airboat/airboat_gun_lastshot1.wav", ")weapons/airboat/airboat_gun_lastshot2.wav" }
 })
 
 sound.Add({
@@ -54,7 +54,7 @@ sound.Add({
   channel = CHAN_WEAPON,
   volume = 0.4,
   level = SNDLVL_70dB,
-  pitch = {95, 105},
+  pitch = { 95, 105 },
   sound = ")weapons/m4a1/m4a1-1.wav"
 })
 
@@ -66,7 +66,7 @@ sound.Add({
   channel = CHAN_WEAPON,
   volume = 0.4,
   level = SNDLVL_70dB,
-  pitch = {95, 105},
+  pitch = { 95, 105 },
   sound = ")weapons/scw_mp5sd/fire.mp3"
 })
 
@@ -84,7 +84,7 @@ sound.Add({
   channel = CHAN_WEAPON,
   volume = 0.4,
   level = SNDLVL_70dB,
-  pitch = {95, 105},
+  pitch = { 95, 105 },
   sound = ")weapons/scw_mp5sd/reload.mp3"
 })
 
@@ -95,9 +95,9 @@ sound.Add({
   name = "SCW.SCAR20.Primary",
   channel = CHAN_WEAPON, -- CHAN_STATIC
   volume = 1.0,
-  level = SNDLVL_95dB, -- 93
+  level = SNDLVL_95dB,   -- 93
   pitch = 100,
-  sound = {")weapons/scw_scar20/scar20_01.mp3", ")weapons/scw_scar20/scar20_02.mp3", ")weapons/scw_scar20/scar20_03.mp3"}
+  sound = { ")weapons/scw_scar20/scar20_01.mp3", ")weapons/scw_scar20/scar20_02.mp3", ")weapons/scw_scar20/scar20_03.mp3" }
 })
 
 sound.Add({

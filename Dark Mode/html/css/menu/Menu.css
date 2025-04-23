@@ -3,6 +3,7 @@ body {
   background-color: transparent;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-user-select: none;
+  user-select: none;
   margin: 0;
   padding: 0;
   font-size: 12px;
@@ -12,6 +13,7 @@ body {
 
 input {
   -webkit-user-select: auto;
+  user-select: auto;
   font-size: 12px;
 }
 
@@ -133,6 +135,7 @@ ul.category li.icon {
   cursor: pointer;
   vertical-align: middle;
   -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   /* inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05) */
 }
 
@@ -155,6 +158,7 @@ ul.category li.icon {
   cursor: pointer;
   vertical-align: middle;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   height: 24px;
 }
 
@@ -165,6 +169,7 @@ ul.category li.icon {
 div.gridicon {
   position: relative;
   -webkit-background-size: cover;
+  background-size: cover;
   height: 100px;
   width: 300px;
   float: left;

@@ -4,7 +4,7 @@
 ---@param min number
 ---@param max number
 local function _CreateConVar(convar, description, def, min, max)
-  local flags = {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_NOTIFY}
+  local flags = { FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_NOTIFY }
   if not ConVarExists(convar) then CreateConVar(convar, def, flags, description, min, max) end
 end
 --
