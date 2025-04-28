@@ -30,6 +30,7 @@ end
 
 ---@param ap Entity
 hook.Add("PlayerDeath", "reloadonkill", function(_, _, ap)
+  if not GetConVar("pr_enable_kill_reload"):GetBool() then return end
   ---@diagnostic disable-next-line: undefined-field
   if not (ap:IsValid() and ap:IsPlayer()) then return end
   ---@cast ap Player
@@ -38,6 +39,7 @@ end)
 
 ---@param ap Entity
 hook.Add("OnNPCKilled", "reloadonkill", function(_, ap, _)
+  if not GetConVar("pr_enable_kill_reload"):GetBool() then return end
   ---@diagnostic disable-next-line: undefined-field
   if not (ap:IsValid() and ap:IsPlayer()) then return end
   ---@cast ap Player

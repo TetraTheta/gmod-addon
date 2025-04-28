@@ -29,6 +29,7 @@ local headcrabs = {
 ---@param e NPC
 ---@param dmg CTakeDamageInfo
 hook.Add("EntityTakeDamage", "SpecialDamage", function(e, dmg)
+  if not GetConVar("pr_enable_special_damage"):GetBool() then return end
   -- Sanitize attacker and weapon
   if not e:IsValid() then return end
   local attacker = _CheckPlayer(dmg)

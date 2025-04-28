@@ -1,5 +1,6 @@
 ---@param p Player
-hook.Add("PlayerLoadout", "CustomLoadout", function(p)
+hook.Add("PlayerLoadout", "PR_CustomLoadout", function(p)
+  if not GetConVar("pr_enable_loadout"):GetBool() then return end
   local c = GetConVar("sbox_weapons"):GetBool()
   if c then
     p:RemoveAllAmmo()
@@ -27,8 +28,8 @@ hook.Add("PlayerLoadout", "CustomLoadout", function(p)
   else
     p:RemoveAllAmmo()
     -- Weapon
-    --p:Give("gmod_tool")
-    --p:Give("weapon_physgun")
+    p:Give("gmod_tool")
+    p:Give("weapon_physgun")
     --p:Give("scw_empty")
     --p:SelectWeapon("scw_empty")
     return true
