@@ -152,6 +152,11 @@ function SWEP:CanBePickedUpByNPCs()
   return true
 end
 
+-- Disable ammo display
+function SWEP:CustomAmmoDisplay()
+  return { false, 0, 0, 0 }
+end
+
 function SWEP:FireAnimationEvent(_, _, evt, _)
   -- Disable Brass Shell Ejection
   if evt == 6001 then return true end
@@ -177,7 +182,7 @@ end
 ########################
 ]]
 function SWEP:PrimaryAttack()
-  if not self:CanPrimaryAttack() then return end
+  -- Skip ammo check performed by 'CanPrimaryAttack'
   local owner = self:GetOwner() ---@cast owner NPC
   ---@type Bullet
   ---@diagnostic disable-next-line: missing-fields
@@ -219,7 +224,7 @@ end
 ##########################
 ]]
 function SWEP:SecondaryAttack()
-  if not self:CanSecondaryAttack() then return end
+  -- Skip ammo check performed by 'CanSecondaryAttack'
   local mode = self:GetSecondaryMode()
   if mode == 1 then
     self:_SA_Explosion()

@@ -33,22 +33,18 @@ function Show-Prompt {
   Write-Host 'What do you want to build?'
   Write-Host '[1] Dark Mode'
   Write-Host '[2] Fix Map'
-  Write-Host '[3] Kill Feed'
-  Write-Host '[4] Lua Menu'
-  Write-Host '[5] Private Reserve'
-  Write-Host '[6] SC Resistance Turrets'
-  Write-Host '[7] SC Tools'
-  Write-Host '[8] SC Weapons'
+  Write-Host '[3] Private Reserve'
+  Write-Host '[4] SC Resistance Turrets'
+  Write-Host '[5] SC Tools'
+  Write-Host '[6] SC Weapons'
   $choice = Read-Host 'Choice'
   switch ($choice.ToUpper()) {
-    "1" { return 'Dark Mode' }
-    "2" { return 'Fix Map' }
-    "3" { return 'Kill Feed' }
-    "4" { return 'Lua Menu' }
-    "5" { return 'Private Reserve' }
-    "6" { return 'SC Resistance Turrets' }
-    "7" { return 'SC Tools' }
-    "8" { return 'SC Weapons' }
+    "1" { return 'dark-mode' }
+    "2" { return 'fix-map' }
+    "3" { return 'private-reserve' }
+    "4" { return 'sc-resistance-turrets' }
+    "5" { return 'sc-tools' }
+    "6" { return 'sc-weapons' }
     default { return $null }
   }
 }
@@ -68,7 +64,7 @@ function Copy-Recursive {
 
 function New-GMA {
   param([string]$dir, [string]$dst = $addons_test)
-  $lower = ($dir -replace '[\s\t]', '_').ToLower() -replace '[^a-z0-9_]', ''
+  $lower = ($dir -replace '[\s\t-]', '_').ToLower() -replace '[^a-z0-9_]', ''
   if (-Not (Test-Path -Path $dst)) {
     New-Item -Path $dst -ItemType Directory | Out-Null
   }
@@ -121,19 +117,10 @@ if ($null -eq $target) {
 
 switch ($target) {
   'Dark Mode' {
-    Copy-Recursive 'Dark Mode' "$addons/DarkMode"
-  }
-  'Fix Map' {
-    New-GMA 'Fix Map'
-  }
-  'Kill Feed' {
-    New-GMA 'Kill Feed' $addons_private
-  }
-  'Lua Menu' {
-    Copy-Recursive 'Lua Menu' "$root/garrysmod"
+    Copy-Recursive 'dark-mode' "$addons/DarkMode"
   }
   'Private Reserve' {
-    New-GMA 'Private Reserve' $addons_private
+    New-GMA 'private-reserve' $addons_private
   }
   default {
     New-GMA $target
