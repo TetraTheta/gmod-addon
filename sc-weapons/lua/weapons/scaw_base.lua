@@ -70,6 +70,18 @@ SWEP.Secondary.MOD_GRN_Sound = "SCAW.Base.Grenade"
 #     SWEP UTILITY     #
 ########################
 ]]
+
+---@return Entity exp env_explosion
+function SWEP:_CreateEnvExplosion()
+  local exp = ents.Create("env_explosion")
+  exp:SetKeyValue("iMagnitude", tostring(self.Secondary.MOD_EXP_Magnitude))
+  -- Repeatable(2) + No Fireball(4) + No Smoke(8) + No Decal(16) + No Sparks(32) + No Sound(64) + No Fireball Smoke(256) + No Particles(512)
+  exp:SetKeyValue("spawnflags", "894")
+  self:DeleteOnRemove(exp)
+  -- self:GetOwner() isn't available in here!
+  return exp
+end
+
 function SWEP:_CreateRandomString()
   local r = {}
   for i = 0, 6 do
@@ -135,15 +147,11 @@ function SWEP:Initialize()
     self.ExpPool = {}
     self.NxtExpNum = 1
 
-    for _ = 1, 7 do
-      local e = ents.Create("env_explosion")
-      e:SetKeyValue("iMagnitude", tostring(self.Secondary.MOD_EXP_Magnitude))
-      -- Repeatable(2) + No Fireball(4) + No Smoke(8) + No Decal(16) + No Sparks(32) + No Sound(64) + No Fireball Smoke(256) + No Particles(512)
-      e:SetKeyValue("spawnflags", "894")
+    for i = 1, 7 do
+      local e = self:_CreateEnvExplosion()
       e:Spawn()
       e:Activate()
-      table.insert(self.ExpPool, e)
-      self:DeleteOnRemove(e)
+      table.insert(self.ExpPool, i, e)
     end
   end
 end
@@ -181,6 +189,14 @@ end
 #     PRIMARY FIRE     #
 ########################
 ]]
+local no_damage = {
+  npc_rollermine = true,
+  npc_turret_floor = true,
+}
+local no_damage_force = {
+  npc_strider = true,
+}
+
 function SWEP:PrimaryAttack()
   -- Skip ammo check performed by 'CanPrimaryAttack'
   local owner = self:GetOwner() ---@cast owner NPC
@@ -198,16 +214,19 @@ function SWEP:PrimaryAttack()
     TracerName = "Tracer",
     Callback = function(_, tr, _)
       local ent = tr.Entity
-      if IsValid(ent) and ent:GetClass() == "npc_turret_floor" then
-        local pushDir = tr.Normal
-        local phys = ent:GetPhysicsObject()
-        if IsValid(phys) then
-          phys:ApplyForceOffset(pushDir * self.Primary.CFG_Force, tr.HitPos)
-        else
-          ent:SetVelocity(pushDir * self.Primary.CFG_Force)
+      if IsValid(ent) then
+        local cls = ent:GetClass()
+        if no_damage_force[cls] then return { damage = false, effects = false } end
+        if no_damage[cls] then
+          local pushDir = tr.Normal
+          local phys = ent:GetPhysicsObject()
+          if IsValid(phys) then
+            phys:ApplyForceOffset(pushDir * self.Primary.CFG_Force, tr.HitPos)
+          else
+            ent:SetVelocity(pushDir * self.Primary.CFG_Force)
+          end
+          return { damage = false, effects = true }
         end
-        return { damage = false, effects = true }
-      else
         return { damage = true, effects = true }
       end
     end
@@ -246,15 +265,12 @@ function SWEP:_SA_Explosion()
     local idx = self.NxtExpNum
     local e = self.ExpPool[idx]
     if not IsValid(e) then
-      e = ents.Create("env_explosion")
-      e:SetKeyValue("iMagnitude", tostring(self.Secondary.MOD_EXP_Magnitude))
-      -- Repeatable(2) + No Fireball(4) + No Smoke(8) + No Decal(16) + No Sparks(32) + No Sound(64) + No Fireball Smoke(256) + No Particles(512)
-      e:SetKeyValue("spawnflags", "894")
+      e = self:_CreateEnvExplosion()
       e:Spawn()
       e:Activate()
-      self.ExpPool[idx] = e
-      self:DeleteOnRemove(e)
+      table.insert(self.ExpPool, idx, e)
     end
+    e:SetCreator(owner)
     e:SetOwner(owner)
     e:SetPos(hitpos)
     e:Fire("Explode")
