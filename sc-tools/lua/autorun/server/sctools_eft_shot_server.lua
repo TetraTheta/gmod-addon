@@ -94,8 +94,8 @@ hook.Add("ScaleNPCDamage", "SCTOOLS_ShotEffect_Humanoid", function(npc, hg, _) n
 ---@param ent Entity
 ---@param di CTakeDamageInfo
 hook.Add("PostEntityTakeDamage", "SCTOOLS_ShotEffect", function(ent, di, _)
-  -- Ignore GodMode NPC or already processing NPC
-  if ent.SCTOOLS_GODMODE_ENABLED or ent.SCTOOLS_SHOTEFFECT_CD or ent.SCTOOLS_SHOTEFFECT_DEAD or not ent:IsNPC() then return end
+  -- Ignore No Damage, GodMode NPC, already processing NPC
+  if di:GetDamage() <= 0 or sctools.protect[ent] or ent.SCTOOLS_SHOTEFFECT_CD or ent.SCTOOLS_SHOTEFFECT_DEAD or not ent:IsNPC() then return end
   --
   local class = ent:GetClass()
   local att = di:GetAttacker()
