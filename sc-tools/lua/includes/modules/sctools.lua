@@ -1,6 +1,7 @@
 -- 'sctools' Lua module
 sctools = {} ---@diagnostic disable-line: lowercase-global
 sctools.command = {}
+sctools.protect = {} -- GodMode (Hidden Table)
 module("sctools", package.seeall)
 --
 if CLIENT then return end

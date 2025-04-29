@@ -22,6 +22,7 @@ end
 Server ConVar
 
 sc_auto_flashlight <0|1|2> - Automatically enable flashlight to players. 0 = Disable, 1 = Super Admin Only, 2 = All Players.
+sc_auto_god_mode <0|1> - GodMode given by SC Tools. 0 = Buddha, 1 = God
 sc_auto_god_npc <0|1> - Enable GodMode to NPC in campaign maps automatically.
 sc_auto_god_sadmin <0|1> - Enable GodMode to player in 'superadmin' usergroup automatically.
 sc_boost_speed_modifier <float> - Multiplier for boost speed.
@@ -32,6 +33,7 @@ sc_disconnect_mode <0|1> - Re-enable 'disconnect' console command implemented in
 sc_remove_effect <0|1> - Entity remove effect type. 0 = Remove, 1 = Dissolve.
 ]]
 _CreateConVar("sc_auto_flashlight", "Automatically enable flashlight to players. 0 = Disable, 1 = Super Admin Only, 2 = All Players.", "0", 0, 2)
+_CreateConVar("sc_auto_god_mode", "GodMode given by SC Tools. 0 = Buddha, 1 = God", "0", 0, 1)
 _CreateConVar("sc_auto_god_npc", "Enable GodMode to NPC in campaign maps automatically.", "0", 0, 1)
 _CreateConVar("sc_auto_god_sadmin", "Enable GodMode to player in 'superadmin' usergroup automatically.", "0", 0, 1)
 _CreateConVar("sc_boost_speed_modifier", "Multiplier for boost speed.", "1.0", 1, 10)

@@ -39,61 +39,91 @@ local function _IsCandidateNPC(ent, p)
   return false
 end
 
----@param target Entity
----@param dmg CTakeDamageInfo
-local function ProcessDamage(target, dmg)
-  if not (IsValid(target) and target:IsNPC() and GetConVar("sc_auto_god_npc"):GetBool()) then return end
-  -- Assign variable in here (other hooks are unusable)
-  local att = dmg:GetAttacker()
-  if not dmg:GetAttacker():IsPlayer() and IsValid(p_GetHumans()[1]) then att = p_GetHumans()[1] end
-  if _IsCandidateNPC(target, att) and GodMap[g_GetMap()] then
-    DevEntMsgN(target, "is now GodMode (Automatic)")
-    target.SCTOOLS_GODMODE_ENABLED = true ---@diagnostic disable-line: inject-field
-  end
+local function _GetGod(ent)
+  return sctools.protect[ent]
+end
 
-  -- Check GodMode
-  ---@cast target NPC
-  if target.SCTOOLS_GODMODE_ENABLED then ---@diagnostic disable-line: undefined-field
-    if target.SCTOOLS_GODMODE_MANUAL then ---@diagnostic disable-line: undefined-field
-      DevEntMsgN(target, "is in GodMode (manual)")
-      return true
-    else
-      if target:Disposition(att) ~= D_HT then
-        DevEntMsgN(target, "is in GodMode (automatic)")
-        return true
-      end
+---@param ent Entity
+local function _SetGod(ent)
+  if IsValid(ent) and (ent:IsNPC() or ent:IsNextBot() or ent:IsPlayer()) then
+    sctools.protect[ent] = true
+    if ent:IsPlayer() and GetConVar("sc_auto_god_mode"):GetBool() then
+      ---@cast ent Player
+      ent:GodEnable()
     end
   end
 end
 
-hook.Add("EntityTakeDamage", "SCTOOLS_AutoGod_NPC_TakeDamage", ProcessDamage)
+---@param ent Entity
+local function _UnsetGod(ent)
+  if IsValid(ent) and (ent:IsNPC() or ent:IsNextBot() or ent:IsPlayer()) then
+    sctools.protect[ent] = nil
+    if ent:IsPlayer() then
+      ---@cast ent Player
+      ent:GodDisable()
+    end
+  end
+end
+
+---@param target Entity
+---@param dmg CTakeDamageInfo
+hook.Add("EntityTakeDamage", "SCTOOLS_AutoGod_NPC_TakeDamage", function(target, dmg)
+  if not IsValid(target) then return end
+
+  -- Check if target is auto god target
+  if target:IsNPC() and GetConVar("sc_auto_god_npc"):GetBool() then
+    local att = dmg:GetAttacker()
+    -- Check relation with the player
+    -- Temporarily assign first player as attacker for checking relation with him
+    if not att:IsPlayer() and IsValid(p_GetHumans()[1]) then att = p_GetHumans()[1] end
+    if _IsCandidateNPC(target, att) and GodMap[g_GetMap()] then
+      DevEntMsgN(target, "is now GodMode (Automatic)")
+      _SetGod(target)
+    end
+  end
+
+  -- Prevent damage on 'protect' table
+  if _GetGod(target) and dmg:GetDamage() > 0 then
+    if GetConVar("sc_auto_god_mode"):GetBool() then
+      -- God
+      return true
+    else
+      -- Buddha
+      local health = target:Health()
+      local damage = dmg:GetDamage()
+      if health > 1 and health - damage <= 0 then
+        dmg:SetDamage(target:Health() - 1)
+      elseif health <= 1 then
+        dmg:SetDamage(0)
+        return true
+      end
+    end
+  end
+end)
 --[[
 ###########################
 #     AUTO GOD PLAYER     #
 ###########################
 ]]
 ---@param p Player
-local function SetAutoGodSuperAdmin(p)
+hook.Add("PlayerSpawn", "SCTOOLS_AutoGod_SuperAdmin", function(p)
   if IsSuperAdmin(p) and GetConVar("sc_auto_god_sadmin"):GetBool() then
-    p:GodEnable()
+    _SetGod(p)
     SendMessage("[SC Auto GodMode] GodMode is automatically enabled to you.", p, HUD_PRINTTALK)
     MsgN(Format("[SC Auto GodMode] Enabled automatic GodMode to %s", p:GetName()))
   end
-end
-
-hook.Add("PlayerSpawn", "SCTOOLS_AutoGod_SuperAdmin", SetAutoGodSuperAdmin)
+end)
 --[[
 #######################
 #     SET GOD NPC     #
 #######################
 ]]
 ---@param p Player
-local function SetGodNPC(p, _, _, _)
+concommand.Add("sc_set_god", function(p, _, _, _)
   if not IsSuperAdmin(p) then return end
   local ent = GetTraceEntity(p)
   if ent:IsNPC() or ent:IsNextBot() then
-    ent.SCTOOLS_GODMODE_ENABLED = true ---@diagnostic disable-line: inject-field
-    ent.SCTOOLS_GODMODE_MANUAL = true ---@diagnostic disable-line: inject-field
+    _SetGod(ent)
     local msg = ""
     if ent:GetName() == "" then
       msg = Format("[SC GodMode] Enabled GodMode to the NPC [%s (#%s)].", ent:GetClass(), ent:EntIndex())
@@ -103,15 +133,14 @@ local function SetGodNPC(p, _, _, _)
 
     SendMessage(msg, p)
   end
-end
+end, nil, "Enable GodMode to the NPC you're looking at.", FCVAR_NONE)
 
 ---@param p Player
-local function UnsetGodNPC(p, _, _, _)
+concommand.Add("sc_unset_god", function(p, _, _, _)
   if not IsSuperAdmin(p) then return end
   local ent = GetTraceEntity(p)
   if IsValid(ent) and ent:IsNPC() or ent:IsNextBot() then
-    ent.SCTOOLS_GODMODE_ENABLED = nil ---@diagnostic disable-line: inject-field
-    ent.SCTOOLS_GODMODE_MANUAL = nil ---@diagnostic disable-line: inject-field
+    _UnsetGod(ent)
     local msg = ""
     if ent:GetName() == "" then
       msg = Format("[SC GodMode] Disabled GodMode to the NPC [%s (#%s)].", ent:GetClass(), ent:EntIndex())
@@ -121,42 +150,27 @@ local function UnsetGodNPC(p, _, _, _)
 
     SendMessage(msg, p)
   end
-end
-
-concommand.Add("sc_set_god", SetGodNPC, nil, "Enable GodMode to the NPC you're looking at.", FCVAR_NONE)
-concommand.Add("sc_unset_god", UnsetGodNPC, nil, "Disable GodMode to the NPC you're looking at.", FCVAR_NONE)
+end, nil, "Disable GodMode to the NPC you're looking at.", FCVAR_NONE)
 --[[
 ##########################
 #     SET GOD PLAYER     #
 ##########################
 ]]
----@param ply Player
----@param args table
-local function SetGodPlayer(ply, _, args, _)
+concommand.Add("sc_god", function(ply, _, args, _)
   if not IsSuperAdmin(ply) then return end
   if #args > 1 then SendMessage("[SC GodMode] Only first player will be processed.", ply) end
   local p = #args == 1 and GetPlayerByName(args[1]) or ply
   if IsValid(p) and p:IsPlayer() then
-    if p:HasGodMode() then
-      p.SCTOOLS_GODMODE_ENABLED = nil ---@diagnostic disable-line: inject-field
-      p.SCTOOLS_GODMODE_MANUAL = nil ---@diagnostic disable-line: inject-field
-      p:GodDisable()
+    if _GetGod(p) then
+      _UnsetGod(p)
       SendMessage(Format("[SC GodMode] GodMode is disabled to %s.", p:GetName()), ply)
       SendMessage("[SC GodMode] You are now not in GodMode.", p, HUD_PRINTTALK)
     else
-      p.SCTOOLS_GODMODE_ENABLED = true ---@diagnostic disable-line: inject-field
-      p.SCTOOLS_GODMODE_MANUAL = true ---@diagnostic disable-line: inject-field
-      p:GodEnable()
+      _SetGod(p)
       SendMessage(Format("[SC GodMode] GodMode is enabled to %s.", p:GetName()), ply)
       SendMessage("[SC GodMode] You are now in GodMode.", p, HUD_PRINTTALK)
     end
   end
-end
-
----@param args string
----@return table
-local function SetGodPlayerCompletion(_, args)
+end, function(_, args)
   return SuggestPlayer("sc_god", args)
-end
-
-concommand.Add("sc_god", SetGodPlayer, SetGodPlayerCompletion, "Toggle GodMode for the player.", FCVAR_NONE)
+end, "Toggle GodMode for the player.", FCVAR_NONE)
