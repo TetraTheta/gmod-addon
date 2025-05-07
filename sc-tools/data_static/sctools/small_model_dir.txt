@@ -1,0 +1,5 @@
+# You can add a comment using '#'.
+# '#' can be either the start of the line or the middle of the line. Any character after '#' will be ignored.
+# Directory path must ends with '/'.
+models/gibs/
+models/humans/

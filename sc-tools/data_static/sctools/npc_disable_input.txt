@@ -1,0 +1,39 @@
+# You can add a comment using '#'.
+# '#' can be either the start of the line or the middle of the line. Any character after '#' will be ignored.
+# entity_class|input_name_1:input_name_2 param:...
+combine_mine|Disarm
+npc_alyx|HolsterWeapon
+npc_antlion|DisableJump:StopFightToPosition
+npc_antlionguard|ClearChargeTarget:DisableBark:DisablePreferPhysicsAttack:StopInvestigating
+npc_apcdriver|StopFiring:Stop
+npc_barnacle|LetGo
+npc_barney|HolsterWeapon
+npc_breen|HolsterWeapon
+npc_citizen|HolsterWeapon
+npc_clawscanner|ClearFollowTarget:DisableSpotlight
+npc_combine_camera|Disable:SetIdle
+npc_combine_s|HolsterWeapon:StopPatrolling
+npc_combinedropship|StopPatrol:SetGunRange 1
+npc_combinegunship|BlindfireOff:OmniscientOff:StopPatrol
+npc_cscanner|ClearFollowTarget:DisableSpotlight
+npc_eli|HolsterWeapon
+npc_fisherman|HolsterWeapon
+npc_gman|HolsterWeapon
+npc_helicopter|DisableDeadlyShooting:GunOff:MissileOff:StopPatrol
+npc_hunter|Crouch:DisableShooting
+npc_kleiner|HolsterWeapon
+npc_magnusson|HolsterWeapon
+npc_manhack|InteractivePowerDown
+npc_metropolice|HolsterWeapon
+npc_missiledefense|HolsterWeapon
+npc_monk|HolsterWeapon
+npc_mossman|HolsterWeapon
+npc_rollermine|InteractivePowerDown:TurnOff
+npc_sniper|DisableSniper:StopSweeping
+npc_stalker|HolsterWeapon
+npc_strider|DisableAggressiveBehavior:StopPatrol
+npc_turret_ceiling|Disable
+npc_turret_floor|Disable
+npc_turret_ground|Disable:InteractivePowerDown
+npc_vehicledriver|StopFiring:Stop
+npc_vortigaunt|HolsterWeapon

@@ -13,6 +13,7 @@ local DevEntMsgN = DevEntMsgN
 local ErrorNoHalt = ErrorNoHalt
 local f_Exists = file.Exists
 local f_Read = file.Read
+local f_Write = file.Write
 local p_GetHumans = player.GetHumans
 local s_Explode = string.Explode
 local s_find = string.find
@@ -54,13 +55,20 @@ end
 ---@return table
 local function _ReadFile(f)
   local tbl = {}
+  local c = ""
   if f_Exists(f, "DATA") then
-    local c = f_Read(f, "DATA")
+    c = f_Read(f, "DATA")
     if not c then
       ErrorNoHalt("[ERROR] Can't open file: ", f)
       return tbl
     end
+  else
+    --ErrorNoHalt("[ERROR] File doesn't exist: ", f)
+    c = f_Read("data_static/" .. f, "GAME")
+    f_Write(f, c)
+  end
 
+  if c then
     local lines = s_Split(c, "\n")
     for _, line in ipairs(lines) do
       local k, v = line:match("([^|]*)|?(.*)")
@@ -74,9 +82,8 @@ local function _ReadFile(f)
         tbl[k] = vs
       end
     end
-  else
-    ErrorNoHalt("[ERROR] File doesn't exist: ", f)
   end
+
   return tbl
 end
 
@@ -129,7 +136,6 @@ end
 
 ---Reload config of SC Tools
 function sctools.ReloadConfig()
-  include("sctools/data.lua")
   sctools._GodMap = _ReadFile("sctools/auto_god_map.txt")
   sctools._GodNPC = _ReadFile("sctools/auto_god_npc.txt")
   sctools._NPCDisable = _ReadFile("sctools/npc_disable_input.txt")
