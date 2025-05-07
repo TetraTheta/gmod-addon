@@ -20,7 +20,10 @@ local function _ShowNotification(value, msg)
 end
 
 net.Receive("SCTOOLS_CleanResult", function(_, _)
-  local result = u_JSONToTable(u_Decompress(net.ReadData(net.ReadUInt(16)))) ---@cast result table
+  local json = u_Decompress(net.ReadData(net.ReadUInt(16)))
+  ---@cast json string
+  local result = u_JSONToTable(json)
+  ---@cast result table
   local sound = false
   --
   if _ShowNotification(result.ammo, "Ammo") then sound = true end

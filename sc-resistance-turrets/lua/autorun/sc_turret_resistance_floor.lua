@@ -1,5 +1,5 @@
 -- Register 'Resistance Turret'
-local npc = {
+list.Set("NPC", "sc_turret_resistance_floor", {
   Category = "SC Entities",
   Class = "npc_turret_floor",
   Health = "255",
@@ -11,13 +11,18 @@ local npc = {
   Rotate = Angle(0, 180, 0),
   Skin = 2, -- TODO: Add hook for NPC creation for assigning skin to it
   TotalSpawnFlags = SF_FLOOR_TURRET_CITIZEN
-}
-list.Set("NPC", "sc_turret_resistance_floor", npc)
--- Register 'Resistance Turret' end
+})
+--
 -- Set custom FireBullets to custom turrets
+---@param entity Entity
+---@param data table
 hook.Add("EntityFireBullets", "sc_turret_resistance_floor_firebullets", function(entity, data)
+  -- Filter 'npc_turret_floor'
   if (entity:GetClass() == "npc_turret_floor") then
-    local t = util.KeyValuesToTablePreserveOrder(util.GetModelInfo(entity:GetModel())["ModelKeyValues"])
+    ---@cast entity NPC
+    local m = entity:GetModel()
+    ---@cast m string
+    local t = util.KeyValuesToTablePreserveOrder(util.GetModelInfo(m)["ModelKeyValues"])
     for _, v in ipairs(t) do
       if (v["Key"] == "custom_turret" and v["Value"] == 1) then
         -- This turret is SC Resistance Turret
@@ -41,4 +46,3 @@ hook.Add("EntityFireBullets", "sc_turret_resistance_floor_firebullets", function
     return true
   end
 end)
--- Set custom FireBullets to custom turrets end

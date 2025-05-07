@@ -156,4 +156,4 @@ local function SetSpeedCompletion(_, args)
   end
 end
 
-concommand.Add("sc_setspeed", SetSpeed, SetSpeedCompletion, "Set player's speed.", FCVAR_NONE)
+concommand.Add("sc_setspeed", SetSpeed, SetSpeedCompletion, "Set player's speed.", { FCVAR_NONE })

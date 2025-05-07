@@ -1,7 +1,6 @@
--- Suppress LuaLS warning. I know what I'm doing.
----@diagnostic disable inject-field, undefined-field
 local msgBS = "SCTOOLS_BodyshotEffect"
 local msgHS = "SCTOOLS_HeadshotEffect"
+--
 util.AddNetworkString(msgBS)
 util.AddNetworkString(msgHS)
 --
@@ -89,22 +88,22 @@ end
 
 ---@param npc NPC
 ---@param hg HITGROUP
----@param di CTakeDamageInfo
-hook.Add("ScaleNPCDamage", "SCTOOLS_ShotEffect_Humanoid", function(npc, hg, _) npc.SCTOOLS_LAST_HITGROUP = hg end)
+hook.Add("ScaleNPCDamage", "SCTOOLS_ShotEffect_Humanoid", function(npc, hg, _) npc["SCTOOLS_LAST_HITGROUP"] = hg end)
 ---@param ent Entity
 ---@param di CTakeDamageInfo
 hook.Add("PostEntityTakeDamage", "SCTOOLS_ShotEffect", function(ent, di, _)
   -- Ignore No Damage, GodMode NPC, already processing NPC
-  if di:GetDamage() <= 0 or sctools.protect[ent] or ent.SCTOOLS_SHOTEFFECT_CD or ent.SCTOOLS_SHOTEFFECT_DEAD or not ent:IsNPC() then return end
+  if di:GetDamage() <= 0 or sctools.protect[ent] or ent["SCTOOLS_SHOTEFFECT_CD"] or ent["SCTOOLS_SHOTEFFECT_DEAD"] or not ent:IsNPC() then return end
+  ---@cast ent NPC
   --
   local class = ent:GetClass()
   local att = di:GetAttacker()
-  local hg = ent.SCTOOLS_LAST_HITGROUP
+  local hg = ent["SCTOOLS_LAST_HITGROUP"]
   --
   if att:IsPlayer() then
     ---@cast att Player
     -- Prevent other ShotEffect from processing same damage
-    ent.SCTOOLS_SHOTEFFECT_CD = true
+    ent["SCTOOLS_SHOTEFFECT_CD"] = true
     -- 0. Prepare
     local cv = 0
     if hg == HITGROUP_HEAD then
@@ -134,7 +133,7 @@ hook.Add("PostEntityTakeDamage", "SCTOOLS_ShotEffect", function(ent, di, _)
     net.WriteBool(hasArmor[class] and true or false)
     -- 4. NPC Death (Is this NPC dead from this damage?)
     if ent:Health() <= 0 then
-      ent.SCTOOLS_SHOTEFFECT_DEAD = true
+      ent["SCTOOLS_SHOTEFFECT_DEAD"] = true
       net.WriteBool(true)
     else
       net.WriteBool(false)
@@ -151,6 +150,6 @@ hook.Add("PostEntityTakeDamage", "SCTOOLS_ShotEffect", function(ent, di, _)
     net.WriteString(ent:GetClass())
     -- Send
     net.Send(att)
-    timer.Simple(0.1, function() if ent.SCTOOLS_SHOTEFFECT_CD then ent.SCTOOLS_SHOTEFFECT_CD = false end end)
+    timer.Simple(0.1, function() if ent["SCTOOLS_SHOTEFFECT_CD"] then ent["SCTOOLS_SHOTEFFECT_CD"] = false end end)
   end
 end)

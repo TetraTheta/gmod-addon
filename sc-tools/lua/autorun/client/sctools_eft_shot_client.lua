@@ -1,3 +1,5 @@
+local m_random = math.random
+--
 local msgBS = "SCTOOLS_BodyshotEffect"
 local msgHS = "SCTOOLS_HeadshotEffect"
 --
@@ -28,7 +30,7 @@ end
 ---@param snd string
 ---@param vol number
 local function PlaySound(snd, vol)
-  local r = math.random(90, 110)
+  local r = m_random(90, 110)
   LocalPlayer():EmitSound(snd, SNDLVL_NORM, r, vol, CHAN_BODY)
   DevMsgN(Format("Playing '%s'", snd))
 end
@@ -39,22 +41,22 @@ end
 ---@param vol number
 local function PlayBodySound(cat, armor, death, vol)
   if death then
-    PlaySound(Format("sctools_shot_feedback/kill%d.mp3", math.random(1, 5)), vol)
+    PlaySound(Format("sctools_shot_feedback/kill%d.mp3", m_random(1, 5)), vol)
   else
     if cat == CAT_ANIMAL then
-      PlaySound(Format("sctools_shot_feedback/humanoid_body_noarmor_live%d.mp3", math.random(1, 8)), vol)
+      PlaySound(Format("sctools_shot_feedback/humanoid_body_noarmor_live%d.mp3", m_random(1, 8)), vol)
     elseif cat == CAT_ANTLION then
-      PlaySound(Format("sctools_shot_feedback/antlion_body_live%d.mp3", math.random(1, 4)), vol)
+      PlaySound(Format("sctools_shot_feedback/antlion_body_live%d.mp3", m_random(1, 4)), vol)
     elseif cat == CAT_HUMANOID then
       if armor then
-        PlaySound(Format("sctools_shot_feedback/humanoid_body_armor_live%d.mp3", math.random(1, 5)), vol)
+        PlaySound(Format("sctools_shot_feedback/humanoid_body_armor_live%d.mp3", m_random(1, 5)), vol)
       else
-        PlaySound(Format("sctools_shot_feedback/humanoid_body_noarmor_live%d.mp3", math.random(1, 8)), vol)
+        PlaySound(Format("sctools_shot_feedback/humanoid_body_noarmor_live%d.mp3", m_random(1, 8)), vol)
       end
     elseif cat == CAT_ROBOT then
-      PlaySound(Format("sctools_shot_feedback/robot_body_live%d.mp3", math.random(1, 6)), vol)
+      PlaySound(Format("sctools_shot_feedback/robot_body_live%d.mp3", m_random(1, 6)), vol)
     elseif cat == CAT_SYNTH then
-      PlaySound(Format("sctools_shot_feedback/synth_body_live%d.mp3", math.random(1, 6)), vol)
+      PlaySound(Format("sctools_shot_feedback/synth_body_live%d.mp3", m_random(1, 6)), vol)
     end
   end
 end
@@ -63,15 +65,15 @@ end
 ---@param death boolean
 ---@param vol number
 local function PlayHeadSound(armor, death, vol)
-  -- Only available if cat is CAT_HUMANOID and
+  -- Only available if cat is CAT_HUMANOID
   if death then
-    PlaySound(Format("sctools_shot_feedback/kill%d.mp3", math.random(1, 5)), vol)
+    PlaySound(Format("sctools_shot_feedback/kill%d.mp3", m_random(1, 5)), vol)
     PlaySound("sctools_shot_feedback/humanoid_head_armor_dead1.mp3", vol)
   else
     if armor then
       PlaySound("sctools_shot_feedback/humanoid_head_armor_live1.mp3", vol)
     else
-      PlaySound(Format("sctools_shot_feedback/humanoid_head_noarmor_live%d.mp3", math.random(1, 5)), vol)
+      PlaySound(Format("sctools_shot_feedback/humanoid_head_noarmor_live%d.mp3", m_random(1, 5)), vol)
     end
   end
 end

@@ -8,37 +8,7 @@ local IsSuperAdmin = sctools.IsSuperAdmin
 local p_GetHumans = player.GetHumans
 local SendMessage = sctools.SendMessage
 local SuggestPlayer = sctools.command.SuggestPlayer
---[[
-########################
-#     AUTO GOD NPC     #
-########################
-]]
----@param ent Entity Entity to check if it is GodMode applicable NPC or not
----@param p Entity|Player Any valid Player or Entity
----@return boolean
-local function _IsCandidateNPC(ent, p)
-  local class = ent:GetClass()
-  if not IsValid(ent) then
-    DevEntMsgN(ent, "is invalid.")
-    return false
-  end
-
-  if not IsValid(p) then
-    DevEntMsgN(p, "is invalid.")
-    return false
-  end
-
-  ---@cast ent NPC
-  if ent:IsNPC() and ent:Disposition(p) ~= D_HT then
-    if GodNPC[class] then
-      return true
-    elseif class == "npc_citizen" and ent:GetInternalVariable("citizentype") == 4 and ent:GetModel() == "models/odessa.mdl" then
-      return true
-    end
-  end
-  return false
-end
-
+--
 local function _GetGod(ent)
   return sctools.protect[ent]
 end
@@ -64,25 +34,65 @@ local function _UnsetGod(ent)
     end
   end
 end
+--[[
+########################
+#     AUTO GOD NPC     #
+########################
+]]
+---@param ent Entity Entity to check if it is GodMode applicable NPC or not
+---@param p Player Any valid Player or Entity
+---@return boolean 'true' if the entity should be protected
+local function _IsCandidateNPC(ent, p)
+  local class = ent:GetClass()
+  if not IsValid(ent) then
+    DevEntMsgN(ent, "is invalid.")
+    return false
+  end
+
+  if not IsValid(p) then
+    DevEntMsgN(p, "is invalid.")
+    return false
+  end
+
+  ---@cast ent NPC
+  if ent:IsNPC() then
+    if ent:Disposition(p) == D_HT then
+      -- Remove entity that hates Player from protect table
+      _UnsetGod(ent)
+      return false
+    else
+      if GodNPC[class] then
+        -- The NPC should be protected
+        return true
+      elseif class == "npc_citizen" and ent:GetInternalVariable("citizentype") == 4 and ent:GetModel() == "models/odessa.mdl" then
+        -- Colonel Odessa Cubbage should be protected
+        return true
+      end
+    end
+  end
+
+  return false
+end
 
 ---@param target Entity
 ---@param dmg CTakeDamageInfo
 hook.Add("EntityTakeDamage", "SCTOOLS_AutoGod_NPC_TakeDamage", function(target, dmg)
   if not IsValid(target) then return end
 
-  -- Check if target is auto god target
+  -- Check if target is auto god target that slipped through my checks
   if target:IsNPC() and GetConVar("sc_auto_god_npc"):GetBool() then
+    -- To check if damaged entity is friendly to Player, use first player as the attacker if attacker is not Player
     local att = dmg:GetAttacker()
-    -- Check relation with the player
-    -- Temporarily assign first player as attacker for checking relation with him
     if not att:IsPlayer() and IsValid(p_GetHumans()[1]) then att = p_GetHumans()[1] end
+    ---@cast att Player
+
     if _IsCandidateNPC(target, att) and GodMap[g_GetMap()] then
       DevEntMsgN(target, "is now GodMode (Automatic)")
       _SetGod(target)
     end
   end
 
-  -- Prevent damage on 'protect' table
+  -- Process damage for entity in 'protect' table
   if _GetGod(target) and dmg:GetDamage() > 0 then
     if GetConVar("sc_auto_god_mode"):GetBool() then
       -- God
@@ -133,7 +143,7 @@ concommand.Add("sc_set_god", function(p, _, _, _)
 
     SendMessage(msg, p)
   end
-end, nil, "Enable GodMode to the NPC you're looking at.", FCVAR_NONE)
+end, nil, "Enable GodMode to the NPC you're looking at.", { FCVAR_NONE })
 
 ---@param p Player
 concommand.Add("sc_unset_god", function(p, _, _, _)
@@ -150,7 +160,7 @@ concommand.Add("sc_unset_god", function(p, _, _, _)
 
     SendMessage(msg, p)
   end
-end, nil, "Disable GodMode to the NPC you're looking at.", FCVAR_NONE)
+end, nil, "Disable GodMode to the NPC you're looking at.", { FCVAR_NONE })
 --[[
 ##########################
 #     SET GOD PLAYER     #
@@ -173,4 +183,4 @@ concommand.Add("sc_god", function(ply, _, args, _)
   end
 end, function(_, args)
   return SuggestPlayer("sc_god", args)
-end, "Toggle GodMode for the player.", FCVAR_NONE)
+end, "Toggle GodMode for the player.", { FCVAR_NONE })

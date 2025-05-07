@@ -4,15 +4,13 @@ hook.Add("Think", "SCTOOLS_DynamicFire", function()
   if next_think > time or not GetConVar("sc_dynamic_fire"):GetBool() then return end
   next_think = time + 0.05
   for _, v in pairs(ents.GetAll()) do
-    ---@cast v Entity
     if not v:IsValid() then continue end
-    ---@diagnostic disable-next-line: undefined-field
-    if not (v:IsPlayer() or v:IsNPC() or v.Type == "nextbot" or v:GetClass():find("prop") or v:GetClass() == "_firesmoke") then continue end
+    if not (v:IsPlayer() or v:IsNPC() or v:IsNextBot() or v:GetClass():find("prop") or v:GetClass() == "_firesmoke") then continue end
     if v:GetClass() == "_firesmoke" or v:IsOnFire() then
       local pos = v:WorldSpaceCenter() + vector_up * 8
       local dlight = DynamicLight(v:EntIndex())
       if dlight then
-        local size = 128 ---@cast size number
+        local size = 128
         local rad = v:GetModelRadius()
         if not isnumber(rad) then rad = size end
         if v:GetClass() == "_firesmoke" then

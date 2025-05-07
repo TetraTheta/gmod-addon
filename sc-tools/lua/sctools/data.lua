@@ -131,6 +131,7 @@ files["auto_god_npc.txt"] = [[
 # '#' can be either the start of the line or the middle of the line. Any character after '#' will be ignored.
 # Don't add 'npc_citizen' in here! Colonel Odessa Cubbage will be handled automatically.
 # NPCs will only be set to 'god mode' if they are not hostile to the player. But if they become hostile to the player during midgame, you must attack them first to remove their god mode.
+generic_actor
 npc_alyx
 npc_barney
 npc_eli

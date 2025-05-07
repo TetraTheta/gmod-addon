@@ -1,3 +1,5 @@
+-- TODO: Remove 'redundant-return-value' when unneeded
+---@diagnostic disable: redundant-return-value
 ---@param p Player
 hook.Add("PlayerLoadout", "PR_CustomLoadout", function(p)
   if not GetConVar("pr_enable_loadout"):GetBool() then return end
@@ -36,7 +38,8 @@ hook.Add("PlayerLoadout", "PR_CustomLoadout", function(p)
   end
 end)
 
-concommand.Add("pr_loadout", function(p)
+---@param p Player
+concommand.Add("pr_loadout", function(p, _, _, _)
   -- Strip
   p:StripWeapons()
   -- GMod Weapons
@@ -52,4 +55,4 @@ concommand.Add("pr_loadout", function(p)
   p:GiveAmmo(9999, "SMG1", true)
   p:GiveAmmo(9999, "SMG1_Grenade", true)
   p:GiveAmmo(9999, "XBowBolt", true)
-end, nil, "My Loadout", FCVAR_NONE)
+end, nil, "My Loadout", { FCVAR_NONE })

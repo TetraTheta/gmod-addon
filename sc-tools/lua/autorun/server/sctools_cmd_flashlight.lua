@@ -10,7 +10,7 @@ local GetPlayerByName = sctools.command.GetPlayerByName
 #############################
 ]]
 ---@param p Player
-local function AllowFlashlightAuto(p, _)
+hook.Add("PlayerSpawn", "SCTOOLS_EnableFlashlightAuto", function(p, _)
   local cv = GetConVar("sc_auto_flashlight"):GetInt()
   if cv == 1 and p:IsUserGroup("superadmin") and not p:CanUseFlashlight() then
     -- SuperAdmin only
@@ -21,17 +21,21 @@ local function AllowFlashlightAuto(p, _)
     p:AllowFlashlight(true)
     SendMessage("[SC Flashlight] Flashlight is automatically enabled.", p, HUD_PRINTTALK)
   end
-end
-
-hook.Add("PlayerSpawn", "SCTOOLS_EnableFlashlightAuto", AllowFlashlightAuto)
+end)
 --[[
 ################################
 #     FLASH ENABLE COMMAND     #
 ################################
 ]]
+---@param args string
+---@return table
+local function AllowFlashlightCompletion(_, args)
+  return SuggestPlayer("sc_flashlight", args)
+end
+
 ---@param p Player
 ---@param args table
-local function AllowFlashlight(p, _, args, _)
+concommand.Add("sc_flashlight", function(p, _, args, _)
   if not IsSuperAdmin(p) then return end
   if #args > 1 then SendMessage("[SC Flashlight] Only first player will be processed.", p) end
   if #args == 0 then SendMessage("[SC Flashlight] You must provide one player.", p) end
@@ -41,12 +45,4 @@ local function AllowFlashlight(p, _, args, _)
     if p ~= ply then SendMessage(Format("[SC Flashlight] Flashlight is enabled to %s", ply:GetName()), p) end
     SendMessage("[SC Flashlight] Flashlight is enabled.", ply, HUD_PRINTTALK)
   end
-end
-
----@param args string
----@return table
-local function AllowFlashlightCompletion(_, args)
-  return SuggestPlayer("sc_flashlight", args)
-end
-
-concommand.Add("sc_flashlight", AllowFlashlight, AllowFlashlightCompletion, "Enable flashlight for the given player.", FCVAR_NONE)
+end, AllowFlashlightCompletion, "Enable flashlight for the given player.", { FCVAR_NONE })

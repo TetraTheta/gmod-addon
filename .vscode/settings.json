@@ -4,16 +4,24 @@
     "${addons}/garrysmod/module/library"
   ],
   "Lua.runtime.nonstandardSymbol": [
-    "continue",
-    "/**/"
+    "!",
+    "!=",
+    "/**/",
+    "//",
+    "&&",
+    "||",
+    "continue"
   ],
+  // Remove 'missing-fields' when https://github.com/luttje/glua-api-snippets/issues/85 is resolved
   "Lua.diagnostics.disable": [
-    "duplicate-set-field"
+    "duplicate-set-field",
+    "missing-fields",
+    "undefined-global"
   ],
   "Lua.runtime.version": "LuaJIT",
   "Lua.workspace.checkThirdParty": false,
   "Lua.runtime.special": {
-    "include": "dofile",
-    "IncludeCS": "dofile"
+    "include": "require",
+    "IncludeCS": "require"
   },
 }

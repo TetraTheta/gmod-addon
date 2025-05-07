@@ -1,6 +1,5 @@
 require("sctools")
-local function ReloadConfig(_, _, _, _)
+--
+concommand.Add("sc_reload", function(_, _, _, _)
   sctools.ReloadConfig()
-end
-
-concommand.Add("sc_reload", ReloadConfig, nil, "Reload SC Tools configurations.", FCVAR_NONE)
+end, nil, "Reload SC Tools configurations.", { FCVAR_NONE })

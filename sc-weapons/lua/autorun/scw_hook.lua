@@ -22,6 +22,7 @@ local function _AddHooks(className)
         for k, v in pairs(saveData) do
           local p = player.GetBySteamID64(k)
           if IsValid(p) then
+            ---@cast p Player
             local wpn = p:GetWeapon(className)
             if IsValid(wpn) then
               ---@diagnostic disable-next-line undefined-field

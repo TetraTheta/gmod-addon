@@ -2,7 +2,6 @@ require("sctools")
 local b_band = bit.band
 local e_GetAll = ents.GetAll
 local IsSuperAdmin = sctools.IsSuperAdmin
-local Iterator = ents.Iterator
 local p_GetHumans = player.GetHumans
 local RemoveEntity = sctools.RemoveEntity
 local s_lower = string.lower
@@ -129,12 +128,14 @@ local function CleanSmall()
     if IsValid(v) and v:GetClass() == "prop_physics" and IsValid(v:GetPhysicsObject()) then
       if SM[v:GetModel()] then
         RemoveEntity(v)
-        if not v.SCTOOLS_REMOVAL then result = result + 1 end
+        if not v["SCTOOLS_REMOVAL"] then result = result + 1 end
       else
         for d, _ in pairs(SMD) do
-          if s_StartsWith(v:GetModel(), d) then
+          local m = v:GetModel()
+          ---@cast m string
+          if s_StartsWith(m, d) then
             RemoveEntity(v)
-            if not v.SCTOOLS_REMOVAL then result = result + 1 end
+            if not v["SCTOOLS_REMOVAL"] then result = result + 1 end
           end
         end
       end
@@ -280,4 +281,4 @@ local function CleanAutoComplete(_, args)
   return tbl
 end
 
-concommand.Add("sc_clean", Clean, CleanAutoComplete, "Remove objects from the current map.", FCVAR_NONE)
+concommand.Add("sc_clean", Clean, CleanAutoComplete, "Remove objects from the current map.", { FCVAR_NONE })
