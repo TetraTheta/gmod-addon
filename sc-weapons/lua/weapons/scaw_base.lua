@@ -283,7 +283,8 @@ function SWEP:_SA_Explosion()
 end
 
 function SWEP:_SA_AirboatGun()
-  local owner = self:GetOwner() ---@cast owner NPC
+  -- NPC cannot do secondary attack
+  local owner = self:GetOwner() ---@cast owner Player
   ---@type Bullet
   ---@diagnostic disable-next-line: missing-fields
   local bullet = {
@@ -313,34 +314,23 @@ function SWEP:_SA_AirboatGun()
 end
 
 function SWEP:_SA_CombineBall()
-  local owner = self:GetOwner() ---@cast owner NPC
+  -- NPC cannot do secondary attack
+  local owner = self:GetOwner() ---@cast owner Player
   if SERVER then
-    local cbl = ents.Create("point_combine_ball_launcher")
-    cbl:SetAngles(owner:GetAngles())
-    cbl:SetPos(owner:GetShootPos() + owner:GetAimVector() * 10)
-    cbl:SetKeyValue("MinSpeed", tostring(self.Secondary.MOD_CMB_Speed)) -- This is defined in its parent
-    cbl:SetKeyValue("MaxSpeed", tostring(self.Secondary.MOD_CMB_Speed)) -- This is defined in its parent
-    cbl:SetKeyValue("MaxBallBounces", "10")                             -- Max number of bounces (def: 8)
-    cbl:SetNotSolid(true)
-    cbl:SetMoveType(MOVETYPE_NONE)
-    cbl:Spawn()
-    cbl:Activate() -- should I activate it?
-    cbl:Fire("LaunchBall")
-    cbl:Fire("Kill")
-    -- Set owner of fired CombineBall
-    timer.Simple(0.01, function()
-      if IsValid(self) and IsValid(owner) then
-        for _, v in pairs(ents.FindInSphere(owner:GetShootPos(), 85)) do
-          ---@cast v Entity
-          if IsValid(v) and v:GetClass() == "prop_combine_ball" and not IsValid(v:GetOwner()) then
-            v:SetOwner(owner)
-            --v:SetSaveValue("m_flSpeed", self.Secondary.MOD_CMB_Speed) -- 1500 when released from Gravity Gun
-            v:GetPhysicsObject():AddGameFlag(FVPHYSICS_WAS_THROWN) -- Do I need this? this is default value of spawned Combine Ball
-            v:Fire("Explode", nil, self.Secondary.MOD_CMB_Lifespan)
-          end
-        end
-      end
-    end)
+    local cb = ents.Create("prop_combine_ball")
+    local ang = owner:GetAimVector():Angle()
+    local fwd = ang:Forward()
+    cb:SetPos(owner:GetShootPos())
+    cb:SetAngles(ang)
+    cb:SetOwner(owner)
+    cb:SetSaveValue("m_flRadius", 5)
+    cb:SetSaveValue("m_nMaxBounces", 10)
+    cb:Spawn()
+    cb:Activate()
+    cb:SetSaveValue("m_nState", 2) -- STATE_THROWN
+    cb:SetSaveValue("m_flSpeed", self.Secondary.MOD_CMB_Speed)
+    cb:GetPhysicsObject():SetVelocity(fwd * self.Secondary.MOD_CMB_Speed)
+    cb:Fire("Explode", nil, self.Secondary.MOD_CMB_Lifespan)
   end
 
   self:EmitSound(self.Secondary.MOD_CMB_Sound1)
@@ -349,6 +339,7 @@ function SWEP:_SA_CombineBall()
 end
 
 function SWEP:_SA_Grenade()
+  -- NPC cannot do secondary attack
   local owner = self:GetOwner() ---@cast owner Player
   if SERVER then
     local fwd = owner:EyeAngles():Forward()

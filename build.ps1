@@ -33,18 +33,20 @@ function Show-Prompt {
   Write-Host 'What do you want to build?'
   Write-Host '[1] Dark Mode'
   Write-Host '[2] Fix Map'
-  Write-Host '[3] Private Reserve'
-  Write-Host '[4] SC Resistance Turrets'
-  Write-Host '[5] SC Tools'
-  Write-Host '[6] SC Weapons'
+  Write-Host '[3] More Properties'
+  Write-Host '[4] Private Reserve'
+  Write-Host '[5] SC Resistance Turrets'
+  Write-Host '[6] SC Tools'
+  Write-Host '[7] SC Weapons'
   $choice = Read-Host 'Choice'
   switch ($choice.ToUpper()) {
     "1" { return 'dark-mode' }
     "2" { return 'fix-map' }
-    "3" { return 'private-reserve' }
-    "4" { return 'sc-resistance-turrets' }
-    "5" { return 'sc-tools' }
-    "6" { return 'sc-weapons' }
+    "3" { return 'more-properties' }
+    "4" { return 'private-reserve' }
+    "5" { return 'sc-resistance-turrets' }
+    "6" { return 'sc-tools' }
+    "7" { return 'sc-weapons' }
     default { return $null }
   }
 }
