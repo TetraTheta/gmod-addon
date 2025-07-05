@@ -1,7 +1,7 @@
 ---@param p Player
 ---@param wep Weapon
 hook.Add("PlayerCanPickupWeapon", "CustomPickup", function(p, wep)
-  if not GetConVar("pr_enable_custom_pickup"):GetBool() then return end
+  if not GetConVar("pr_enable_additional_pickup"):GetBool() then return end
   if (wep:GetClass() == "weapon_smg1") then
     if (not p:HasWeapon("scw_mp5sd")) then
       p:Give("scw_mp5sd")
