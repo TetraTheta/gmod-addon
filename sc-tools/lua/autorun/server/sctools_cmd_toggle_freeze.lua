@@ -44,16 +44,19 @@ concommand.Add("sc_toggle_freeze", function(ply, _, _, _)
   elseif ent:IsNPC() or ent:IsNextBot() then
     -- NPC
     ---@cast ent NPC
-    local frozen = ent:IsFlagSet(FL_FROZEN)
-    -- FL_FROZEN is ignored for NPC, so I'll use it as a placeholder
+    local frozen = ent:IsEFlagSet(EFL_NO_THINK_FUNCTION)
     if frozen then
-      ent:RemoveFlags(FL_FROZEN)
-      ent:NextThink(CurTime())
+      ent:RemoveEFlags(EFL_NO_THINK_FUNCTION)
+      timer.Simple(0.001, function()
+        local pos = ent["SCTOOLS_SAVED_POS"]
+        ent:SetPos(pos)
+        ent:GetPhysicsObject():SetPos(pos)
+      end)
       UnfreezeEffect(ent)
     else
-      ent:AddFlags(FL_FROZEN)
+      ent["SCTOOLS_SAVED_POS"] = ent:GetPos()
       ent:NavSetGoalPos(ent:GetPos())
-      ent:NextThink(CurTime() + 9999999999)
+      ent:AddEFlags(EFL_NO_THINK_FUNCTION)
       FreezeEffect(ent)
     end
   else
