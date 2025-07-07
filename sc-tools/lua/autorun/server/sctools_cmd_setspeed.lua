@@ -13,15 +13,15 @@ local argfunc = {
       p:SetRunSpeed(600)
       p:SetSlowWalkSpeed(150)
       p:SetWalkSpeed(300)
-      p.SCTOOLS_DEF_CROUCH_SPD = 0.8 ---@diagnostic disable-line: inject-field
-      p.SCTOOLS_DEF_LADDER_SPD = 300 ---@diagnostic disable-line: inject-field
+      p["SCTOOLS_DEF_CROUCH_SPD"] = 0.8
+      p["SCTOOLS_DEF_LADDER_SPD"] = 300
     elseif t == "reset" then
       p:SetCrouchedWalkSpeed(0.3)
       p:SetRunSpeed(400)
       p:SetSlowWalkSpeed(100)
       p:SetWalkSpeed(200)
-      p.SCTOOLS_DEF_CROUCH_SPD = 0.3 ---@diagnostic disable-line: inject-field
-      p.SCTOOLS_DEF_LADDER_SPD = 200 ---@diagnostic disable-line: inject-field
+      p["SCTOOLS_DEF_CROUCH_SPD"] = 0.3
+      p["SCTOOLS_DEF_LADDER_SPD"] = 200
     else
       SendMessage("[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.", p)
     end
@@ -31,10 +31,10 @@ local argfunc = {
   duck = function(p, t)
     if t == "fast" then
       p:SetCrouchedWalkSpeed(0.8)
-      p.SCTOOLS_DEF_CROUCH_SPD = 0.8 ---@diagnostic disable-line: inject-field
+      p["SCTOOLS_DEF_CROUCH_SPD"] = 0.8
     elseif t == "reset" then
       p:SetCrouchedWalkSpeed(0.3)
-      p.SCTOOLS_DEF_CROUCH_SPD = 0.3 ---@diagnostic disable-line: inject-field
+      p["SCTOOLS_DEF_CROUCH_SPD"] = 0.3
     else
       SendMessage("[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.", p)
     end
@@ -117,7 +117,7 @@ local function SetSpeedCompletion(_, args)
     elseif args:StartsWith("sc_setspeed all reset") then
       return SuggestPlayer("sc_setspeed all reset", args)
     else
-      return {"sc_setspeed all fast [player]", "sc_setspeed all reset [player]"}
+      return {"sc_setspeed all fast ", "sc_setspeed all reset "}
     end
   elseif args:StartsWith("sc_setspeed d") then
     if args:StartsWith("sc_setspeed duck fast") then
@@ -125,7 +125,7 @@ local function SetSpeedCompletion(_, args)
     elseif args:StartsWith("sc_setspeed duck reset") then
       return SuggestPlayer("sc_setspeed duck reset", args)
     else
-      return {"sc_setspeed duck fast [player]", "sc_setspeed duck reset [player]"}
+      return {"sc_setspeed duck fast ", "sc_setspeed duck reset "}
     end
   elseif args:StartsWith("sc_setspeed r") then
     if args:StartsWith("sc_setspeed run fast") then
@@ -133,7 +133,7 @@ local function SetSpeedCompletion(_, args)
     elseif args:StartsWith("sc_setspeed run reset") then
       return SuggestPlayer("sc_setspeed run reset", args)
     else
-      return {"sc_setspeed run fast [player]", "sc_setspeed run reset [player]"}
+      return {"sc_setspeed run fast ", "sc_setspeed run reset "}
     end
   elseif args:StartsWith("sc_setspeed s") then
     if args:StartsWith("sc_setspeed slow fast") then
@@ -141,7 +141,7 @@ local function SetSpeedCompletion(_, args)
     elseif args:StartsWith("sc_setspeed slow reset") then
       return SuggestPlayer("sc_setspeed slow reset", args)
     else
-      return {"sc_setspeed slow fast [player]", "sc_setspeed slow reset [player]"}
+      return {"sc_setspeed slow fast ", "sc_setspeed slow reset "}
     end
   elseif args:StartsWith("sc_setspeed w") then
     if args:StartsWith("sc_setspeed walk fast") then
@@ -149,10 +149,10 @@ local function SetSpeedCompletion(_, args)
     elseif args:StartsWith("sc_setspeed walk reset") then
       return SuggestPlayer("sc_setspeed walk reset", args)
     else
-      return {"sc_setspeed walk fast [player]", "sc_setspeed walk reset [player]"}
+      return {"sc_setspeed walk fast ", "sc_setspeed walk reset "}
     end
   else
-    return {"sc_setspeed all fast [player]", "sc_setspeed all reset [player]", "sc_setspeed duck fast [player]", "sc_setspeed duck reset [player]", "sc_setspeed run fast [player]", "sc_setspeed run reset [player]", "sc_setspeed slow fast [player]", "sc_setspeed slow reset [player]", "sc_setspeed walk fast [player]", "sc_setspeed walk reset [player]"}
+    return {"sc_setspeed all", "sc_setspeed duck", "sc_setspeed run", "sc_setspeed slow", "sc_setspeed walk"}
   end
 end
 
