@@ -323,13 +323,14 @@ function SWEP:_SA_CombineBall()
     cb:SetPos(owner:GetShootPos())
     cb:SetAngles(ang)
     cb:SetOwner(owner)
-    cb:SetSaveValue("m_flRadius", 5)
+    cb:SetSaveValue("m_flRadius", 2)
     cb:SetSaveValue("m_nMaxBounces", 10)
     cb:Spawn()
     cb:Activate()
     cb:SetSaveValue("m_nState", 2) -- STATE_THROWN
     cb:SetSaveValue("m_flSpeed", self.Secondary.MOD_CMB_Speed)
-    cb:GetPhysicsObject():SetVelocity(fwd * self.Secondary.MOD_CMB_Speed)
+    local cbphys = cb:GetPhysicsObject()
+    cbphys:SetVelocity(fwd * self.Secondary.MOD_CMB_Speed)
     cb:Fire("Explode", nil, self.Secondary.MOD_CMB_Lifespan)
   end
 
