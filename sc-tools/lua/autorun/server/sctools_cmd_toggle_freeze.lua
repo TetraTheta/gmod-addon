@@ -23,8 +23,6 @@ local function UnfreezeEffect(ent)
   u_Effect("phys_unfreeze", ed, true, true)
 end
 
-local function ToggleFreezeAutocomplete() end
-
 concommand.Add("sc_toggle_freeze", function(ply, _, _, _)
   if not IsSuperAdmin(ply) then return end
   local ent = GetTraceEntity(ply)
@@ -63,11 +61,16 @@ concommand.Add("sc_toggle_freeze", function(ply, _, _, _)
     -- Physics Object (+ Vehicle, Weapon, etc.)
     local p = ent:GetPhysicsObject()
     if not p:IsValid() then return end
+    local mt = ent:GetMoveType()
     local m = p:IsMotionEnabled()
     if m then
+      ent["SCTOOLS_MOVETYPE"] = mt
+      ent:SetMoveType(MOVETYPE_NONE)
       p:EnableMotion(false)
       FreezeEffect(ent)
     else
+      ent:SetMoveType(ent["SCTOOLS_MOVETYPE"])
+      ent["SCTOOLS_MOVETYPE"] = nil
       p:EnableMotion(true)
       UnfreezeEffect(ent)
     end

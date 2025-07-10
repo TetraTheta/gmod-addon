@@ -7,7 +7,7 @@ module("sctools", package.seeall)
 if CLIENT then return end
 --
 -- localize functions for optimization
-local bor = bit.bor
+local b_bor = bit.bor
 local c_RemoveAll = constraint.RemoveAll
 local DevEntMsgN = DevEntMsgN
 local ErrorNoHalt = ErrorNoHalt
@@ -118,7 +118,7 @@ function sctools.GetTraceEntity(ply)
   if not IsValid(ply) then return NULL end
   local tr = u_GetPlayerTrace(ply)
   -- MASK_SOLID(33570827): CONTENTS_SOLID(1) + CONTENTS_WINDOW(2) + CONTENTS_GRATE(8) + CONTENTS_MOVEABLE(16384) + CONTENTS_MONSTER(33554432)
-  tr.mask = bor(MASK_SOLID, CONTENTS_AUX, CONTENTS_DEBRIS)
+  tr.mask = b_bor(MASK_SOLID, CONTENTS_AUX, CONTENTS_DEBRIS)
   local trace = u_TraceLine(tr) ---@cast trace TraceResult
   if trace.Hit then
     return trace.Entity
