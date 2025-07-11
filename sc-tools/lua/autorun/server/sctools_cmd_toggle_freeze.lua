@@ -69,7 +69,9 @@ concommand.Add("sc_toggle_freeze", function(ply, _, _, _)
       p:EnableMotion(false)
       FreezeEffect(ent)
     else
-      ent:SetMoveType(ent["SCTOOLS_MOVETYPE"])
+      local smt = ent["SCTOOLS_MOVETYPE"]
+      if not isnumber(smt) then smt = MOVETYPE_VPHYSICS end
+      ent:SetMoveType(smt)
       ent["SCTOOLS_MOVETYPE"] = nil
       p:EnableMotion(true)
       UnfreezeEffect(ent)
