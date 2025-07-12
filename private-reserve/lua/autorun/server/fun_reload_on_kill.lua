@@ -29,7 +29,7 @@ local function _ReloadAllWeapons(p)
 end
 
 ---@param ap Entity
-hook.Add("PlayerDeath", "reloadonkill", function(_, _, ap)
+hook.Add("PlayerDeath", "PR_Reload_On_Kill", function(_, _, ap)
   if not GetConVar("pr_enable_kill_reload"):GetBool() then return end
   if not (ap:IsValid() and ap:IsPlayer()) then return end
   ---@cast ap Player
