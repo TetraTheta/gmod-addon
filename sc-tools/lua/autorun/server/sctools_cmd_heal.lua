@@ -43,8 +43,10 @@ concommand.Add("sc_overheal", function(ply, _, args, _)
   if #args > 1 then SendMessage("[SC Heal] Only first player will be processed.", ply) end
   local p = #args == 1 and GetPlayerByName(args[1]) or ply
   if IsValid(p) and p:IsPlayer() then
+    local sccm = GetConVar("sk_suitcharger_citadel_maxarmor")
+    local ma = sccm ~= nil and sccm:GetInt() or 200 -- 'IsValid(ConVar)' returns 'false' wtf?
     p:SetHealth(p:GetMaxHealth())
-    p:SetArmor(p:GetMaxArmor())
+    p:SetArmor(ma) -- instead of 'p:GetMaxArmor()' which is limited to 100 by default
     if p ~= ply then SendMessage(Format("[SC Heal] Overhealed %s.", p:GetName()), ply) end
     SendMessage("[SC Heal] You are overhealed.", p, HUD_PRINTTALK)
   end
