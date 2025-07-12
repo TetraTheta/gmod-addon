@@ -331,6 +331,7 @@ function SWEP:_SA_CombineBall()
     cb:SetSaveValue("m_flSpeed", self.Secondary.MOD_CMB_Speed)
     local cbphys = cb:GetPhysicsObject()
     cbphys:SetVelocity(fwd * self.Secondary.MOD_CMB_Speed)
+    cbphys:AddGameFlag(FVPHYSICS_DMG_DISSOLVE)
     cb:Fire("Explode", nil, self.Secondary.MOD_CMB_Lifespan)
   end
 
