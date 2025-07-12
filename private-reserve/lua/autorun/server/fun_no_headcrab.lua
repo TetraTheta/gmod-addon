@@ -14,7 +14,7 @@ local zombies = {
 }
 
 ---@param ent Entity
-hook.Add("OnEntityCreated", "No_Headcrab", function(ent)
+hook.Add("OnEntityCreated", "PR_No_Headcrab", function(ent)
   if not GetConVar("pr_disable_headcrab"):GetBool() then return end
   if IsValid(ent) and ent:IsNPC() and headcrabs[ent:GetClass()] then
     timer.Simple(0, function()
