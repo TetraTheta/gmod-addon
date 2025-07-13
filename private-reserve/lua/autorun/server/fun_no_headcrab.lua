@@ -4,6 +4,7 @@ local headcrabs = {
   npc_headcrab_fast = true,
   npc_headcrab_poison = true,
 }
+
 local zombies = {
   npc_fastzombie = true,
   npc_fastzombie_torso = true,
@@ -13,6 +14,13 @@ local zombies = {
   npc_zombine = true,
 }
 
+--
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 ---@param ent Entity
 hook.Add("OnEntityCreated", "PR_No_Headcrab", function(ent)
   if not GetConVar("pr_disable_headcrab"):GetBool() then return end

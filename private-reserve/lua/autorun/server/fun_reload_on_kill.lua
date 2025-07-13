@@ -14,6 +14,7 @@ local function _ReloadAllWeapons(p)
           p:SetAmmo(ammoTotal1 - reloadAmount1, ammoType1)
         end
       end
+
       if IsValid(wpn) and wpn:GetSecondaryAmmoType() > -1 then
         local ammoType2 = wpn:GetSecondaryAmmoType()
         local ammoTotal2 = p:GetAmmoCount(ammoType2)
@@ -28,6 +29,13 @@ local function _ReloadAllWeapons(p)
   end)
 end
 
+--
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 ---@param ap Entity
 hook.Add("PlayerDeath", "PR_Reload_On_Kill", function(_, _, ap)
   if not GetConVar("pr_enable_kill_reload"):GetBool() then return end

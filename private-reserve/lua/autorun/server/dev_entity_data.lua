@@ -1,8 +1,9 @@
 local b_bor = bit.bor
 local u_GetPlayerTrace = util.GetPlayerTrace
 local u_TraceLine = util.TraceLine
-
-local function GetTraceEntity(ply)
+--
+---@return Entity
+local function _GetTraceEntity(ply)
   if not IsValid(ply) then return NULL end
   local tr = u_GetPlayerTrace(ply)
   -- MASK_SOLID(33570827): CONTENTS_SOLID(1) + CONTENTS_WINDOW(2) + CONTENTS_GRATE(8) + CONTENTS_MOVEABLE(16384) + CONTENTS_MONSTER(33554432)
@@ -15,12 +16,15 @@ local function GetTraceEntity(ply)
   end
 end
 
-local function GetEntityDataAutoComplete(_, _, _)
-  return { "get_entity_data", "get_entity_data save" }
-end
-
-concommand.Add("get_entity_data", function(ply, _, args, _)
-  local ent = GetTraceEntity(ply)
+--
+--[[
+###########################
+#     COMMAND EXECUTE     #
+###########################
+]]
+--
+local function GetEntityData(ply, args)
+  local ent = _GetTraceEntity(ply)
   if ent:IsValid() then
     local keyvalues = ent:GetKeyValues()
     local savetable = ent:GetSaveTable(true)
@@ -43,4 +47,25 @@ concommand.Add("get_entity_data", function(ply, _, args, _)
   else
     print("Invalid Entity")
   end
-end, GetEntityDataAutoComplete, "Show entity data you're looking at", { FCVAR_NONE })
+end
+
+--
+--[[
+#################################
+#     COMMAND AUTO COMPLETE     #
+#################################
+]]
+--
+---@return table
+local function GetEntityDataAutoComplete(_, _, _)
+  return {"get_entity_data", "get_entity_data save"}
+end
+
+--
+--[[
+############################
+#     COMMAND REGISTER     #
+############################
+]]
+--
+concommand.Add("get_entity_data", function(ply, _, args, _) GetEntityData(ply, args) end, GetEntityDataAutoComplete, "Show entity data you're looking at.", {FCVAR_NONE})
