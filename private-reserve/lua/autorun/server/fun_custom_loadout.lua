@@ -1,3 +1,9 @@
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 -- TODO: Remove 'redundant-return-value' when unneeded
 ---@diagnostic disable: redundant-return-value
 ---@param p Player
@@ -38,6 +44,13 @@ hook.Add("PlayerLoadout", "PR_CustomLoadout", function(p)
   end
 end)
 
+--
+--[[
+############################
+#     COMMAND REGISTER     #
+############################
+]]
+--
 ---@param p Player
 concommand.Add("pr_loadout", function(p, _, _, _)
   -- Strip
@@ -55,4 +68,4 @@ concommand.Add("pr_loadout", function(p, _, _, _)
   p:GiveAmmo(9999, "SMG1", true)
   p:GiveAmmo(9999, "SMG1_Grenade", true)
   p:GiveAmmo(9999, "XBowBolt", true)
-end, nil, "My Loadout", { FCVAR_NONE })
+end, nil, "My Loadout", {FCVAR_NONE})

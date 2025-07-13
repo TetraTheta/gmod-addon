@@ -1,3 +1,10 @@
+--
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 hook.Add("PostEntityFireBullets", "PR_Shoot_Open_AmmoCrate", function(_, fb)
   if not GetConVar("pr_enable_shoot_open_crate"):GetBool() then return end
   -- Sanitize attacker and entity

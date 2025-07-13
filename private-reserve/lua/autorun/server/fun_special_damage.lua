@@ -1,3 +1,10 @@
+local headcrabs = {
+  npc_headcrab = true,
+  npc_headcrab_black = true,
+  npc_headcrab_fast = true,
+  npc_headcrab_poison = true,
+}
+
 ---@param dmg CTakeDamageInfo
 ---@return Player
 local function _CheckPlayer(dmg)
@@ -19,13 +26,13 @@ local function _CheckWeapon(e)
   end
 end
 
-local headcrabs = {
-  npc_headcrab = true,
-  npc_headcrab_black = true,
-  npc_headcrab_fast = true,
-  npc_headcrab_poison = true,
-}
-
+--
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 ---@param e NPC
 ---@param dmg CTakeDamageInfo
 hook.Add("EntityTakeDamage", "PR_SpecialDamage", function(e, dmg)
