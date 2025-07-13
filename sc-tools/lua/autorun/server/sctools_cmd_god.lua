@@ -1,4 +1,5 @@
 require("sctools")
+local b_band = bit.band
 local g_GetMap = game.GetMap
 local GetPlayerByName = sctools.command.GetPlayerByName
 local GetTraceEntity = sctools.GetTraceEntity
@@ -34,11 +35,7 @@ local function _UnsetGod(ent)
     end
   end
 end
---[[
-########################
-#     AUTO GOD NPC     #
-########################
-]]
+
 ---@param ent Entity Entity to check if it is GodMode applicable NPC or not
 ---@param p Player Any valid Player or Entity
 ---@return boolean 'true' if the entity should be protected
@@ -70,22 +67,24 @@ local function _IsCandidateNPC(ent, p)
       end
     end
   end
-
   return false
 end
 
----@param target Entity
----@param dmg CTakeDamageInfo
+--
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 hook.Add("EntityTakeDamage", "SCTOOLS_AutoGod_NPC_TakeDamage", function(target, dmg)
   if not IsValid(target) then return end
-
   -- Check if target is auto god target that slipped through my checks
   if target:IsNPC() and GetConVar("sc_auto_god_npc"):GetBool() then
     -- To check if damaged entity is friendly to Player, use first player as the attacker if attacker is not Player
     local att = dmg:GetAttacker()
     if not att:IsPlayer() and IsValid(p_GetHumans()[1]) then att = p_GetHumans()[1] end
     ---@cast att Player
-
     if _IsCandidateNPC(target, att) and GodMap[g_GetMap()] then
       DevEntMsgN(target, "is now GodMode (Automatic)")
       _SetGod(target)
@@ -110,77 +109,109 @@ hook.Add("EntityTakeDamage", "SCTOOLS_AutoGod_NPC_TakeDamage", function(target, 
     end
   end
 end)
---[[
-###########################
-#     AUTO GOD PLAYER     #
-###########################
-]]
----@param p Player
+
 hook.Add("PlayerSpawn", "SCTOOLS_AutoGod_SuperAdmin", function(p)
-  if IsSuperAdmin(p) and GetConVar("sc_auto_god_sadmin"):GetBool() then
+  if not IsSuperAdmin(p) then return end
+  local cv = GetConVar("sc_auto_god_sadmin"):GetInt()
+  local toggle = b_band(cv, 1) > 0
+  local verbose = b_band(cv, 2) > 0
+  if toggle then
     _SetGod(p)
-    SendMessage("[SC Auto GodMode] GodMode is automatically enabled to you.", p, HUD_PRINTTALK)
-    MsgN(Format("[SC Auto GodMode] Enabled automatic GodMode to %s", p:GetName()))
+    if verbose then
+      SendMessage("[SC Auto GodMode] GodMode is automatically enabled to you.", p, HUD_PRINTTALK)
+      MsgN(Format("[SC Auto GodMode] Enabled automatic GodMode to %s", p:GetName()))
+    end
   end
 end)
+
+--
 --[[
-#######################
-#     SET GOD NPC     #
-#######################
+###########################
+#     COMMAND EXECUTE     #
+###########################
 ]]
+--
 ---@param p Player
-concommand.Add("sc_set_god", function(p, _, _, _)
+---@param isGod boolean Will the entity the player is looking at set as GodMode?
+---@param silent boolean
+local function SetNPCGod(p, isGod, silent)
   if not IsSuperAdmin(p) then return end
   local ent = GetTraceEntity(p)
-  if ent:IsNPC() or ent:IsNextBot() then
-    _SetGod(ent)
-    local msg = ""
-    if ent:GetName() == "" then
-      msg = Format("[SC GodMode] Enabled GodMode to the NPC [%s (#%s)].", ent:GetClass(), ent:EntIndex())
+  if ent:IsValid() and (ent:IsNPC() or ent:IsNextBot()) then
+    local ed = ""
+    if isGod then
+      ed = "Enabled"
+      _SetGod(ent)
     else
-      msg = Format("[SC GodMode] Enabled GodMode to the NPC [%s (#%s, %s)].", ent:GetClass(), ent:EntIndex(), ent:GetName())
+      ed = "Disabled"
+      _UnsetGod(ent)
     end
 
-    SendMessage(msg, p)
-  end
-end, nil, "Enable GodMode to the NPC you're looking at.", { FCVAR_NONE })
+    if not silent then
+      local msg = ""
+      if ent:GetName() == "" then
+        msg = Format("[SC GodMode] %s GodMode to the NPC [%s (#%s)].", ed, ent:GetClass(), ent:EntIndex())
+      else
+        msg = Format("[SC GodMode] %s GodMode to the NPC [%s (#%s, %s)].", ed, ent:GetClass(), ent:EntIndex(), ent:GetName())
+      end
 
----@param p Player
-concommand.Add("sc_unset_god", function(p, _, _, _)
-  if not IsSuperAdmin(p) then return end
-  local ent = GetTraceEntity(p)
-  if IsValid(ent) and ent:IsNPC() or ent:IsNextBot() then
-    _UnsetGod(ent)
-    local msg = ""
-    if ent:GetName() == "" then
-      msg = Format("[SC GodMode] Disabled GodMode to the NPC [%s (#%s)].", ent:GetClass(), ent:EntIndex())
-    else
-      msg = Format("[SC GodMode] Disabled GodMode to the NPC [%s (#%s, %s)].", ent:GetClass(), ent:EntIndex(), ent:GetName())
+      SendMessage(msg, p)
     end
-
-    SendMessage(msg, p)
   end
-end, nil, "Disable GodMode to the NPC you're looking at.", { FCVAR_NONE })
---[[
-##########################
-#     SET GOD PLAYER     #
-##########################
-]]
-concommand.Add("sc_god", function(ply, _, args, _)
+end
+
+---@param ply Player
+---@param args table
+---@param silent boolean
+local function SetPlayerGod(ply, args, silent)
   if not IsSuperAdmin(ply) then return end
-  if #args > 1 then SendMessage("[SC GodMode] Only first player will be processed.", ply) end
+  if #args > 1 and not silent then SendMessage("[SC GodMode] Only first player will be processed.", ply) end
   local p = #args == 1 and GetPlayerByName(args[1]) or ply
   if IsValid(p) and p:IsPlayer() then
     if _GetGod(p) then
       _UnsetGod(p)
-      SendMessage(Format("[SC GodMode] GodMode is disabled to %s.", p:GetName()), ply)
-      SendMessage("[SC GodMode] You are now not in GodMode.", p, HUD_PRINTTALK)
+      if not silent then
+        SendMessage(Format("[SC GodMode] GodMode is disabled to %s.", p:GetName()), ply)
+        SendMessage("[SC GodMode] You are now not in GodMode.", p, HUD_PRINTTALK)
+      end
     else
       _SetGod(p)
-      SendMessage(Format("[SC GodMode] GodMode is enabled to %s.", p:GetName()), ply)
-      SendMessage("[SC GodMode] You are now in GodMode.", p, HUD_PRINTTALK)
+      if not silent then
+        SendMessage(Format("[SC GodMode] GodMode is enabled to %s.", p:GetName()), ply)
+        SendMessage("[SC GodMode] You are now in GodMode.", p, HUD_PRINTTALK)
+      end
     end
   end
-end, function(_, args)
+end
+
+--[[
+#################################
+#     COMMAND AUTO COMPLETE     #
+#################################
+]]
+--
+---@param args string
+---@return table
+local function GodPlayerComplete(_, args)
   return SuggestPlayer("sc_god", args)
-end, "Toggle GodMode for the player.", { FCVAR_NONE })
+end
+
+---@param args string
+---@return table
+local function GodPlayerSComplete(_, args)
+  return SuggestPlayer("sc_god_s", args)
+end
+
+--[[
+############################
+#     COMMAND REGISTER     #
+############################
+]]
+--
+concommand.Add("sc_set_god", function(p, _, _, _) SetNPCGod(p, true, false) end, nil, "Enable GodMode to the NPC you're looking at.", {FCVAR_NONE})
+concommand.Add("sc_set_god_s", function(p, _, _, _) SetNPCGod(p, true, true) end, nil, "Enable GodMode to the NPC you're looking at. (Silent)", {FCVAR_NONE})
+concommand.Add("sc_unset_god", function(p, _, _, _) SetNPCGod(p, false, false) end, nil, "Disable GodMode to the NPC you're looking at.", {FCVAR_NONE})
+concommand.Add("sc_unset_god_s", function(p, _, _, _) SetNPCGod(p, false, true) end, nil, "Enable GodMode to the NPC you're looking at. (Silent)", {FCVAR_NONE})
+--
+concommand.Add("sc_god", function(ply, _, args, _) SetPlayerGod(ply, args, false) end, GodPlayerComplete, "Toggle GodMode for the player.", {FCVAR_NONE})
+concommand.Add("sc_god_s", function(ply, _, args, _) SetPlayerGod(ply, args, true) end, GodPlayerSComplete, "Toggle GodMode for the player. (Silent)", {FCVAR_NONE})

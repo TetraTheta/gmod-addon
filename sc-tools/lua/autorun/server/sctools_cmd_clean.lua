@@ -16,6 +16,12 @@ local u_TableToJSON = util.TableToJSON
 --
 util.AddNetworkString("SCTOOLS_CleanResult")
 --
+--[[
+###########################
+#     COMMAND EXECUTE     #
+###########################
+]]
+--
 ---@return integer
 local function CleanAmmo()
   local target = {
@@ -112,11 +118,7 @@ local function CleanRagdolls()
   local max = GetConVar("g_ragdoll_maxcount"):GetInt()
   max = max > 0 and max or 32
   RunConsoleCommand("g_ragdoll_maxcount", "0")
-  local function run(count)
-    timer.Simple(1, function() RunConsoleCommand("g_ragdoll_maxcount", tostring(count)) end)
-  end
-
-  run(max)
+  timer.Simple(1, function() RunConsoleCommand("g_ragdoll_maxcount", tostring(max)) end)
   --
   return result
 end
@@ -245,6 +247,41 @@ local function Clean(ply, _, args, _)
   net.Send(ply)
 end
 
+---@param ply Player
+---@param args table
+local function CleanS(ply, _, args, _)
+  if not IsSuperAdmin(ply) then return end
+  local arg = s_lower(args[1])
+  local valid = {
+    all = true,
+    ammo = true,
+    debris = true,
+    decals = true,
+    gibs = true,
+    powerups = true,
+    ragdolls = true,
+    small = true,
+    weapons = true
+  }
+
+  if not valid[arg] then return end
+  -- Parse argument
+  if arg == "all" or arg == "ammo" then CleanAmmo() end
+  if arg == "all" or arg == "debris" then CleanDebris() end
+  if arg == "all" or arg == "decals" then CleanDecals() end
+  if arg == "all" or arg == "gibs" then CleanGibs() end
+  if arg == "all" or arg == "powerups" then CleanPowerups() end
+  if arg == "all" or arg == "ragdolls" then CleanRagdolls() end
+  if arg == "all" or arg == "small" then CleanSmall() end
+  if arg == "all" or arg == "weapons" then CleanWeapons() end
+end
+
+--
+--[[
+#################################
+#     COMMAND AUTO COMPLETE     #
+#################################
+]]
 --
 ---@param args string
 ---@return table
@@ -281,4 +318,47 @@ local function CleanAutoComplete(_, args)
   return tbl
 end
 
-concommand.Add("sc_clean", Clean, CleanAutoComplete, "Remove objects from the current map.", { FCVAR_NONE })
+---@param args string
+---@return table
+local function CleanSAutoComplete(_, args)
+  local arg = s_Trim(args:lower())
+  local tbl = {}
+  if s_StartsWith(arg, "a") then
+    t_insert(tbl, "sc_clean_s all")
+    t_insert(tbl, "sc_clean_s ammo")
+  elseif s_StartsWith(arg, "d") then
+    t_insert(tbl, "sc_clean_s debris")
+    t_insert(tbl, "sc_clean_s decals")
+  elseif s_StartsWith(arg, "g") then
+    t_insert(tbl, "sc_clean_s gibs")
+  elseif s_StartsWith(arg, "p") then
+    t_insert(tbl, "sc_clean_s powerups")
+  elseif s_StartsWith(arg, "r") then
+    t_insert(tbl, "sc_clean_s ragdolls")
+  elseif s_StartsWith(arg, "s") then
+    t_insert(tbl, "sc_clean_s small")
+  elseif s_StartsWith(arg, "w") then
+    t_insert(tbl, "sc_clean_s weapons")
+  else
+    t_insert(tbl, "sc_clean_s all")
+    t_insert(tbl, "sc_clean_s ammo")
+    t_insert(tbl, "sc_clean_s debris")
+    t_insert(tbl, "sc_clean_s decals")
+    t_insert(tbl, "sc_clean_s gibs")
+    t_insert(tbl, "sc_clean_s powerups")
+    t_insert(tbl, "sc_clean_s ragdolls")
+    t_insert(tbl, "sc_clean_s small")
+    t_insert(tbl, "sc_clean_s weapons")
+  end
+  return tbl
+end
+
+--
+--[[
+############################
+#     COMMAND REGISTER     #
+############################
+]]
+--
+concommand.Add("sc_clean", Clean, CleanAutoComplete, "Remove objects from the current map.", {FCVAR_NONE})
+concommand.Add("sc_clean_s", CleanS, CleanSAutoComplete, "Remove objects from the current map. (Silent)", {FCVAR_NONE})

@@ -86,20 +86,20 @@ local function _GetNPCType(npc)
   end
 end
 
----@param npc NPC
----@param hg HITGROUP
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 hook.Add("ScaleNPCDamage", "SCTOOLS_ShotEffect_Humanoid", function(npc, hg, _) npc["SCTOOLS_LAST_HITGROUP"] = hg end)
----@param ent Entity
----@param di CTakeDamageInfo
 hook.Add("PostEntityTakeDamage", "SCTOOLS_ShotEffect", function(ent, di, _)
   -- Ignore No Damage, GodMode NPC, already processing NPC
   if di:GetDamage() <= 0 or sctools.protect[ent] or ent["SCTOOLS_SHOTEFFECT_CD"] or ent["SCTOOLS_SHOTEFFECT_DEAD"] or not ent:IsNPC() then return end
   ---@cast ent NPC
-  --
   local class = ent:GetClass()
   local att = di:GetAttacker()
   local hg = ent["SCTOOLS_LAST_HITGROUP"]
-  --
   if att:IsPlayer() then
     ---@cast att Player
     -- Prevent other ShotEffect from processing same damage

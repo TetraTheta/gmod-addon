@@ -2,9 +2,9 @@ require("sctools")
 local GetTraceEntity = sctools.GetTraceEntity
 local IsSuperAdmin = sctools.IsSuperAdmin
 local u_Effect = util.Effect
-
+--
 ---@param ent Entity
-local function FreezeEffect(ent)
+local function _FreezeEffect(ent)
   local ed = EffectData()
   ed:SetOrigin(ent:GetPos())
   ed:SetEntity(ent)
@@ -14,7 +14,7 @@ local function FreezeEffect(ent)
 end
 
 ---@param ent Entity
-local function UnfreezeEffect(ent)
+local function _UnfreezeEffect(ent)
   local ed = EffectData()
   ed:SetOrigin(ent:GetPos())
   ed:SetEntity(ent)
@@ -23,21 +23,27 @@ local function UnfreezeEffect(ent)
   u_Effect("phys_unfreeze", ed, true, true)
 end
 
-concommand.Add("sc_toggle_freeze", function(ply, _, _, _)
+--[[
+###########################
+#     COMMAND EXECUTE     #
+###########################
+]]
+--
+---@param ply Player
+local function ToggleFreeze(ply)
   if not IsSuperAdmin(ply) then return end
   local ent = GetTraceEntity(ply)
   if not ent:IsValid() then return end
-
   if ent:IsPlayer() then
     -- Player
     ---@cast ent Player
     local frozen = ent:IsFlagSet(FL_FROZEN)
     if frozen then
       ent:Freeze(false)
-      UnfreezeEffect(ent)
+      _UnfreezeEffect(ent)
     else
       ent:Freeze(true)
-      FreezeEffect(ent)
+      _FreezeEffect(ent)
     end
   elseif ent:IsNPC() or ent:IsNextBot() then
     -- NPC
@@ -50,12 +56,13 @@ concommand.Add("sc_toggle_freeze", function(ply, _, _, _)
         ent:SetPos(pos)
         ent:GetPhysicsObject():SetPos(pos)
       end)
-      UnfreezeEffect(ent)
+
+      _UnfreezeEffect(ent)
     else
       ent["SCTOOLS_SAVED_POS"] = ent:GetPos()
       ent:NavSetGoalPos(ent:GetPos())
       ent:AddEFlags(EFL_NO_THINK_FUNCTION)
-      FreezeEffect(ent)
+      _FreezeEffect(ent)
     end
   else
     -- Physics Object (+ Vehicle, Weapon, etc.)
@@ -67,14 +74,26 @@ concommand.Add("sc_toggle_freeze", function(ply, _, _, _)
       ent["SCTOOLS_MOVETYPE"] = mt
       ent:SetMoveType(MOVETYPE_NONE)
       p:EnableMotion(false)
-      FreezeEffect(ent)
+      _FreezeEffect(ent)
     else
       local smt = ent["SCTOOLS_MOVETYPE"]
       if not isnumber(smt) then smt = MOVETYPE_VPHYSICS end
       ent:SetMoveType(smt)
       ent["SCTOOLS_MOVETYPE"] = nil
       p:EnableMotion(true)
-      UnfreezeEffect(ent)
+      _UnfreezeEffect(ent)
     end
   end
-end, nil, "Freeze the entity you are looking at.", { FCVAR_NONE })
+end
+
+--[[
+#################################
+#     COMMAND AUTO COMPLETE     #
+#################################
+]]
+--[[
+############################
+#     COMMAND REGISTER     #
+############################
+]]
+concommand.Add("sc_toggle_freeze", function(ply, _, _, _) ToggleFreeze(ply) end, nil, "Freeze the entity you are looking at.", {FCVAR_NONE})

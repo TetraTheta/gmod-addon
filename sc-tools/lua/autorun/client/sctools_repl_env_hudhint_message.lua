@@ -1,3 +1,9 @@
+--[[
+###############
+#     NET     #
+###############
+]]
+--
 net.Receive("SCTOOLS_env_hudhint_message", function(_, _)
   local phrase = net.ReadString()
   phrase = language.GetPhrase(phrase)

@@ -1,3 +1,9 @@
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 ---@param p Player
 hook.Add("PlayerTick", "SCTOOLS_DisableP2PCollision", function(p, _)
   if GetConVar("sc_disable_player_collision"):GetBool() then

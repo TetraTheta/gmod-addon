@@ -1,3 +1,4 @@
+local b_band = bit.band
 local m_random = math.random
 --
 local msgBS = "SCTOOLS_BodyshotEffect"
@@ -79,11 +80,17 @@ local function PlayHeadSound(armor, death, vol)
 end
 
 --
+--[[
+###############
+#     NET     #
+###############
+]]
+--
 net.Receive(msgBS, function(_, _)
   -- This is non-sense that CLIENT can't read its own cvar
   local cat, cv, armor, death, vol, class = net.ReadUInt(3), net.ReadUInt(3), net.ReadBool(), net.ReadBool(), net.ReadFloat(), net.ReadString()
-  local eff_snd = bit.band(cv, EFF_SND) > 0
-  local eff_ui = bit.band(cv, EFF_UI) > 0
+  local eff_snd = b_band(cv, EFF_SND) > 0
+  local eff_ui = b_band(cv, EFF_UI) > 0
   DevMsgN(Format("cat: %s (%s) | eff_snd: %s | eff_ui: %s | armor: %s | death: %s | vol: %f", _GetCategory(cat), class, tostring(eff_snd), tostring(eff_ui), tostring(armor), tostring(death), vol))
   --
   if eff_snd then PlayBodySound(cat, armor, death, vol) end
@@ -94,8 +101,8 @@ net.Receive(msgHS, function(_, _)
   -- This is non-sense that CLIENT can't read its own cvar
   -- Headshot is only available in Humanoid, so checking NPC type isn't necessary.
   local cat, cv, armor, death, vol, class = net.ReadUInt(3), net.ReadUInt(3), net.ReadBool(), net.ReadBool(), net.ReadFloat(), net.ReadString()
-  local eff_snd = bit.band(cv, EFF_SND) > 0
-  local eff_ui = bit.band(cv, EFF_UI) > 0
+  local eff_snd = b_band(cv, EFF_SND) > 0
+  local eff_ui = b_band(cv, EFF_UI) > 0
   DevMsgN(Format("cat: %s (%s) | eff_snd: %s | eff_ui: %s | armor: %s | death: %s | vol: %f", _GetCategory(cat), class, tostring(eff_snd), tostring(eff_ui), tostring(armor), tostring(death), vol))
   --
   if eff_snd then PlayHeadSound(armor, death, vol) end

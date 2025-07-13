@@ -3,6 +3,11 @@ local GetPlayerByName = sctools.command.GetPlayerByName
 local IsSuperAdmin = sctools.IsSuperAdmin
 local SendMessage = sctools.SendMessage
 local SuggestPlayer = sctools.command.SuggestPlayer
+--[[
+###########################
+#     COMMAND EXECUTE     #
+###########################
+]]
 --
 local argfunc = {
   ---@param p Player
@@ -22,8 +27,6 @@ local argfunc = {
       p:SetWalkSpeed(200)
       p["SCTOOLS_DEF_CROUCH_SPD"] = 0.3
       p["SCTOOLS_DEF_LADDER_SPD"] = 200
-    else
-      SendMessage("[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.", p)
     end
   end,
   ---@param p Player
@@ -35,8 +38,6 @@ local argfunc = {
     elseif t == "reset" then
       p:SetCrouchedWalkSpeed(0.3)
       p["SCTOOLS_DEF_CROUCH_SPD"] = 0.3
-    else
-      SendMessage("[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.", p)
     end
   end,
   ---@param p Player
@@ -46,8 +47,6 @@ local argfunc = {
       p:SetRunSpeed(600)
     elseif t == "reset" then
       p:SetRunSpeed(400)
-    else
-      SendMessage("[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.", p)
     end
   end,
   ---@param p Player
@@ -57,8 +56,6 @@ local argfunc = {
       p:SetSlowWalkSpeed(150)
     elseif t == "reset" then
       p:SetSlowWalkSpeed(100)
-    else
-      SendMessage("[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.", p)
     end
   end,
   ---@param p Player
@@ -68,29 +65,29 @@ local argfunc = {
       p:SetWalkSpeed(300)
     elseif t == "reset" then
       p:SetWalkSpeed(200)
-    else
-      SendMessage("[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.", p)
     end
   end
 }
 
+--
 ---@param ply Player
 ---@param args table
-local function SetSpeed(ply, _, args, _)
+---@param silent boolean
+local function SetSpeed(ply, args, silent)
   if not IsSuperAdmin(ply) then return end
   if #args < 2 or #args > 3 then
-    SendMessage("[SC SetSpeed] Insufficient or excessive arguments.", ply)
+    if not silent then SendMessage("[SC SetSpeed] Insufficient or excessive arguments.", ply) end
     return
   end
 
   local arg1, arg2 = args[1]:lower(), args[2]:lower()
   if not argfunc[arg1] then
-    SendMessage("[SC SetSpeed] Invalid argument: must be one of these: all, duck, run, slow, walk", ply)
+    if not silent then SendMessage("[SC SetSpeed] Invalid argument: must be one of these: all, duck, run, slow, walk", ply) end
     return
   end
 
   if arg2 ~= "fast" and arg2 ~= "reset" then
-    SendMessage("[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.", ply)
+    if not silent then SendMessage("[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.", ply) end
     return
   end
 
@@ -100,7 +97,7 @@ local function SetSpeed(ply, _, args, _)
     if IsValid(np) then
       p = np
     else
-      SendMessage("[SC SetSpeed] Cannot find the player", ply)
+      if not silent then SendMessage("[SC SetSpeed] Cannot find the player", ply) end
       return
     end
   end
@@ -108,6 +105,13 @@ local function SetSpeed(ply, _, args, _)
   argfunc[arg1](p, arg2)
 end
 
+--
+--[[
+#################################
+#     COMMAND AUTO COMPLETE     #
+#################################
+]]
+--
 ---@param args string
 ---@return table
 local function SetSpeedCompletion(_, args)
@@ -156,4 +160,12 @@ local function SetSpeedCompletion(_, args)
   end
 end
 
-concommand.Add("sc_setspeed", SetSpeed, SetSpeedCompletion, "Set player's speed.", { FCVAR_NONE })
+--
+--[[
+############################
+#     COMMAND REGISTER     #
+############################
+]]
+--
+concommand.Add("sc_setspeed", function(p, _, args, _) SetSpeed(p, args, false) end, SetSpeedCompletion, "Set player's speed.", {FCVAR_NONE})
+concommand.Add("sc_setspeed_s", function(p, _, args, _) SetSpeed(p, args, true) end, SetSpeedCompletion, "Set player's speed. (Silent)", {FCVAR_NONE})
