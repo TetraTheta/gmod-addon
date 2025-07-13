@@ -1,3 +1,9 @@
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 -- Save player's default speed multiplier
 ---@param p Player
 hook.Add("PlayerSpawn", "SCTOOLS_GetOriginalSpeedValue", function(p, _)
@@ -22,14 +28,8 @@ hook.Add("KeyPress", "SCTOOLS_BoostKeyPress", function(p, _)
   end
 
   -- safe guard
-  if p["SCTOOLS_DEF_CROUCH_SPD"] == nil then
-    p["SCTOOLS_DEF_CROUCH_SPD"] = 0.3
-  end
-
-  if p["SCTOOLS_DEF_LADDER_SPD"] == nil then
-    p["SCTOOLS_DEF_LADDER_SPD"] = 200
-  end
-
+  if p["SCTOOLS_DEF_CROUCH_SPD"] == nil then p["SCTOOLS_DEF_CROUCH_SPD"] = 0.3 end
+  if p["SCTOOLS_DEF_LADDER_SPD"] == nil then p["SCTOOLS_DEF_LADDER_SPD"] = 200 end
   p:SetCrouchedWalkSpeed(p["SCTOOLS_DEF_CROUCH_SPD"])
   p:SetLadderClimbSpeed(p["SCTOOLS_DEF_LADDER_SPD"])
 end)
@@ -37,14 +37,8 @@ end)
 -- KeyRelease
 ---@param p Player
 hook.Add("KeyRelease", "SCTOOLS_BoostKeyRelease", function(p, _)
-  if p["SCTOOLS_DEF_CROUCH_SPD"] == nil then
-    p["SCTOOLS_DEF_CROUCH_SPD"] = 0.3
-  end
-
-  if p["SCTOOLS_DEF_LADDER_SPD"] == nil then
-    p["SCTOOLS_DEF_LADDER_SPD"] = 200
-  end
-
+  if p["SCTOOLS_DEF_CROUCH_SPD"] == nil then p["SCTOOLS_DEF_CROUCH_SPD"] = 0.3 end
+  if p["SCTOOLS_DEF_LADDER_SPD"] == nil then p["SCTOOLS_DEF_LADDER_SPD"] = 200 end
   if p:Crouching() and p:KeyReleased(IN_SPEED) then
     p:SetCrouchedWalkSpeed(p["SCTOOLS_DEF_CROUCH_SPD"])
     return

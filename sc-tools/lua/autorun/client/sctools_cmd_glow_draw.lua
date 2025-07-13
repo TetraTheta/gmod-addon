@@ -1,13 +1,23 @@
+local s_gmatch = string.gmatch
+local t_merge = table.Merge
+--
 ---@param str string
 ---@return table
 local function _StringToTable(str)
   local tbl = {}
-  for key in string.gmatch(str, "([^|]+)") do
+  for key in s_gmatch(str, "([^|]+)") do
     tbl[key] = true
   end
   return tbl
 end
 
+--
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 local cvGlowClass = "sc_glow_class"
 local cvGlowModel = "sc_glow_model"
 local cvGlowName = "sc_glow_name"
@@ -18,7 +28,7 @@ hook.Add("PreDrawHalos", "SCTOOLS_GlowDraw", function()
   if classes ~= "" then
     local classesTable = _StringToTable(classes)
     for k, _ in pairs(classesTable) do
-      table.Merge(tbl, ents.FindByClass(k))
+      t_merge(tbl, ents.FindByClass(k))
     end
   end
 
@@ -27,7 +37,7 @@ hook.Add("PreDrawHalos", "SCTOOLS_GlowDraw", function()
   if models ~= "" then
     local modelsTable = _StringToTable(models)
     for k, _ in pairs(modelsTable) do
-      table.Merge(tbl, ents.FindByModel(k))
+      t_merge(tbl, ents.FindByModel(k))
     end
   end
 
@@ -36,7 +46,7 @@ hook.Add("PreDrawHalos", "SCTOOLS_GlowDraw", function()
   if names ~= "" then
     local namesTable = _StringToTable(names)
     for k, _ in pairs(namesTable) do
-      table.Merge(tbl, ents.FindByName(k))
+      t_merge(tbl, ents.FindByName(k))
     end
   end
 

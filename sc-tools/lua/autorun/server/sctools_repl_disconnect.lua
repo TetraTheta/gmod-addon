@@ -6,10 +6,12 @@ local p_GetHumans = player.GetHumans
 local s_find = string.find
 --
 util.AddNetworkString(nw)
+--[[
+################
+#     HOOK     #
+################
+]]
 --
----@param ent Entity
----@param input string
----@param value string
 hook.Add("AcceptInput", "SCTOOLS_DisconnectInput", function(ent, input, _, _, value)
   local class = ent:GetClass()
   local cv = GetConVar("sc_disconnect_mode"):GetBool()

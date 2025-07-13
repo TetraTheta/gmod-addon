@@ -6,7 +6,7 @@ local function _StringToTable(str)
     tbl[key] = true
   end
 
-  DevMsgN(table.ToString(tbl, "gc(tbl)", true))
+  DevMsgN(table.ToString(tbl, "glow(tbl)", true))
   return tbl
 end
 
@@ -18,73 +18,47 @@ local function _TableToString(tbl)
     if v then str = str == "" and k or str .. "|" .. k end
   end
 
-  DevMsgN("gc(str): ", str)
+  DevMsgN("glow(str): ", str)
   return str
 end
 
---[[
-######################
-#     GLOW CLASS     #
-######################
-]]
-local cvGlowClass = "sc_glow_class"
 --
----@param args table
-concommand.Add("sc_glow_add_class", function(_, _, args, _)
-  local classes = GetConVar(cvGlowClass):GetString()
-  local classesTable = _StringToTable(classes)
-  classesTable[args[1]] = true
-  GetConVar(cvGlowClass):SetString(_TableToString(classesTable))
-end, nil, "Make entities with given class to glow", { FCVAR_NONE })
---
----@param args table
-concommand.Add("sc_glow_remove_class", function(_, _, args, _)
-  local classes = GetConVar(cvGlowClass):GetString()
-  local classesTable = _StringToTable(classes)
-  classesTable[args[1]] = nil
-  GetConVar(cvGlowClass):SetString(_TableToString(classesTable))
-end, nil, "Stop entities with given class from glowing", { FCVAR_NONE })
---[[
-######################
-#     GLOW MODEL     #
-######################
-]]
-local cvGlowModel = "sc_glow_model"
---
----@param args table
-concommand.Add("sc_glow_add_model", function(_, _, args, _)
-  local models = GetConVar(cvGlowModel):GetString()
-  local modelsTable = _StringToTable(models)
-  modelsTable[args[1]] = true
-  GetConVar(cvGlowModel):SetString(_TableToString(modelsTable))
-end, nil, "Make entities with given model to glow", { FCVAR_NONE })
---
----@param args table
-concommand.Add("sc_glow_remove_model", function(_, _, args, _)
-  local models = GetConVar(cvGlowModel):GetString()
-  local modelsTable = _StringToTable(models)
-  modelsTable[args[1]] = nil
-  GetConVar(cvGlowModel):SetString(_TableToString(modelsTable))
-end, nil, "Stop entities with given model from glowing", { FCVAR_NONE })
 --[[
 ###########################
-#     GLOW TARGETNAME     #
+#     COMMAND EXECUTE     #
 ###########################
 ]]
-local cvGlowName = "sc_glow_name"
 --
+---@param target string
 ---@param args table
-concommand.Add("sc_glow_add_name", function(_, _, args, _)
-  local names = GetConVar(cvGlowName):GetString()
-  local namesTable = _StringToTable(names)
-  namesTable[args[1]] = true
-  GetConVar(cvGlowName):SetString(_TableToString(namesTable))
-end, nil, "Make entities with given targetname to glow", { FCVAR_NONE })
+---@param isAdd boolean `true`: Add, `false`: Remove
+local function GlowModify(target, args, isAdd)
+  local elem_str = GetConVar(target):GetString()
+  local elem_tbl = _StringToTable(elem_str)
+  local val = isAdd and true or nil
+  elem_tbl[args[1]] = val
+  GetConVar(target):SetString(_TableToString(elem_tbl))
+end
+
 --
----@param args table
-concommand.Add("sc_glow_remove_name", function(_, _, args, _)
-  local names = GetConVar(cvGlowName):GetString()
-  local namesTable = _StringToTable(names)
-  namesTable[args[1]] = nil
-  GetConVar(cvGlowName):SetString(_TableToString(namesTable))
-end, nil, "Stop entities with given targetname from glowing", { FCVAR_NONE })
+--[[
+#################################
+#     COMMAND AUTO COMPLETE     #
+#################################
+]]
+--
+--
+--[[
+############################
+#     COMMAND REGISTER     #
+############################
+]]
+--
+concommand.Add("sc_glow_add_class", function(_, _, args, _) GlowModify("sc_glow_class", args, true) end, nil, "Make entities with given class to glow", {FCVAR_NONE})
+concommand.Add("sc_glow_remove_class", function(_, _, args, _) GlowModify("sc_glow_class", args, false) end, nil, "Stop entities with given class from glowing", {FCVAR_NONE})
+--
+concommand.Add("sc_glow_add_model", function(_, _, args, _) GlowModify("sc_glow_model", args, true) end, nil, "Make entities with given model to glow", {FCVAR_NONE})
+concommand.Add("sc_glow_remove_model", function(_, _, args, _) GlowModify("sc_glow_model", args, false) end, nil, "Stop entities with given model from glowing", {FCVAR_NONE})
+--
+concommand.Add("sc_glow_add_name", function(_, _, args, _) GlowModify("sc_glow_name", args, true) end, nil, "Make entities with given targetname to glow", {FCVAR_NONE})
+concommand.Add("sc_glow_remove_name", function(_, _, args, _) GlowModify("sc_glow_name", args, false) end, nil, "Stop entities with given targetname from glowing", {FCVAR_NONE})

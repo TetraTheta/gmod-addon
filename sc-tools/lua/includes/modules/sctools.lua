@@ -83,7 +83,6 @@ local function _ReadFile(f)
       end
     end
   end
-
   return tbl
 end
 
@@ -94,7 +93,8 @@ local function _RemoveEntity(ent)
   -- remove effect
   -- https://github.com/Facepunch/garrysmod/blob/master/garrysmod/gamemodes/sandbox/entities/weapons/gmod_tool/stools/remover.lua
   c_RemoveAll(ent)
-  timer.Simple(0.1, function() if IsValid(ent) then ent:Remove() end end) -- Removal delay: 0.1 second
+  -- Removal delay: 0.1 second
+  timer.Simple(0.1, function() if IsValid(ent) then ent:Remove() end end)
   ent:SetNotSolid(true)
   ent:SetMoveType(MOVETYPE_NONE)
   ent:SetNoDraw(true)
@@ -184,7 +184,8 @@ function sctools.RemoveEntity(ent)
       DevEntMsgN(ent, "RemoveEntity: Dissolve")
       ent.SCTOOLS_REMOVAL = true ---@diagnostic disable-line inject-field
       ent:Dissolve(ENTITY_DISSOLVE_NORMAL, 100)
-      timer.Simple(1, function() if IsValid(ent) then ent:Remove() end end) -- Removal delay: 1 second
+      -- Removal delay: 1 second
+      timer.Simple(1, function() if IsValid(ent) then ent:Remove() end end)
     end
   end
 end

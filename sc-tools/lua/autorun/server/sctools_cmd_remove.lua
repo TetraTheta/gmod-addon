@@ -6,14 +6,22 @@ local IsSuperAdmin = sctools.IsSuperAdmin
 local RemoveEntity = sctools.RemoveEntity
 --
 --[[
-######################
-#     REMOVE ALL     #
-######################
+###########################
+#     COMMAND EXECUTE     #
+###########################
 ]]
----@param p Player
-concommand.Add("sc_remove_all", function(p, _, _, _)
-  if not IsSuperAdmin(p) then return end
-  local e = GetTraceEntity(p)
+--
+---@param ply Player
+local function RemoveOne(ply)
+  if not IsSuperAdmin(ply) then return end
+  local e = GetTraceEntity(ply)
+  if IsValid(e) and not e:IsPlayer() then RemoveEntity(e) end
+end
+
+---@param ply Player
+local function RemoveAll(ply)
+  if not IsSuperAdmin(ply) then return end
+  local e = GetTraceEntity(ply)
   if IsValid(e) and not e:IsPlayer() then
     local cons = c_GetAllConstrainedEntities(e)
     for _, t in pairs(cons) do
@@ -22,26 +30,28 @@ concommand.Add("sc_remove_all", function(p, _, _, _)
 
     RemoveEntity(e)
   end
-end, nil, "Remove every entities that are connected to the entity you are looking at.", { FCVAR_NONE })
---[[
-##############################
-#     REMOVE CONSTRAINTS     #
-##############################
-]]
----@param p Player
-concommand.Add("sc_remove_constraints", function(p, _, _, _)
-  if not IsSuperAdmin(p) then return end
-  local e = GetTraceEntity(p)
+end
+
+---@param ply Player
+local function RemoveConstraints(ply)
+  if not IsSuperAdmin(ply) then return end
+  local e = GetTraceEntity(ply)
   if IsValid(e) and not e:IsPlayer() then c_RemoveAll(e) end
-end, nil, "Remove constraints from the entity you are looking at.", { FCVAR_NONE })
+end
+
+--
 --[[
-######################
-#     REMOVE ONE     #
-######################
+#################################
+#     COMMAND AUTO COMPLETE     #
+#################################
 ]]
----@param p Player
-concommand.Add("sc_remove", function(p, _, _, _)
-  if not IsSuperAdmin(p) then return end
-  local e = GetTraceEntity(p)
-  if IsValid(e) and not e:IsPlayer() then RemoveEntity(e) end
-end, nil, "Remove the entity you are looking at.", { FCVAR_NONE })
+--
+--[[
+############################
+#     COMMAND REGISTER     #
+############################
+]]
+--
+concommand.Add("sc_remove", function(p, _, _, _) RemoveOne(p) end, nil, "Remove the entity you are looking at.", {FCVAR_NONE})
+concommand.Add("sc_remove_all", function(p, _, _, _) RemoveAll(p) end, nil, "Remove every entities that are connected to the entity you are looking at.", {FCVAR_NONE})
+concommand.Add("sc_remove_constraints", function(p, _, _, _) RemoveConstraints(p) end, nil, "Remove constraints from the entity you are looking at.", {FCVAR_NONE})

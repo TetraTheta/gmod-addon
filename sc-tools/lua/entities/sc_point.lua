@@ -43,6 +43,7 @@ function ENT:InputKillHierarchy(_, _, _)
   for _, v in pairs(self:GetChildren()) do
     v:Remove()
   end
+
   self:Remove()
 end
 

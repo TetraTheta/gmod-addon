@@ -19,6 +19,13 @@ local function _ShowNotification(value, msg)
   end
 end
 
+--
+--[[
+###############
+#     NET     #
+###############
+]]
+--
 net.Receive("SCTOOLS_CleanResult", function(_, _)
   local json = u_Decompress(net.ReadData(net.ReadUInt(16)))
   ---@cast json string

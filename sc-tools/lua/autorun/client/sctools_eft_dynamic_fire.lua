@@ -1,3 +1,9 @@
+--[[
+################
+#     HOOK     #
+################
+]]
+--
 local next_think = 0
 hook.Add("Think", "SCTOOLS_DynamicFire", function()
   local time = CurTime()

@@ -1,48 +1,80 @@
 require("sctools")
+local b_band = bit.band
+local GetPlayerByName = sctools.command.GetPlayerByName
+local IsSuperAdmin = sctools.IsSuperAdmin
 local SendMessage = sctools.SendMessage
 local SuggestPlayer = sctools.command.SuggestPlayer
-local IsSuperAdmin = sctools.IsSuperAdmin
-local GetPlayerByName = sctools.command.GetPlayerByName
 --
 --[[
-#############################
-#     AUTO ENABLE FLASH     #
-#############################
+################
+#     HOOK     #
+################
 ]]
+--
 ---@param p Player
 hook.Add("PlayerSpawn", "SCTOOLS_EnableFlashlightAuto", function(p, _)
   local cv = GetConVar("sc_auto_flashlight"):GetInt()
-  if cv == 1 and p:IsUserGroup("superadmin") and not p:CanUseFlashlight() then
-    -- SuperAdmin only
+  local toggle = b_band(cv, 1) > 0 -- Disable / Enable
+  local allplayer = b_band(cv, 2) > 0 -- Super Admin Only / All Players
+  local verbose = b_band(cv, 4) > 0 -- Verbose
+  if not toggle then return end
+  if not allplayer and p:IsUserGroup("superadmin") and not p:CanUseFlashlight() then
+    -- Super Admin Only
     p:AllowFlashlight(true)
-    SendMessage("[SC Flashlight] Flashlight is automatically enabled.", p, HUD_PRINTTALK)
-  elseif cv == 2 and not p:CanUseFlashlight() then
-    -- Everyone
+    if verbose then SendMessage("[SC Flashlight] Flashlight is automatically enabled.", p, HUD_PRINTTALK) end
+  elseif allplayer then
+    -- All Players
     p:AllowFlashlight(true)
-    SendMessage("[SC Flashlight] Flashlight is automatically enabled.", p, HUD_PRINTTALK)
+    if verbose then SendMessage("[SC Flashlight] Flashlight is automatically enabled.", p, HUD_PRINTTALK) end
   end
 end)
+
+--
 --[[
-################################
-#     FLASH ENABLE COMMAND     #
-################################
+###########################
+#     COMMAND EXECUTE     #
+###########################
 ]]
+--
+---@param ply Player
+---@param args table
+---@param silent boolean
+local function EnableFlashlight(ply, args, silent)
+  if not IsSuperAdmin(ply) then return end
+  if #args > 1 and not silent then SendMessage("[SC Flashlight] Only first player will be processed.", ply) end
+  local p = #args > 0 and GetPlayerByName(args[1]) or ply
+  if IsValid(p) and p:IsPlayer() and not p:CanUseFlashlight() then
+    p:AllowFlashlight(true)
+    if p ~= ply then SendMessage(Format("[SC Flashlight] Flashlight is enabled to %s", p:GetName()), p) end
+    SendMessage("[SC Flashlight] Flashlight is enabled.", p, HUD_PRINTTALK)
+  end
+end
+
+--
+--[[
+#################################
+#     COMMAND AUTO COMPLETE     #
+#################################
+]]
+--
 ---@param args string
 ---@return table
 local function AllowFlashlightCompletion(_, args)
   return SuggestPlayer("sc_flashlight", args)
 end
 
----@param p Player
----@param args table
-concommand.Add("sc_flashlight", function(p, _, args, _)
-  if not IsSuperAdmin(p) then return end
-  if #args > 1 then SendMessage("[SC Flashlight] Only first player will be processed.", p) end
-  if #args == 0 then SendMessage("[SC Flashlight] You must provide one player.", p) end
-  local ply = GetPlayerByName(args[1])
-  if IsValid(ply) and p:IsPlayer() and not p:CanUseFlashlight() then
-    ply:AllowFlashlight(true)
-    if p ~= ply then SendMessage(Format("[SC Flashlight] Flashlight is enabled to %s", ply:GetName()), p) end
-    SendMessage("[SC Flashlight] Flashlight is enabled.", ply, HUD_PRINTTALK)
-  end
-end, AllowFlashlightCompletion, "Enable flashlight for the given player.", { FCVAR_NONE })
+---@param args string
+---@return table
+local function AllowFlashlightSCompletion(_, args)
+  return SuggestPlayer("sc_flashlight", args)
+end
+
+--
+--[[
+############################
+#     COMMAND REGISTER     #
+############################
+]]
+--
+concommand.Add("sc_flashlight", function(p, _, args, _) EnableFlashlight(p, args, false) end, AllowFlashlightCompletion, "Enable flashlight for the given player.", {FCVAR_NONE})
+concommand.Add("sc_flashlight_s", function(p, _, args, _) EnableFlashlight(p, args, true) end, AllowFlashlightSCompletion, "Enable flashlight for the given player. (Silent)", {FCVAR_NONE})
