@@ -9,15 +9,15 @@ SWEP.Category = "SC Admin Weapon"
 SWEP.DrawAmmo = false
 SWEP.IconOverride = "" -- [!!!!] Override this from child SWEPs!
 SWEP.Instructions = "" -- [!!!!] Override this from child SWEPs!
-SWEP.PrintName = ""    -- [!!!!] Override this from child SWEPs!
-SWEP.Purpose = ""      -- [!!!!] Override this from child SWEPs!
-SWEP.Slot = 0          -- [!!!!] Override this from child SWEPs!
-SWEP.SlotPos = 0       -- [!!!!] Override this from child SWEPs!
+SWEP.PrintName = "" -- [!!!!] Override this from child SWEPs!
+SWEP.Purpose = "" -- [!!!!] Override this from child SWEPs!
+SWEP.Slot = 0 -- [!!!!] Override this from child SWEPs!
+SWEP.SlotPos = 0 -- [!!!!] Override this from child SWEPs!
 SWEP.Spawnable = false -- [!!!!] Override this from child SWEPs!
 SWEP.UseHands = true
-SWEP.ViewModel = ""    -- [!!!!] Override this from child SWEPs!
+SWEP.ViewModel = "" -- [!!!!] Override this from child SWEPs!
 SWEP.Weight = 999
-SWEP.WorldModel = ""   -- [!!!!] Override this from child SWEPs!
+SWEP.WorldModel = "" -- [!!!!] Override this from child SWEPs!
 SWEP.CFG_HoldType = "" -- [!!!!] Override this from child SWEPs!
 -- SWEP Primary Fire
 SWEP.Primary.Ammo = "Pistol"
@@ -70,7 +70,6 @@ SWEP.Secondary.MOD_GRN_Sound = "SCAW.Base.Grenade"
 #     SWEP UTILITY     #
 ########################
 ]]
-
 ---@return Entity exp env_explosion
 function SWEP:_CreateEnvExplosion()
   local exp = ents.Create("env_explosion")
@@ -142,11 +141,9 @@ end
 --
 function SWEP:Initialize()
   self:SetHoldType(self.CFG_HoldType)
-
   if SERVER then
     self.ExpPool = {}
     self.NxtExpNum = 1
-
     for i = 1, 7 do
       local e = self:_CreateEnvExplosion()
       e:Spawn()
@@ -162,7 +159,7 @@ end
 
 -- Disable ammo display
 function SWEP:CustomAmmoDisplay()
-  return { false, 0, 0, 0 }
+  return {false, 0, 0, 0}
 end
 
 function SWEP:FireAnimationEvent(_, _, evt, _)
@@ -193,6 +190,7 @@ local no_damage = {
   npc_rollermine = true,
   npc_turret_floor = true,
 }
+
 local no_damage_force = {
   npc_strider = true,
 }
@@ -216,7 +214,13 @@ function SWEP:PrimaryAttack()
       local ent = tr.Entity
       if IsValid(ent) then
         local cls = ent:GetClass()
-        if no_damage_force[cls] then return { damage = false, effects = false } end
+        if no_damage_force[cls] then
+          return {
+            damage = false,
+            effects = false
+          }
+        end
+
         if no_damage[cls] then
           local pushDir = tr.Normal
           local phys = ent:GetPhysicsObject()
@@ -225,9 +229,15 @@ function SWEP:PrimaryAttack()
           else
             ent:SetVelocity(pushDir * self.Primary.CFG_Force)
           end
-          return { damage = false, effects = true }
+          return {
+            damage = false,
+            effects = true
+          }
         end
-        return { damage = true, effects = true }
+        return {
+          damage = true,
+          effects = true
+        }
       end
     end
   }
@@ -270,11 +280,11 @@ function SWEP:_SA_Explosion()
       e:Activate()
       table.insert(self.ExpPool, idx, e)
     end
+
     e:SetCreator(owner)
     e:SetOwner(owner)
     e:SetPos(hitpos)
     e:Fire("Explode")
-
     self.NxtExpNum = idx % #self.ExpPool + 1
   end
 

@@ -4,6 +4,7 @@ local WeaponModes = {
   [3] = "Combine Ball Mode",
   [4] = "Grenade Mode"
 }
+
 local function _NetMessage(className)
   net.Receive(className .. "_ChangeMode", function()
     local new = net.ReadUInt(3)
@@ -12,11 +13,13 @@ local function _NetMessage(className)
     surface.PlaySound("buttons/button15.wav")
   end)
 end
+
 surface.CreateFont("CSD", {
   font = "csd",
   size = 64,
   additive = true
 })
+
 --
 killicon.AddFont("env_explosion", "HL2MPTypeDeath", "7", Color(255, 80, 0, 255), 0.35)
 killicon.AddFont("npc_grenade_frag", "HL2MPTypeDeath", "4", Color(255, 80, 0, 255), 0.56)
