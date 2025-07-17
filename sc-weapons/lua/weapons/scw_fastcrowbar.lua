@@ -90,6 +90,7 @@ local function _FireBullet(weapon, owner)
     Dir = owner:GetAimVector(),
     Src = owner:GetShootPos()
   }
+
   weapon:FireBullets(bullet)
 end
 
@@ -119,6 +120,7 @@ function SWEP:PrimaryAttack()
     else
       _FireBullet(self, owner)
     end
+
     self:EmitSound(self.Primary.CFG_Sound_MeleeHit)
   else
     self:SendWeaponAnim(ACT_VM_MISSCENTER)
