@@ -3,7 +3,9 @@ list.Set("NPC", "sc_turret_resistance_floor", {
   Category = "SC Entities",
   Class = "npc_turret_floor",
   Health = "255",
-  KeyValues = { custom_turret = "1" },
+  KeyValues = {
+    custom_turret = "1"
+  },
   Model = "models/sc_turret_resistance/floor_turret.mdl",
   Name = "SC Resistance Turret",
   Offset = 8,
@@ -14,12 +16,10 @@ list.Set("NPC", "sc_turret_resistance_floor", {
 })
 
 if not SERVER then return end
-
 local e_fbc = ents.FindByClass
 local e_fic = ents.FindInCone
 local m_cos = math.cos
 local m_rad = math.rad
-
 ---@param src Vector
 ---@param pos1 Vector
 ---@param pos2 Vector
@@ -43,7 +43,7 @@ local function IsSCTurret(ent)
   local m = ent:GetModel() ---@cast m string
   local t = util.KeyValuesToTablePreserveOrder(util.GetModelInfo(m)["ModelKeyValues"])
   for _, v in ipairs(t) do
-    if (v["Key"] == "custom_turret" and v["Value"] == 1) then return true end
+    if v["Key"] == "custom_turret" and v["Value"] == 1 then return true end
   end
   return false
 end
@@ -64,6 +64,7 @@ hook.Add("EntityFireBullets", "sc_turret_resistance_floor_firebullets", function
     elseif enemy:GetClass() == "npc_cscanner" then
       sub = Vector(0, 0, 0)
     end
+
     local eeye = enemy:LookupAttachment("eyes") > 0 and enemy:GetAttachment(enemy:LookupAttachment("eyes")).Pos or enemy:EyePos()
     eeye = eeye - sub
     debugoverlay.Line(teye, eeye)
@@ -74,12 +75,10 @@ hook.Add("EntityFireBullets", "sc_turret_resistance_floor_firebullets", function
 end)
 
 local deg = m_cos(m_rad(90))
-
 -- Using Timer instead of Think
 timer.Create("sc_turret_resistance_floor_timer", 0.1, 0, function()
   local ply = Entity(1)
   if not ply:IsValid() then return end
-
   for _, t in ipairs(e_fbc("npc_turret_floor")) do
     ---@cast t NPC
     if not IsSCTurret(t) then continue end
@@ -89,15 +88,12 @@ timer.Create("sc_turret_resistance_floor_timer", 0.1, 0, function()
     else
       local teye = t:EyePos()
       local tang = t:GetAngles():Forward()
-
       local coneTargets = e_fic(teye, tang, 1200, deg)
       local bestTarget = NULL
       for _, e in ipairs(coneTargets) do
         if not IsValid(e) or not e:IsNPC() or e == t then continue end
         ---@cast e NPC
-
         if e:Health() <= 0 then continue end
-
         if t:Visible(e) then
           local disp, _ = e:Disposition(ply)
           if disp == D_HT then
@@ -105,9 +101,7 @@ timer.Create("sc_turret_resistance_floor_timer", 0.1, 0, function()
               local pos_t = t:GetPos()
               local pos_e = e:GetPos()
               local pos_b = bestTarget:GetPos()
-              if CompareDistance(pos_t, pos_e, pos_b) == -1 then
-                bestTarget = e
-              end
+              if CompareDistance(pos_t, pos_e, pos_b) == -1 then bestTarget = e end
             else
               bestTarget = e
             end
