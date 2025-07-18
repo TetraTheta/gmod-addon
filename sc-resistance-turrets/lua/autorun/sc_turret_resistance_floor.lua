@@ -20,11 +20,12 @@ local e_fbc = ents.FindByClass
 local e_fic = ents.FindInCone
 local m_cos = math.cos
 local m_rad = math.rad
+--
 ---@param src Vector
 ---@param pos1 Vector
 ---@param pos2 Vector
 ---@return number result `0` if distance between src-pos1 and src-pos2 are same.<br>`-1` if distance between src-pos1 is smaller than src-pos2.<br>`1` if distance between src-pos1 is larger than src-pos2.
-local function CompareDistance(src, pos1, pos2)
+local function _CompareDistance(src, pos1, pos2)
   local d1, d2 = src:DistToSqr(pos1), src:DistToSqr(pos2)
   if d1 < d2 then
     return -1
@@ -37,7 +38,7 @@ end
 
 ---@param ent Entity
 ---@return boolean
-local function IsSCTurret(ent)
+local function _IsSCTurret(ent)
   if not IsValid(ent) then return false end
   if ent:GetClass() ~= "npc_turret_floor" then return false end
   local m = ent:GetModel() ---@cast m string
@@ -48,21 +49,30 @@ local function IsSCTurret(ent)
   return false
 end
 
+---@param e Entity
+---@return boolean
+local function _IsValidTarget(e)
+  return IsValid(e) and (e:IsNPC() or e:IsNextBot()) and e:GetClass() ~= "npc_turret_floor"
+end
+
 ---@param ent Entity
----@param data table
+---@param data Bullet
 hook.Add("EntityFireBullets", "sc_turret_resistance_floor_firebullets", function(ent, data)
   if not SERVER then return end
-  if not IsSCTurret(ent) then return end
+  if not _IsSCTurret(ent) then return end
   ---@cast ent NPC
   local enemy = ent:GetEnemy()
   if IsValid(enemy) then
     -- Modify bullet data
     local teye = ent:EyePos() -- or use 'eyes' attachment position
     local sub = Vector(0, 0, 5)
-    if enemy:GetClass() == "npc_fastzombie" or enemy:GetClass() == "npc_poisonzombie" then
-      sub = Vector(0, 0, 15)
-    elseif enemy:GetClass() == "npc_cscanner" then
+    -- Special shoot target position
+    if enemy:GetClass() == "npc_cscanner" then
       sub = Vector(0, 0, 0)
+    elseif enemy:GetClass() == "npc_fastzombie" then
+      sub = Vector(0, 0, 15)
+    elseif enemy:GetClass() == "npc_poisonzombie" then
+      sub = Vector(0, 0, 15)
     end
 
     local eeye = enemy:LookupAttachment("eyes") > 0 and enemy:GetAttachment(enemy:LookupAttachment("eyes")).Pos or enemy:EyePos()
@@ -77,43 +87,41 @@ end)
 local deg = m_cos(m_rad(90))
 -- Using Timer instead of Think
 timer.Create("sc_turret_resistance_floor_timer", 0.1, 0, function()
-  local ply = Entity(1)
+  local ply = Entity(1) -- Use first player because I don't care about 'team' stuff
   if not ply:IsValid() then return end
-  for _, t in ipairs(e_fbc("npc_turret_floor")) do
-    ---@cast t NPC
-    if not IsSCTurret(t) then continue end
-    local enemy = t:GetEnemy()
-    if IsValid(enemy) then
-      continue
-    else
-      local teye = t:EyePos()
-      local tang = t:GetAngles():Forward()
-      local coneTargets = e_fic(teye, tang, 1200, deg)
-      local bestTarget = NULL
-      for _, e in ipairs(coneTargets) do
-        if not IsValid(e) or not e:IsNPC() or e == t then continue end
-        ---@cast e NPC
-        if e:Health() <= 0 then continue end
-        if t:Visible(e) then
-          local disp, _ = e:Disposition(ply)
-          if disp == D_HT then
-            if bestTarget:IsValid() then
-              local pos_t = t:GetPos()
-              local pos_e = e:GetPos()
-              local pos_b = bestTarget:GetPos()
-              if CompareDistance(pos_t, pos_e, pos_b) == -1 then bestTarget = e end
-            else
-              bestTarget = e
-            end
+  for _, turret in ipairs(e_fbc("npc_turret_floor")) do
+    ---@cast turret NPC
+    if not _IsSCTurret(turret) then continue end
+    local enemy = turret:GetEnemy()
+    -- Skip turrets that already has enemy
+    if IsValid(enemy) then continue end
+    local teye = turret:EyePos()
+    local tang = turret:GetAngles():Forward()
+    local coneTargets = e_fic(teye, tang, 1200, deg)
+    local bestTarget = NULL
+    for _, e in ipairs(coneTargets) do
+      if not _IsValidTarget(e) or e == turret then continue end
+      ---@cast e NPC
+      if e:Health() <= 0 then continue end
+      if turret:Visible(e) then
+        local disp, _ = e:Disposition(ply)
+        if disp == D_HT then
+          if bestTarget:IsValid() then
+            local pos_turret = turret:GetPos()
+            local pos_enemy = e:GetPos()
+            local pos_best_target = bestTarget:GetPos()
+            if _CompareDistance(pos_turret, pos_enemy, pos_best_target) == -1 then bestTarget = e end
+          else
+            bestTarget = e
           end
         end
       end
 
       if bestTarget:IsValid() then
-        bestTarget:AddFlags(FL_OBJECT)
-        t:AddEntityRelationship(bestTarget, D_HT, 99)
-        t:SetEnemy(bestTarget)
-        t:UpdateEnemyMemory(bestTarget, bestTarget:GetPos())
+        bestTarget:AddFlags(FL_OBJECT) -- 'This entity can be seen by NPCs'
+        turret:AddEntityRelationship(bestTarget, D_HT, 99)
+        turret:SetEnemy(bestTarget)
+        turret:UpdateEnemyMemory(bestTarget, bestTarget:GetPos())
       end
     end
   end
