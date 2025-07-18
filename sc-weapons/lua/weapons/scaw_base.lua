@@ -254,6 +254,10 @@ end
 ]]
 function SWEP:SecondaryAttack()
   -- Skip ammo check performed by 'CanSecondaryAttack'
+  -- Prevent Secondary Attack when the player is opening Context Menu
+  local owner = self:GetOwner() ---@cast owner Player
+  if owner:GetNWBool("SCAW_IsContextMenuOpened", false) then return end
+  --
   local mode = self:GetSecondaryMode()
   if mode == 1 then
     self:_SA_Explosion()
