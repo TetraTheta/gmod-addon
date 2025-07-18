@@ -1,6 +1,11 @@
 ---@param className string
 local function _AddHooks(className)
   if SERVER then
+    --[[
+    ####################################
+    #     SAVE SECONDARY FIRE MODE     #
+    ####################################
+    ]]
     ---@param save ISave
     saverestore.AddSaveHook(className .. "_SaveData", function(save)
       local saveData = {}
@@ -33,6 +38,11 @@ local function _AddHooks(className)
       end
     end)
 
+    --[[
+    ############################################
+    #     PREVENT GRENADE EARLY DETONATION     #
+    ############################################
+    ]]
     ---@param target Entity
     ---@param dmginfo CTakeDamageInfo
     hook.Add("EntityTakeDamage", className .. "_GrenadeBehavior", function(target, dmginfo)
@@ -51,3 +61,29 @@ _AddHooks("scaw_pistol")
 _AddHooks("scaw_pistol_clean")
 _AddHooks("scaw_mp5sd")
 _AddHooks("scaw_mp5sd_clean")
+--[[
+##############################################################
+#     PREVENT SECONDARY FIRE WHEN CONTEXT MENU IS OPENED     #
+##############################################################
+]]
+if SERVER then
+  util.AddNetworkString("SCAW_ContextMenuState")
+  net.Receive("SCAW_ContextMenuState", function(_, ply)
+    local open = net.ReadBool()
+    ply:SetNWBool("SCAW_IsContextMenuOpened", open)
+  end)
+end
+
+if CLIENT then
+  hook.Add("OnContextMenuOpen", "SCAW_ContextMenuOpen", function()
+    net.Start("SCAW_ContextMenuState")
+    net.WriteBool(true)
+    net.SendToServer()
+  end)
+
+  hook.Add("OnContextMenuClose", "SCAW_ContextMenuClose", function()
+    net.Start("SCAW_ContextMenuState")
+    net.WriteBool(false)
+    net.SendToServer()
+  end)
+end
