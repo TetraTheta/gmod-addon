@@ -8,6 +8,6 @@
   "ignore": [
     ".ignore/*",
     "models/.ignore/*",
-    "modelssrc/*"
+    "modelsrc/*"
   ]
 }
