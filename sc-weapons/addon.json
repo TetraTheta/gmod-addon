@@ -7,6 +7,6 @@
   "ignore": [
     "lua/weapons/.ignore/*",
     "models/.ignore/*",
-    "modelssrc/*"
+    "modelsrc/*"
   ]
 }
