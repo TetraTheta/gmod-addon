@@ -35,7 +35,6 @@ models/props_lab/box01a.mdl
 models/props_lab/box01b.mdl
 models/props_lab/clipboard.mdl
 models/props_lab/jar01a.mdl
-models/props_wasteland/cafeteria_table001a.mdl
 models/props_wasteland/controlroom_chair001a.mdl
 models/props/cs_office/cardboard_box01.mdl
 models/props/cs_office/cardboard_box02.mdl
