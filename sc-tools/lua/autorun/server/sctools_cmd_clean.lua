@@ -116,7 +116,7 @@ local function CleanRagdolls()
   end
 
   local max = GetConVar("g_ragdoll_maxcount"):GetInt()
-  max = max > 0 and max or 32
+  -- max = max >= 0 and max or 32
   RunConsoleCommand("g_ragdoll_maxcount", "0")
   timer.Simple(1, function() RunConsoleCommand("g_ragdoll_maxcount", tostring(max)) end)
   --
