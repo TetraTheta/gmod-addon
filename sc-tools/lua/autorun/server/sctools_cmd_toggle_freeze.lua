@@ -23,6 +23,58 @@ local function _UnfreezeEffect(ent)
   u_Effect("phys_unfreeze", ed, true, true)
 end
 
+---@param ply Player
+local function _FreezePlayer(ply)
+  local frozen = ply:IsFlagSet(FL_FROZEN)
+  if frozen then
+    ply:Freeze(false)
+    _UnfreezeEffect(ply)
+  else
+    ply:Freeze(true)
+  end
+end
+
+---@param ent NPC
+local function _FreezeNPC(ent)
+  local frozen = ent:IsEFlagSet(EFL_NO_THINK_FUNCTION)
+  if frozen then
+    ent:RemoveEFlags(EFL_NO_THINK_FUNCTION)
+    timer.Simple(0.001, function()
+      local pos = ent["SCTOOLS_SAVED_POS"]
+      ent:SetPos(pos)
+      ent:GetPhysicsObject():SetPos(pos)
+    end)
+
+    _UnfreezeEffect(ent)
+  else
+    ent["SCTOOLS_SAVED_POS"] = ent:GetPos()
+    ent:NavSetGoalPos(ent:GetPos())
+    ent:AddEFlags(EFL_NO_THINK_FUNCTION)
+    _FreezeEffect(ent)
+  end
+end
+
+---@param ent Entity
+local function _FreezeEntity(ent)
+  local p = ent:GetPhysicsObject()
+  if not p:IsValid() then return end
+  local mt = ent:GetMoveType()
+  local m = p:IsMotionEnabled()
+  if m then
+    ent["SCTOOLS_MOVETYPE"] = mt
+    ent:SetMoveType(MOVETYPE_NONE)
+    p:EnableMotion(false)
+    _FreezeEffect(ent)
+  else
+    local smt = ent["SCTOOLS_MOVETYPE"]
+    if not isnumber(smt) then smt = MOVETYPE_VPHYSICS end
+    ent:SetMoveType(smt)
+    ent["SCTOOLS_MOVETYPE"] = nil
+    p:EnableMotion(true)
+    _UnfreezeEffect(ent)
+  end
+end
+
 --[[
 ###########################
 #     COMMAND EXECUTE     #
@@ -37,52 +89,18 @@ local function ToggleFreeze(ply)
   if ent:IsPlayer() then
     -- Player
     ---@cast ent Player
-    local frozen = ent:IsFlagSet(FL_FROZEN)
-    if frozen then
-      ent:Freeze(false)
-      _UnfreezeEffect(ent)
-    else
-      ent:Freeze(true)
-      _FreezeEffect(ent)
-    end
+    _FreezePlayer(ent)
+  elseif ent:IsNPC() and ent:GetClass() == "npc_turret_floor" then
+    ---@cast ent NPC
+    _FreezeNPC(ent)
+    _FreezeEntity(ent)
   elseif ent:IsNPC() or ent:IsNextBot() then
     -- NPC
     ---@cast ent NPC
-    local frozen = ent:IsEFlagSet(EFL_NO_THINK_FUNCTION)
-    if frozen then
-      ent:RemoveEFlags(EFL_NO_THINK_FUNCTION)
-      timer.Simple(0.001, function()
-        local pos = ent["SCTOOLS_SAVED_POS"]
-        ent:SetPos(pos)
-        ent:GetPhysicsObject():SetPos(pos)
-      end)
-
-      _UnfreezeEffect(ent)
-    else
-      ent["SCTOOLS_SAVED_POS"] = ent:GetPos()
-      ent:NavSetGoalPos(ent:GetPos())
-      ent:AddEFlags(EFL_NO_THINK_FUNCTION)
-      _FreezeEffect(ent)
-    end
+    _FreezeNPC(ent)
   else
     -- Physics Object (+ Vehicle, Weapon, etc.)
-    local p = ent:GetPhysicsObject()
-    if not p:IsValid() then return end
-    local mt = ent:GetMoveType()
-    local m = p:IsMotionEnabled()
-    if m then
-      ent["SCTOOLS_MOVETYPE"] = mt
-      ent:SetMoveType(MOVETYPE_NONE)
-      p:EnableMotion(false)
-      _FreezeEffect(ent)
-    else
-      local smt = ent["SCTOOLS_MOVETYPE"]
-      if not isnumber(smt) then smt = MOVETYPE_VPHYSICS end
-      ent:SetMoveType(smt)
-      ent["SCTOOLS_MOVETYPE"] = nil
-      p:EnableMotion(true)
-      _UnfreezeEffect(ent)
-    end
+    _FreezeEntity(ent)
   end
 end
 
