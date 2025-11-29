@@ -118,10 +118,10 @@ if ($null -eq $target) {
 }
 
 switch ($target) {
-  'Dark Mode' {
+  'dark-mode' {
     Copy-Recursive 'dark-mode' "$addons/DarkMode"
   }
-  'Private Reserve' {
+  'private-reserve' {
     New-GMA 'private-reserve' $addons_private
   }
   default {

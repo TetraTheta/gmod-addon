@@ -37,7 +37,7 @@ end
 ]]
 --
 ---@param ap Entity
-hook.Add("PlayerDeath", "PR_Reload_On_Kill", function(_, _, ap)
+hook.Add("PlayerDeath", "PR_Reload_On_Kill_Player", function(_, _, ap)
   if not GetConVar("pr_enable_kill_reload"):GetBool() then return end
   if not (ap:IsValid() and ap:IsPlayer()) then return end
   ---@cast ap Player
@@ -45,7 +45,7 @@ hook.Add("PlayerDeath", "PR_Reload_On_Kill", function(_, _, ap)
 end)
 
 ---@param ap Entity
-hook.Add("OnNPCKilled", "reloadonkill", function(_, ap, _)
+hook.Add("OnNPCKilled", "PR_Reload_On_Kill_NPC", function(_, ap, _)
   if not GetConVar("pr_enable_kill_reload"):GetBool() then return end
   if not (ap:IsValid() and ap:IsPlayer()) then return end
   ---@cast ap Player
