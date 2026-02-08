@@ -1,3 +1,5 @@
+local cv = GetConVar("pr_disable_headcrab")
+
 local headcrabs = {
   npc_headcrab = true,
   npc_headcrab_black = true,
@@ -23,7 +25,8 @@ local zombies = {
 --
 ---@param ent Entity
 hook.Add("OnEntityCreated", "PR_No_Headcrab", function(ent)
-  if not GetConVar("pr_disable_headcrab"):GetBool() then return end
+  if not cv then cv = GetConVar("pr_disable_headcrab") end
+  if not cv:GetBool() then return end
   if IsValid(ent) and ent:IsNPC() and headcrabs[ent:GetClass()] then
     timer.Simple(0, function()
       if not IsValid(ent) then return end

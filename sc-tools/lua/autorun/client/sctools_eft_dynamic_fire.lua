@@ -1,3 +1,4 @@
+local cv = GetConVar("sc_dynamic_fire")
 --[[
 ################
 #     HOOK     #
@@ -7,7 +8,7 @@
 local next_think = 0
 hook.Add("Think", "SCTOOLS_DynamicFire", function()
   local time = CurTime()
-  if next_think > time or not GetConVar("sc_dynamic_fire"):GetBool() then return end
+  if next_think > time or not cv:GetBool() then return end
   next_think = time + 0.05
   for _, v in pairs(ents.GetAll()) do
     if not v:IsValid() then continue end

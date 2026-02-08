@@ -1,5 +1,7 @@
 local band = bit.band
 --
+local cv = GetConVar("pr_enable_special_damage")
+--
 local headcrabs = {
   npc_headcrab = true,
   npc_headcrab_black = true,
@@ -48,8 +50,8 @@ end
 ---@param e NPC
 ---@param dmg CTakeDamageInfo
 hook.Add("EntityTakeDamage", "PR_SpecialDamage", function(e, dmg)
-  if not GetConVar("pr_enable_special_damage"):GetBool() then return end
-  if not e:IsValid() then return end
+  if not cv then cv = GetConVar("pr_enable_special_damage") end
+  if not cv:GetBool() or not e:IsValid() then return end
   local attacker = _CheckPlayer(dmg)
   local weapon = _CheckWeapon(attacker)
   if e:IsPlayer() then

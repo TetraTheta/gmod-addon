@@ -1,3 +1,5 @@
+local cv = GetConVar("pr_enable_kill_reload")
+
 ---@param p Player
 local function _ReloadAllWeapons(p)
   local wpns = p:GetWeapons()
@@ -38,16 +40,16 @@ end
 --
 ---@param ap Entity
 hook.Add("PlayerDeath", "PR_Reload_On_Kill_Player", function(_, _, ap)
-  if not GetConVar("pr_enable_kill_reload"):GetBool() then return end
-  if not (ap:IsValid() and ap:IsPlayer()) then return end
+  if not cv then cv = GetConVar("pr_enable_kill_reload") end
+  if not cv:GetBool() or not (ap:IsValid() and ap:IsPlayer()) then return end
   ---@cast ap Player
   _ReloadAllWeapons(ap)
 end)
 
 ---@param ap Entity
 hook.Add("OnNPCKilled", "PR_Reload_On_Kill_NPC", function(_, ap, _)
-  if not GetConVar("pr_enable_kill_reload"):GetBool() then return end
-  if not (ap:IsValid() and ap:IsPlayer()) then return end
+  if not cv then cv = GetConVar("pr_enable_kill_reload") end
+  if not cv:GetBool() or not (ap:IsValid() and ap:IsPlayer()) then return end
   ---@cast ap Player
   _ReloadAllWeapons(ap)
 end)

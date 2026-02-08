@@ -1,3 +1,5 @@
+local cv = GetConVar("pr_enable_additional_pickup")
+
 --[[
 ################
 #     HOOK     #
@@ -5,7 +7,8 @@
 ]]
 --
 hook.Add("PlayerCanPickupWeapon", "PR_AdditionalWeaponPickup", function(p, wep)
-  if not GetConVar("pr_enable_additional_pickup"):GetBool() then return end
+  if not cv then cv = GetConVar("pr_enable_additional_pickup") end
+  if not cv:GetBool() then return end
   if wep:GetClass() == "weapon_smg1" then
     if not p:HasWeapon("scw_mp5sd") then
       p:Give("scw_mp5sd")

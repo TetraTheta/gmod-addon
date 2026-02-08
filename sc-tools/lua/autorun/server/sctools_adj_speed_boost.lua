@@ -1,3 +1,5 @@
+local cv = GetConVar("sc_boost_speed_modifier")
+
 --[[
 ################
 #     HOOK     #
@@ -16,7 +18,7 @@ end)
 -- KeyPress
 ---@param p Player
 hook.Add("KeyPress", "SCTOOLS_BoostKeyPress", function(p, _)
-  local mult = GetConVar("sc_boost_speed_modifier"):GetFloat()
+  local mult = cv:GetFloat()
   -- sanitize multiplier
   mult = mult > 0 and mult or 1.0
   if p:Crouching() and p:KeyPressed(IN_SPEED) then

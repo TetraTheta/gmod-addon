@@ -1,3 +1,6 @@
+local cv_enable = GetConVar("pr_enable_loadout")
+local cv_sbox_weapons = GetConVar("sbox_weapons")
+
 --[[
 ################
 #     HOOK     #
@@ -8,9 +11,10 @@
 ---@diagnostic disable: redundant-return-value
 ---@param p Player
 hook.Add("PlayerLoadout", "PR_CustomLoadout", function(p)
-  if not GetConVar("pr_enable_loadout"):GetBool() then return end
-  local c = GetConVar("sbox_weapons"):GetBool()
-  if c then
+  if not cv_enable then cv_enable = GetConVar("pr_enable_loadout") end
+  if not cv_sbox_weapons then cv_sbox_weapons = GetConVar("sbox_weapons") end
+  if not cv_enable:GetBool() then return end
+  if cv_sbox_weapons:GetBool() then
     p:RemoveAllAmmo()
     -- Ammo
     p:GiveAmmo(256, "Pistol", true)

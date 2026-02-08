@@ -10,6 +10,10 @@ local p_GetHumans = player.GetHumans
 local SendMessage = sctools.SendMessage
 local SuggestPlayer = sctools.command.SuggestPlayer
 --
+local cv_auto_god_mode = GetConVar("sc_auto_god_mode")
+local cv_auto_god_npc = GetConVar("sc_auto_god_npc")
+local cv_auto_god_sadmin = GetConVar("sc_auto_god_sadmin")
+--
 local function _GetGod(ent)
   return sctools.protect[ent]
 end
@@ -18,7 +22,7 @@ end
 local function _SetGod(ent)
   if IsValid(ent) and (ent:IsNPC() or ent:IsNextBot() or ent:IsPlayer()) then
     sctools.protect[ent] = true
-    if ent:IsPlayer() and GetConVar("sc_auto_god_mode"):GetBool() then
+    if ent:IsPlayer() and cv_auto_god_mode:GetBool() then
       ---@cast ent Player
       ent:GodEnable()
     end
@@ -80,7 +84,7 @@ end
 hook.Add("EntityTakeDamage", "SCTOOLS_AutoGod_NPC_TakeDamage", function(target, dmg)
   if not IsValid(target) then return end
   -- Check if target is auto god target that slipped through my checks
-  if target:IsNPC() and GetConVar("sc_auto_god_npc"):GetBool() then
+  if target:IsNPC() and cv_auto_god_npc:GetBool() then
     -- To check if damaged entity is friendly to Player, use first player as the attacker if attacker is not Player
     local att = dmg:GetAttacker()
     if not att:IsPlayer() and IsValid(p_GetHumans()[1]) then att = p_GetHumans()[1] end
@@ -93,7 +97,7 @@ hook.Add("EntityTakeDamage", "SCTOOLS_AutoGod_NPC_TakeDamage", function(target, 
 
   -- Process damage for entity in 'protect' table
   if _GetGod(target) and dmg:GetDamage() > 0 then
-    if GetConVar("sc_auto_god_mode"):GetBool() then
+    if cv_auto_god_mode:GetBool() then
       -- God
       return true
     else
@@ -112,7 +116,7 @@ end)
 
 hook.Add("PlayerSpawn", "SCTOOLS_AutoGod_SuperAdmin", function(p)
   if not IsSuperAdmin(p) then return end
-  local cv = GetConVar("sc_auto_god_sadmin"):GetInt()
+  local cv = cv_auto_god_sadmin:GetInt()
   local toggle = b_band(cv, 1) > 0
   local verbose = b_band(cv, 2) > 0
   if toggle then
