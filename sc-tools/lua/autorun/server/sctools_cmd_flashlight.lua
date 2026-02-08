@@ -45,7 +45,7 @@ local function EnableFlashlight(ply, args, silent)
   local p = #args > 0 and GetPlayerByName(args[1]) or ply
   if IsValid(p) and p:IsPlayer() and not p:CanUseFlashlight() then
     p:AllowFlashlight(true)
-    if p ~= ply then SendMessage(Format("[SC Flashlight] Flashlight is enabled to %s", p:GetName()), p) end
+    if p ~= ply then SendMessage(Format("[SC Flashlight] Flashlight is enabled to %s", p:Nick()), p) end
     SendMessage("[SC Flashlight] Flashlight is enabled.", p, HUD_PRINTTALK)
   end
 end

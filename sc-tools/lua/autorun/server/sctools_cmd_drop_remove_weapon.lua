@@ -21,7 +21,7 @@ local function DropWeapon(ply, args, silent)
     local wep = p:GetActiveWeapon()
     if IsValid(wep) then
       p:DropWeapon(wep)
-      if p ~= ply and not silent then SendMessage(Format("[SC Drop Weapon] Dropped weapon that %s was holding.", p:GetName()), ply) end
+      if p ~= ply and not silent then SendMessage(Format("[SC Drop Weapon] Dropped weapon that %s was holding.", p:Nick()), ply) end
     end
   end
 end
@@ -37,7 +37,7 @@ local function RemoveWeapon(ply, args, silent)
     local wep = p:GetActiveWeapon()
     if IsValid(wep) then
       p:StripWeapon(wep:GetClass())
-      if p ~= ply and not silent then SendMessage(Format("[SC Remove Weapon] Removed weapon that %s was holding.", p:GetName()), ply) end
+      if p ~= ply and not silent then SendMessage(Format("[SC Remove Weapon] Removed weapon that %s was holding.", p:Nick()), ply) end
     end
   end
 end

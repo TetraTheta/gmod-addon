@@ -19,7 +19,7 @@ local function HealPlayer(ply, args, silent)
   if IsValid(p) and p:IsPlayer() then
     p:SetHealth(p:GetMaxHealth())
     if not silent then
-      if p ~= ply then SendMessage(Format("[SC Heal] Healed %s.", p:GetName()), ply) end
+      if p ~= ply then SendMessage(Format("[SC Heal] Healed %s.", p:Nick()), ply) end
       SendMessage("[SC Heal] You are healed.", p, HUD_PRINTTALK)
     end
   end
@@ -38,7 +38,7 @@ local function OverhealPlayer(ply, args, silent)
     p:SetHealth(p:GetMaxHealth())
     p:SetArmor(ma) -- instead of 'p:GetMaxArmor()' which is limited to 100 by default
     if not silent then
-      if p ~= ply then SendMessage(Format("[SC Heal] Overhealed %s.", p:GetName()), ply) end
+      if p ~= ply then SendMessage(Format("[SC Heal] Overhealed %s.", p:Nick()), ply) end
       SendMessage("[SC Heal] You are overhealed.", p, HUD_PRINTTALK)
     end
   end
