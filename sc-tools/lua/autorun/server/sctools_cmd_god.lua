@@ -119,7 +119,7 @@ hook.Add("PlayerSpawn", "SCTOOLS_AutoGod_SuperAdmin", function(p)
     _SetGod(p)
     if verbose then
       SendMessage("[SC Auto GodMode] GodMode is automatically enabled to you.", p, HUD_PRINTTALK)
-      MsgN(Format("[SC Auto GodMode] Enabled automatic GodMode to %s", p:GetName()))
+      MsgN(Format("[SC Auto GodMode] Enabled automatic GodMode to %s", p:Nick()))
     end
   end
 end)
@@ -171,13 +171,13 @@ local function SetPlayerGod(ply, args, silent)
     if _GetGod(p) then
       _UnsetGod(p)
       if not silent then
-        SendMessage(Format("[SC GodMode] GodMode is disabled to %s.", p:GetName()), ply)
+        SendMessage(Format("[SC GodMode] GodMode is disabled to %s.", p:Nick()), ply)
         SendMessage("[SC GodMode] You are now not in GodMode.", p, HUD_PRINTTALK)
       end
     else
       _SetGod(p)
       if not silent then
-        SendMessage(Format("[SC GodMode] GodMode is enabled to %s.", p:GetName()), ply)
+        SendMessage(Format("[SC GodMode] GodMode is enabled to %s.", p:Nick()), ply)
         SendMessage("[SC GodMode] You are now in GodMode.", p, HUD_PRINTTALK)
       end
     end

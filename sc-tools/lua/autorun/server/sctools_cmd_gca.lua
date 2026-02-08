@@ -24,7 +24,7 @@ local function GiveCurrentAmmo(ply, args, silent)
     local max = GetConVar("gmod_maxammo"):GetInt()
     p:SetAmmo(max, wep:GetPrimaryAmmoType())
     p:SetAmmo(max, wep:GetSecondaryAmmoType())
-    if p ~= ply and not silent then SendMessage(Format("[SC GiveCurrentAmmo] Ammunition of %s's weapon is refilled.", p:GetName()), ply) end
+    if p ~= ply and not silent then SendMessage(Format("[SC GiveCurrentAmmo] Ammunition of %s's weapon is refilled.", p:Nick()), ply) end
     if not silent then SendMessage("[SC GiveCurrentAmmo] Your current weapon's ammunition is refilled.", p, HUD_PRINTTALK) end
   end
 end

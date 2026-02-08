@@ -215,7 +215,7 @@ end
 function sctools.command.GetPlayerByName(name)
   if s_sub(name, 1, 1) == "\"" and s_sub(name, -1) == "\"" then name = s_sub(2, -2) end
   for _, p in ipairs(p_GetHumans()) do ---@cast p Player
-    if p:GetName():lower() == name:lower() then return p end
+    if p:Nick():lower() == name:lower() then return p end
   end
   return NULL
 end
@@ -228,8 +228,8 @@ function sctools.command.SuggestPlayer(cmd, args)
   args = s_Trim(args:lower())
   local tbl = {}
   for _, p in ipairs(p_GetHumans()) do ---@cast p Player
-    local ln = p:GetName():lower()
-    if s_find(ln, args) then t_insert(tbl, Format("%s \"%s\"", cmd, p:GetName())) end
+    local ln = p:Nick():lower()
+    if s_find(ln, args) then t_insert(tbl, Format("%s \"%s\"", cmd, p:Nick())) end
   end
   return tbl
 end
