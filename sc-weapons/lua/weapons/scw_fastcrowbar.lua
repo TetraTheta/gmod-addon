@@ -110,7 +110,7 @@ function SWEP:PrimaryAttack()
   if tr.Hit then
     local e = tr.Entity
     self:SendWeaponAnim(ACT_VM_HITCENTER)
-    if IsValid(e) then
+    if IsValid(e) then ---@cast e Entity
       local cls = e:GetClass()
       if string.find(cls, "npc") or cls == "prop_ragdoll" or e:IsPlayer() then
         _HitEntity(self, owner, e)
