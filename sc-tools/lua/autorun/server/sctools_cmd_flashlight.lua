@@ -5,6 +5,8 @@ local IsSuperAdmin = sctools.IsSuperAdmin
 local SendMessage = sctools.SendMessage
 local SuggestPlayer = sctools.command.SuggestPlayer
 --
+local cv = GetConVar("sc_auto_flashlight")
+--
 --[[
 ################
 #     HOOK     #
@@ -13,10 +15,10 @@ local SuggestPlayer = sctools.command.SuggestPlayer
 --
 ---@param p Player
 hook.Add("PlayerSpawn", "SCTOOLS_EnableFlashlightAuto", function(p, _)
-  local cv = GetConVar("sc_auto_flashlight"):GetInt()
-  local toggle = b_band(cv, 1) > 0 -- Disable / Enable
-  local allplayer = b_band(cv, 2) > 0 -- Super Admin Only / All Players
-  local verbose = b_band(cv, 4) > 0 -- Verbose
+  local cvv = cv:GetInt()
+  local toggle = b_band(cvv, 1) > 0 -- Disable / Enable
+  local allplayer = b_band(cvv, 2) > 0 -- Super Admin Only / All Players
+  local verbose = b_band(cvv, 4) > 0 -- Verbose
   if not toggle then return end
   if not allplayer and p:IsUserGroup("superadmin") and not p:CanUseFlashlight() then
     -- Super Admin Only

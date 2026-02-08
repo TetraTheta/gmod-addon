@@ -4,6 +4,7 @@ local e_Iterator = ents.Iterator
 local SM = sctools._SmallModel
 local SMD = sctools._SmallModelDir
 --
+local cv = GetConVar("sc_disable_obstacle")
 --[[
 #################
 #     TIMER     #
@@ -11,7 +12,7 @@ local SMD = sctools._SmallModelDir
 ]]
 --
 timer.Create("SCTOOLS_DisableObstacle", 0.1, 0, function()
-  if GetConVar("sc_disable_obstacle"):GetBool() then
+  if cv:GetBool() then
     for _, e in e_Iterator() do
       if not IsValid(e:GetPhysicsObject()) then continue end
       local class = e:GetClass()

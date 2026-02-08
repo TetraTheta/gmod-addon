@@ -1,9 +1,11 @@
 -- It is quite surprising that these are not provided by default
+local cv_dev = GetConVar("developer")
+--
 local level = 3
 ---`MsgN()` but only if `developer` is above 3
 ---@param ... any
 function DevMsgN(...)
-  if GetConVar("developer"):GetInt() >= level then MsgN(...) end
+  if cv_dev:GetInt() >= level then MsgN(...) end
 end
 
 ---`DevMsgN()` but for Entity
@@ -23,7 +25,7 @@ end
 ---`ErrorNoHalt()` but only if `developer` is above 3
 ---@param ... any
 function DevError(...)
-  if GetConVar("developer"):GetInt() >= level then ErrorNoHalt("[ERROR] ", ...) end
+  if cv_dev:GetInt() >= level then ErrorNoHalt("[ERROR] ", ...) end
 end
 
 ---`MsgN()` but for Entity
