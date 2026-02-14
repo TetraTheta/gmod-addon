@@ -1,5 +1,7 @@
 --[[
-  Admin Weapon
+########################
+#     ADMIN WEAPON     #
+########################
 ]]
 sound.Add({
   name = "SCAW.Base.Explosion",
@@ -16,7 +18,7 @@ sound.Add({
   volume = 0.35,
   level = SNDLVL_GUNFIRE,
   pitch = 100,
-  sound = {")weapons/airboat/airboat_gun_lastshot1.wav", ")weapons/airboat/airboat_gun_lastshot2.wav"}
+  sound = { ")weapons/airboat/airboat_gun_lastshot1.wav", ")weapons/airboat/airboat_gun_lastshot2.wav" }
 })
 
 sound.Add({
@@ -47,26 +49,85 @@ sound.Add({
 })
 
 --[[
-  Pistol
+###############
+#     MP5     #
+###############
 ]]
 sound.Add({
-  name = "SCW.Pistol.Primary",
+  name = "SCW.MP5.Primary",
   channel = CHAN_WEAPON,
   volume = 0.4,
   level = SNDLVL_70dB,
-  pitch = {95, 105},
-  sound = ")weapons/m4a1/m4a1-1.wav"
+  pitch = { 95, 105 },
+  sound = ")weapons/scw_mp5/fire.mp3"
 })
 
+sound.Add({
+  name = "SCW.MP5.FirstRaise",
+  channel = CHAN_WEAPON,
+  volume = 0.4,
+  level = SNDLVL_70dB,
+  pitch = 100,
+  sound = ")weapons/scw_mp5/firstraise.mp3"
+})
+
+sound.Add({
+  name = "SCW.MP5.BoltGrab",
+  channel = CHAN_WEAPON,
+  volume = 0.4,
+  level = SNDLVL_70dB,
+  pitch = 100,
+  sound = ")weapons/scw_mp5/boltgrab.mp3"
+})
+
+sound.Add({
+  name = "SCW.MP5.BoltBack",
+  channel = CHAN_WEAPON,
+  volume = 0.4,
+  level = SNDLVL_70dB,
+  pitch = 100,
+  sound = ")weapons/scw_mp5/boltback.mp3"
+})
+
+sound.Add({
+  name = "SCW.MP5.MagOut",
+  channel = CHAN_WEAPON,
+  volume = 0.4,
+  level = SNDLVL_70dB,
+  pitch = 100,
+  sound = ")weapons/scw_mp5/magout.mp3"
+})
+
+sound.Add({
+  name = "SCW.MP5.MagIn",
+  channel = CHAN_WEAPON,
+  volume = 0.4,
+  level = SNDLVL_70dB,
+  pitch = 100,
+  sound = ")weapons/scw_mp5/magin.mp3"
+})
+
+sound.Add({
+  name = "SCW.MP5.BoltRelease",
+  channel = CHAN_WEAPON,
+  volume = 0.4,
+  level = SNDLVL_70dB,
+  pitch = 100,
+  sound = ")weapons/scw_mp5/boltrelease.mp3"
+})
+
+
 --[[
-  MP5SD
+#################
+#     MP5SD     #
+#################
 ]]
 sound.Add({
   name = "SCW.MP5SD.Primary",
   channel = CHAN_WEAPON,
   volume = 0.4,
   level = SNDLVL_70dB,
-  pitch = {95, 105},
+  pitch = { 95, 105 },
   sound = ")weapons/scw_mp5sd/fire.mp3"
 })
 
@@ -84,20 +145,36 @@ sound.Add({
   channel = CHAN_WEAPON,
   volume = 0.4,
   level = SNDLVL_70dB,
-  pitch = {95, 105},
+  pitch = { 95, 105 },
   sound = ")weapons/scw_mp5sd/reload.mp3"
 })
 
 --[[
-  SCAR20
+##################
+#     Pistol     #
+##################
+]]
+sound.Add({
+  name = "SCW.Pistol.Primary",
+  channel = CHAN_WEAPON,
+  volume = 0.4,
+  level = SNDLVL_70dB,
+  pitch = { 95, 105 },
+  sound = ")weapons/m4a1/m4a1-1.wav"
+})
+
+--[[
+##################
+#     SCAR20     #
+##################
 ]]
 sound.Add({
   name = "SCW.SCAR20.Primary",
   channel = CHAN_WEAPON, -- CHAN_STATIC
   volume = 1.0,
-  level = SNDLVL_95dB, -- 93
+  level = SNDLVL_95dB,   -- 93
   pitch = 100,
-  sound = {")weapons/scw_scar20/scar20_01.mp3", ")weapons/scw_scar20/scar20_02.mp3", ")weapons/scw_scar20/scar20_03.mp3"}
+  sound = { ")weapons/scw_scar20/scar20_01.mp3", ")weapons/scw_scar20/scar20_02.mp3", ")weapons/scw_scar20/scar20_03.mp3" }
 })
 
 sound.Add({

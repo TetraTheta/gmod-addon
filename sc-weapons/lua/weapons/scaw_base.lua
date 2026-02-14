@@ -9,15 +9,15 @@ SWEP.Category = "SC Admin Weapon"
 SWEP.DrawAmmo = false
 SWEP.IconOverride = "" -- [!!!!] Override this from child SWEPs!
 SWEP.Instructions = "" -- [!!!!] Override this from child SWEPs!
-SWEP.PrintName = "" -- [!!!!] Override this from child SWEPs!
-SWEP.Purpose = "" -- [!!!!] Override this from child SWEPs!
-SWEP.Slot = 0 -- [!!!!] Override this from child SWEPs!
-SWEP.SlotPos = 0 -- [!!!!] Override this from child SWEPs!
+SWEP.PrintName = ""    -- [!!!!] Override this from child SWEPs!
+SWEP.Purpose = ""      -- [!!!!] Override this from child SWEPs!
+SWEP.Slot = 0          -- [!!!!] Override this from child SWEPs!
+SWEP.SlotPos = 0       -- [!!!!] Override this from child SWEPs!
 SWEP.Spawnable = false -- [!!!!] Override this from child SWEPs!
 SWEP.UseHands = true
-SWEP.ViewModel = "" -- [!!!!] Override this from child SWEPs!
+SWEP.ViewModel = ""    -- [!!!!] Override this from child SWEPs!
 SWEP.Weight = 999
-SWEP.WorldModel = "" -- [!!!!] Override this from child SWEPs!
+SWEP.WorldModel = ""   -- [!!!!] Override this from child SWEPs!
 SWEP.CFG_HoldType = "" -- [!!!!] Override this from child SWEPs!
 -- SWEP Primary Fire
 SWEP.Primary.Ammo = "Pistol"
@@ -159,7 +159,7 @@ end
 
 -- Disable ammo display
 function SWEP:CustomAmmoDisplay()
-  return {false, 0, 0, 0}
+  return { false, 0, 0, 0 }
 end
 
 function SWEP:FireAnimationEvent(_, _, evt, _)

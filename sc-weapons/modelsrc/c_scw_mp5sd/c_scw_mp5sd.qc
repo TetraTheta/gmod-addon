@@ -182,7 +182,7 @@ $sequence "grenade" {
 $sequence "reload" {
 	"c_scw_mp5sd_anims/reload.smd"
 	activity "ACT_VM_RELOAD" 1
-	{ event AE_CL_PLAYSOUND 0 "weapon_mp5sdm203.Reload" }
+	{ event AE_CL_PLAYSOUND 0 "SCW.MP5SD.Reload" }
 	fadein 0.2
 	fadeout 0.2
 	fps 30
