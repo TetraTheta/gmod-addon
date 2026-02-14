@@ -52,6 +52,6 @@ end
 ############################
 ]]
 --
-concommand.Add("sc_remove", function(p, _, _, _) RemoveOne(p) end, nil, "Remove the entity you are looking at.", {FCVAR_NONE})
-concommand.Add("sc_remove_all", function(p, _, _, _) RemoveAll(p) end, nil, "Remove every entities that are connected to the entity you are looking at.", {FCVAR_NONE})
-concommand.Add("sc_remove_constraints", function(p, _, _, _) RemoveConstraints(p) end, nil, "Remove constraints from the entity you are looking at.", {FCVAR_NONE})
+concommand.Add("sc_remove", function(p, _, _, _) RemoveOne(p) end, nil, "Remove the entity you are looking at.", { FCVAR_NONE })
+concommand.Add("sc_remove_all", function(p, _, _, _) RemoveAll(p) end, nil, "Remove every entities that are connected to the entity you are looking at.", { FCVAR_NONE })
+concommand.Add("sc_remove_constraints", function(p, _, _, _) RemoveConstraints(p) end, nil, "Remove constraints from the entity you are looking at.", { FCVAR_NONE })

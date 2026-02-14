@@ -121,7 +121,7 @@ local function SetSpeedCompletion(_, args)
     elseif args:StartsWith("sc_setspeed all reset") then
       return SuggestPlayer("sc_setspeed all reset", args)
     else
-      return {"sc_setspeed all fast ", "sc_setspeed all reset "}
+      return { "sc_setspeed all fast ", "sc_setspeed all reset " }
     end
   elseif args:StartsWith("sc_setspeed d") then
     if args:StartsWith("sc_setspeed duck fast") then
@@ -129,7 +129,7 @@ local function SetSpeedCompletion(_, args)
     elseif args:StartsWith("sc_setspeed duck reset") then
       return SuggestPlayer("sc_setspeed duck reset", args)
     else
-      return {"sc_setspeed duck fast ", "sc_setspeed duck reset "}
+      return { "sc_setspeed duck fast ", "sc_setspeed duck reset " }
     end
   elseif args:StartsWith("sc_setspeed r") then
     if args:StartsWith("sc_setspeed run fast") then
@@ -137,7 +137,7 @@ local function SetSpeedCompletion(_, args)
     elseif args:StartsWith("sc_setspeed run reset") then
       return SuggestPlayer("sc_setspeed run reset", args)
     else
-      return {"sc_setspeed run fast ", "sc_setspeed run reset "}
+      return { "sc_setspeed run fast ", "sc_setspeed run reset " }
     end
   elseif args:StartsWith("sc_setspeed s") then
     if args:StartsWith("sc_setspeed slow fast") then
@@ -145,7 +145,7 @@ local function SetSpeedCompletion(_, args)
     elseif args:StartsWith("sc_setspeed slow reset") then
       return SuggestPlayer("sc_setspeed slow reset", args)
     else
-      return {"sc_setspeed slow fast ", "sc_setspeed slow reset "}
+      return { "sc_setspeed slow fast ", "sc_setspeed slow reset " }
     end
   elseif args:StartsWith("sc_setspeed w") then
     if args:StartsWith("sc_setspeed walk fast") then
@@ -153,10 +153,10 @@ local function SetSpeedCompletion(_, args)
     elseif args:StartsWith("sc_setspeed walk reset") then
       return SuggestPlayer("sc_setspeed walk reset", args)
     else
-      return {"sc_setspeed walk fast ", "sc_setspeed walk reset "}
+      return { "sc_setspeed walk fast ", "sc_setspeed walk reset " }
     end
   else
-    return {"sc_setspeed all", "sc_setspeed duck", "sc_setspeed run", "sc_setspeed slow", "sc_setspeed walk"}
+    return { "sc_setspeed all", "sc_setspeed duck", "sc_setspeed run", "sc_setspeed slow", "sc_setspeed walk" }
   end
 end
 
@@ -167,5 +167,5 @@ end
 ############################
 ]]
 --
-concommand.Add("sc_setspeed", function(p, _, args, _) SetSpeed(p, args, false) end, SetSpeedCompletion, "Set player's speed.", {FCVAR_NONE})
-concommand.Add("sc_setspeed_s", function(p, _, args, _) SetSpeed(p, args, true) end, SetSpeedCompletion, "Set player's speed. (Silent)", {FCVAR_NONE})
+concommand.Add("sc_setspeed", function(p, _, args, _) SetSpeed(p, args, false) end, SetSpeedCompletion, "Set player's speed.", { FCVAR_NONE })
+concommand.Add("sc_setspeed_s", function(p, _, args, _) SetSpeed(p, args, true) end, SetSpeedCompletion, "Set player's speed. (Silent)", { FCVAR_NONE })

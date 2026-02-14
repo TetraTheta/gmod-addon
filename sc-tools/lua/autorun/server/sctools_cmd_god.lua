@@ -212,10 +212,10 @@ end
 ############################
 ]]
 --
-concommand.Add("sc_set_god", function(p, _, _, _) SetNPCGod(p, true, false) end, nil, "Enable GodMode to the NPC you're looking at.", {FCVAR_NONE})
-concommand.Add("sc_set_god_s", function(p, _, _, _) SetNPCGod(p, true, true) end, nil, "Enable GodMode to the NPC you're looking at. (Silent)", {FCVAR_NONE})
-concommand.Add("sc_unset_god", function(p, _, _, _) SetNPCGod(p, false, false) end, nil, "Disable GodMode to the NPC you're looking at.", {FCVAR_NONE})
-concommand.Add("sc_unset_god_s", function(p, _, _, _) SetNPCGod(p, false, true) end, nil, "Enable GodMode to the NPC you're looking at. (Silent)", {FCVAR_NONE})
+concommand.Add("sc_set_god", function(p, _, _, _) SetNPCGod(p, true, false) end, nil, "Enable GodMode to the NPC you're looking at.", { FCVAR_NONE })
+concommand.Add("sc_set_god_s", function(p, _, _, _) SetNPCGod(p, true, true) end, nil, "Enable GodMode to the NPC you're looking at. (Silent)", { FCVAR_NONE })
+concommand.Add("sc_unset_god", function(p, _, _, _) SetNPCGod(p, false, false) end, nil, "Disable GodMode to the NPC you're looking at.", { FCVAR_NONE })
+concommand.Add("sc_unset_god_s", function(p, _, _, _) SetNPCGod(p, false, true) end, nil, "Enable GodMode to the NPC you're looking at. (Silent)", { FCVAR_NONE })
 --
-concommand.Add("sc_god", function(ply, _, args, _) SetPlayerGod(ply, args, false) end, GodPlayerComplete, "Toggle GodMode for the player.", {FCVAR_NONE})
-concommand.Add("sc_god_s", function(ply, _, args, _) SetPlayerGod(ply, args, true) end, GodPlayerSComplete, "Toggle GodMode for the player. (Silent)", {FCVAR_NONE})
+concommand.Add("sc_god", function(ply, _, args, _) SetPlayerGod(ply, args, false) end, GodPlayerComplete, "Toggle GodMode for the player.", { FCVAR_NONE })
+concommand.Add("sc_god_s", function(ply, _, args, _) SetPlayerGod(ply, args, true) end, GodPlayerSComplete, "Toggle GodMode for the player. (Silent)", { FCVAR_NONE })

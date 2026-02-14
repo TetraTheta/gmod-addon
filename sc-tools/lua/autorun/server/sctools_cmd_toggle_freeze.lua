@@ -114,4 +114,4 @@ end
 #     COMMAND REGISTER     #
 ############################
 ]]
-concommand.Add("sc_toggle_freeze", function(ply, _, _, _) ToggleFreeze(ply) end, nil, "Freeze the entity you are looking at.", {FCVAR_NONE})
+concommand.Add("sc_toggle_freeze", function(ply, _, _, _) ToggleFreeze(ply) end, nil, "Freeze the entity you are looking at.", { FCVAR_NONE })

@@ -16,9 +16,9 @@ local cv = GetConVar("sc_auto_flashlight")
 ---@param p Player
 hook.Add("PlayerSpawn", "SCTOOLS_EnableFlashlightAuto", function(p, _)
   local cvv = cv:GetInt()
-  local toggle = b_band(cvv, 1) > 0 -- Disable / Enable
+  local toggle = b_band(cvv, 1) > 0    -- Disable / Enable
   local allplayer = b_band(cvv, 2) > 0 -- Super Admin Only / All Players
-  local verbose = b_band(cvv, 4) > 0 -- Verbose
+  local verbose = b_band(cvv, 4) > 0   -- Verbose
   if not toggle then return end
   if not allplayer and p:IsUserGroup("superadmin") and not p:CanUseFlashlight() then
     -- Super Admin Only
@@ -78,5 +78,5 @@ end
 ############################
 ]]
 --
-concommand.Add("sc_flashlight", function(p, _, args, _) EnableFlashlight(p, args, false) end, AllowFlashlightCompletion, "Enable flashlight for the given player.", {FCVAR_NONE})
-concommand.Add("sc_flashlight_s", function(p, _, args, _) EnableFlashlight(p, args, true) end, AllowFlashlightSCompletion, "Enable flashlight for the given player. (Silent)", {FCVAR_NONE})
+concommand.Add("sc_flashlight", function(p, _, args, _) EnableFlashlight(p, args, false) end, AllowFlashlightCompletion, "Enable flashlight for the given player.", { FCVAR_NONE })
+concommand.Add("sc_flashlight_s", function(p, _, args, _) EnableFlashlight(p, args, true) end, AllowFlashlightSCompletion, "Enable flashlight for the given player. (Silent)", { FCVAR_NONE })
