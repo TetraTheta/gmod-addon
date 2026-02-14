@@ -55,5 +55,5 @@ end
 ############################
 ]]
 --
-concommand.Add("sc_gca", function(ply, _, args, _) GiveCurrentAmmo(ply, args, false) end, GiveCurrentAmmoCompletion, "Refill the ammo of the weapon that the given player is holding.", {FCVAR_NONE})
-concommand.Add("sc_gca_s", function(ply, _, args, _) GiveCurrentAmmo(ply, args, true) end, GiveCurrentAmmoSCompletion, "Refill the ammo of the weapon that the given player is holding. (Silent)", {FCVAR_NONE})
+concommand.Add("sc_gca", function(ply, _, args, _) GiveCurrentAmmo(ply, args, false) end, GiveCurrentAmmoCompletion, "Refill the ammo of the weapon that the given player is holding.", { FCVAR_NONE })
+concommand.Add("sc_gca_s", function(ply, _, args, _) GiveCurrentAmmo(ply, args, true) end, GiveCurrentAmmoSCompletion, "Refill the ammo of the weapon that the given player is holding. (Silent)", { FCVAR_NONE })

@@ -36,7 +36,7 @@ local function OverhealPlayer(ply, args, silent)
     local sccm = GetConVar("sk_suitcharger_citadel_maxarmor")
     local ma = sccm ~= nil and sccm:GetInt() or 200 -- 'IsValid(ConVar)' returns 'false' wtf?
     p:SetHealth(p:GetMaxHealth())
-    p:SetArmor(ma) -- instead of 'p:GetMaxArmor()' which is limited to 100 by default
+    p:SetArmor(ma)                                  -- instead of 'p:GetMaxArmor()' which is limited to 100 by default
     if not silent then
       if p ~= ply then SendMessage(Format("[SC Heal] Overhealed %s.", p:Nick()), ply) end
       SendMessage("[SC Heal] You are overhealed.", p, HUD_PRINTTALK)
@@ -69,8 +69,8 @@ end
 ############################
 ]]
 --
-concommand.Add("sc_heal", function(ply, _, args, _) HealPlayer(ply, args, false) end, HealComplete, "Heal player.", {FCVAR_NONE})
-concommand.Add("sc_heal_s", function(ply, _, args, _) HealPlayer(ply, args, true) end, HealComplete, "Heal player. (Silent)", {FCVAR_NONE})
+concommand.Add("sc_heal", function(ply, _, args, _) HealPlayer(ply, args, false) end, HealComplete, "Heal player.", { FCVAR_NONE })
+concommand.Add("sc_heal_s", function(ply, _, args, _) HealPlayer(ply, args, true) end, HealComplete, "Heal player. (Silent)", { FCVAR_NONE })
 --
-concommand.Add("sc_overheal", function(ply, _, args, _) OverhealPlayer(ply, args, false) end, OverHealComplete, "Overheal player.", {FCVAR_NONE})
-concommand.Add("sc_overheal_s", function(ply, _, args, _) OverhealPlayer(ply, args, true) end, OverHealComplete, "Overheal player. (Silent)", {FCVAR_NONE})
+concommand.Add("sc_overheal", function(ply, _, args, _) OverhealPlayer(ply, args, false) end, OverHealComplete, "Overheal player.", { FCVAR_NONE })
+concommand.Add("sc_overheal_s", function(ply, _, args, _) OverhealPlayer(ply, args, true) end, OverHealComplete, "Overheal player. (Silent)", { FCVAR_NONE })

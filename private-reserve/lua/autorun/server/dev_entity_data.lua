@@ -58,7 +58,7 @@ end
 --
 ---@return table
 local function GetEntityDataAutoComplete(_, _, _)
-  return {"get_entity_data", "get_entity_data save"}
+  return { "get_entity_data", "get_entity_data save" }
 end
 
 --
@@ -68,4 +68,4 @@ end
 ############################
 ]]
 --
-concommand.Add("get_entity_data", function(ply, _, args, _) GetEntityData(ply, args) end, GetEntityDataAutoComplete, "Show entity data you're looking at.", {FCVAR_NONE})
+concommand.Add("get_entity_data", function(ply, _, args, _) GetEntityData(ply, args) end, GetEntityDataAutoComplete, "Show entity data you're looking at.", { FCVAR_NONE })

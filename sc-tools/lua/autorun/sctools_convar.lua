@@ -4,7 +4,7 @@
 ---@param min number
 ---@param max number
 local function _CreateClientConVar(convar, description, def, min, max)
-  local flags = {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE, FCVAR_USERINFO}
+  local flags = { FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE, FCVAR_USERINFO }
   if not ConVarExists(convar) then CreateConVar(convar, def, flags, description, min, max) end
 end
 
@@ -14,7 +14,7 @@ end
 ---@param min number
 ---@param max number
 local function _CreateConVar(convar, description, def, min, max)
-  local flags = {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_NOTIFY}
+  local flags = { FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_NOTIFY }
   if not ConVarExists(convar) then CreateConVar(convar, def, flags, description, min, max) end
 end
 
@@ -42,9 +42,9 @@ _CreateConVar("sc_disable_obstacle", "Disable collision check for obstacle objec
 _CreateConVar("sc_disable_player_collision", "Disable player-to-player collision.", "0", 0, 1)
 _CreateConVar("sc_disconnect_mode", "Re-enable 'disconnect' console command implemented in map.", "0", 0, 1)
 _CreateConVar("sc_remove_effect", "Entity remove effect type. 0 = Remove, 1 = Dissolve.", "0", 0, 1)
-CreateConVar("sc_glow_class", "", {FCVAR_REPLICATED}, "Which class of entities should be glowed?")
-CreateConVar("sc_glow_model", "", {FCVAR_REPLICATED}, "Which model of entities should be glowed?")
-CreateConVar("sc_glow_name", "", {FCVAR_REPLICATED}, "Which targetname of entities should be glowed?")
+CreateConVar("sc_glow_class", "", { FCVAR_REPLICATED }, "Which class of entities should be glowed?")
+CreateConVar("sc_glow_model", "", { FCVAR_REPLICATED }, "Which model of entities should be glowed?")
+CreateConVar("sc_glow_name", "", { FCVAR_REPLICATED }, "Which targetname of entities should be glowed?")
 --
 --[[
 Client ConVar

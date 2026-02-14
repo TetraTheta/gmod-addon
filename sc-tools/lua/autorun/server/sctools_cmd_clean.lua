@@ -360,5 +360,5 @@ end
 ############################
 ]]
 --
-concommand.Add("sc_clean", Clean, CleanAutoComplete, "Remove objects from the current map.", {FCVAR_NONE})
-concommand.Add("sc_clean_s", CleanS, CleanSAutoComplete, "Remove objects from the current map. (Silent)", {FCVAR_NONE})
+concommand.Add("sc_clean", Clean, CleanAutoComplete, "Remove objects from the current map.", { FCVAR_NONE })
+concommand.Add("sc_clean_s", CleanS, CleanSAutoComplete, "Remove objects from the current map. (Silent)", { FCVAR_NONE })
