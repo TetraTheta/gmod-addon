@@ -1,0 +1,17 @@
+"VertexlitGeneric"
+{
+  "$basetexture" "models/weapons/cw_scw_mp5/stock2_c"
+  "$bumpmap" "models/weapons/cw_scw_mp5/mount_n"
+  "$cloakPassEnabled" "1"
+  "$detail" "models/weapons/cw_scw_mp5/stock2_g"
+  "$detailblendfactor" "0.01"
+  "$detailblendmode" "1"
+  "$detailscale" "1"
+  "$nocull" "1"
+  "$normalmapalphaenvmapmask" "1"
+  "$phong" "1"
+  "$phongalbedotint" "1"
+  "$phongboost" "0.5"
+  "$phongexponent" "24"
+  "$phongfresnelranges" "[.2 1.2 8]"
+}

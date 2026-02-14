@@ -1,0 +1,23 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\weapons\pack\pap_rainbow"
+	//make the texture more detailed
+	$detail "models\weapons\pack\pap_rainbow"
+	$detailscale "1"
+	$detailblendmode "0"
+	$detailblendfactor "0.9"
+
+	// small reflection
+	$reflectivity "[2 2 2]"
+
+                     "Proxies"
+             		  {
+   	   	"AnimatedTexture"
+    		  {
+     		    "animatedtexturevar" "$basetexture"
+      		    "animatedtextureframenumvar" "$frame"
+         		    "animatedtextureframerate" "30"
+     		  }
+  	 }
+	
+}
