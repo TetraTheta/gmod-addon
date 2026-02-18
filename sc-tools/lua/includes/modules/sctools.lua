@@ -11,6 +11,7 @@ local b_bor = bit.bor
 local c_RemoveAll = constraint.RemoveAll
 local DevEntMsgN = DevEntMsgN
 local ErrorNoHalt = ErrorNoHalt
+local f_CreateDir = file.CreateDir
 local f_Exists = file.Exists
 local f_Read = file.Read
 local f_Write = file.Write
@@ -59,12 +60,14 @@ local function _ReadFile(f)
   if f_Exists(f, "DATA") then
     c = f_Read(f, "DATA")
     if not c then
-      ErrorNoHalt("[ERROR] Can't open file: ", f)
+      ErrorNoHalt("[SC Tools] [ERROR] Can't open file: ", f)
       return tbl
     end
   else
-    --ErrorNoHalt("[ERROR] File doesn't exist: ", f)
-    c = f_Read("data_static/" .. f, "GAME")
+    --ErrorNoHalt("[SC Tools] [ERROR] File doesn't exist: ", f)
+    local df = f:gsub("%.txt$", ".default.txt")
+    c = f_Read("data_static/" .. df, "GAME")
+    f_CreateDir("sctools")
     f_Write(f, c)
   end
 
