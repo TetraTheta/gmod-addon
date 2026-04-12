@@ -30,7 +30,7 @@ SWEP.Primary.CFG_Force = 1000000
 SWEP.Primary.CFG_Recoil = 0.1
 SWEP.Primary.CFG_ShotCount = 75
 SWEP.Primary.CFG_Sound = "" -- [!!!!] Override this from child SWEPs!
-SWEP.Primary.CFG_Spread = 0.015
+SWEP.Primary.CFG_Spread = Vector(0.015, 0.015, 0)
 -- SWEP Secondary Fire
 SWEP.Secondary.Ammo = "Pistol"
 SWEP.Secondary.Automatic = true
@@ -49,7 +49,7 @@ SWEP.Secondary.MOD_ABG_Delay = 0.05
 SWEP.Secondary.MOD_ABG_Force = 1000000
 SWEP.Secondary.MOD_ABG_ShotCount = 7
 SWEP.Secondary.MOD_ABG_Sound = "SCAW.Base.Airboat"
-SWEP.Secondary.MOD_ABG_Spread = 0.2
+SWEP.Secondary.MOD_ABG_Spread = Vector(0.2, 0.2, 0)
 -- SWEP Secondary Fire | Mode 3 - Combine Ball
 SWEP.Secondary.MOD_CMB_Delay = 0.5
 SWEP.Secondary.MOD_CMB_Lifespan = 5
@@ -206,7 +206,7 @@ function SWEP:PrimaryAttack()
     Dir = owner:GetAimVector(),
     Force = self.Primary.CFG_Force,
     Num = self.Primary.CFG_ShotCount,
-    Spread = Vector(self.Primary.CFG_Spread, self.Primary.CFG_Spread, 0),
+    Spread = self.Primary.CFG_Spread,
     Src = owner:GetShootPos(),
     Tracer = 1,
     TracerName = "Tracer",
@@ -300,7 +300,6 @@ function SWEP:_SA_AirboatGun()
   -- NPC cannot do secondary attack
   local owner = self:GetOwner() ---@cast owner Player
   ---@type Bullet
-  ---@diagnostic disable-next-line: missing-fields
   local bullet = {
     AmmoType = self.Secondary.Ammo,
     ---@param di CTakeDamageInfo
