@@ -12,10 +12,8 @@
     "||",
     "continue"
   ],
-  // Remove 'missing-fields' when https://github.com/luttje/glua-api-snippets/issues/85 is resolved
   "Lua.diagnostics.disable": [
     "duplicate-set-field",
-    "missing-fields",
     "undefined-global"
   ],
   "Lua.runtime.version": "LuaJIT",
