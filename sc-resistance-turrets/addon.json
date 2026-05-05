@@ -8,6 +8,7 @@
   "ignore": [
     ".ignore/*",
     "models/.ignore/*",
-    "modelsrc/*"
+    "modelsrc/*",
+    "thumb.jpg"
   ]
 }
