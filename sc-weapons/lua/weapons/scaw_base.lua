@@ -49,7 +49,7 @@ SWEP.Secondary.MOD_ABG_Delay = 0.05
 SWEP.Secondary.MOD_ABG_Force = 1000000
 SWEP.Secondary.MOD_ABG_ShotCount = 7
 SWEP.Secondary.MOD_ABG_Sound = "SCAW.Base.Airboat"
-SWEP.Secondary.MOD_ABG_Spread = Vector(0.2, 0.2, 0)
+SWEP.Secondary.MOD_ABG_Spread = Vector(0.015, 0.015, 0)
 -- SWEP Secondary Fire | Mode 3 - Combine Ball
 SWEP.Secondary.MOD_CMB_Delay = 0.5
 SWEP.Secondary.MOD_CMB_Lifespan = 5
