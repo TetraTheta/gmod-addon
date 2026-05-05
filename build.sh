@@ -36,13 +36,14 @@ resolve_target() {
   lower="$(printf '%s' "$arg" | tr '[:upper:]' '[:lower:]')"
 
   case "$lower" in
-    1|dark-mode|dark_mode) echo "dark-mode" ;;
-    2|fix-map|fix_map) echo "fix-map" ;;
-    3|more-properties|more_properties) echo "more-properties" ;;
-    4|private-reserve|private_reserve) echo "private-reserve" ;;
-    5|sc-resistance-turrets|sc_resistance_turrets) echo "sc-resistance-turrets" ;;
-    6|sc-tools|sc_tools) echo "sc-tools" ;;
-    7|sc-weapons|sc_weapons) echo "sc-weapons" ;;
+    1|cheat-map|cheat_map) echo "cheat-map" ;;
+    2|dark-mode|dark_mode) echo "dark-mode" ;;
+    3|fix-map|fix_map) echo "fix-map" ;;
+    4|more-properties|more_properties) echo "more-properties" ;;
+    5|private-reserve|private_reserve) echo "private-reserve" ;;
+    6|sc-resistance-turrets|sc_resistance_turrets) echo "sc-resistance-turrets" ;;
+    7|sc-tools|sc_tools) echo "sc-tools" ;;
+    8|sc-weapons|sc_weapons) echo "sc-weapons" ;;
     *) echo "" ;;
   esac
 }
@@ -50,13 +51,14 @@ resolve_target() {
 show_target_prompt() {
   {
     echo "What do you want to build?"
-    echo "[1] Dark Mode"
-    echo "[2] Fix Map"
-    echo "[3] More Properties"
-    echo "[4] Private Reserve"
-    echo "[5] SC Resistance Turrets"
-    echo "[6] SC Tools"
-    echo "[7] SC Weapons"
+    echo "[1] Cheat Map"
+    echo "[2] Dark Mode"
+    echo "[3] Fix Map"
+    echo "[4] More Properties"
+    echo "[5] Private Reserve"
+    echo "[6] SC Resistance Turrets"
+    echo "[7] SC Tools"
+    echo "[8] SC Weapons"
   } >&2
   read -r -p "Choice: " choice >&2
   resolve_target "$choice"
