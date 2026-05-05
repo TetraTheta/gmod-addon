@@ -6,6 +6,7 @@
     "roleplay"
   ],
   "ignore": [
-    "lua/.ignore/*"
+    "lua/.ignore/*",
+    "thumb.jpg"
   ]
 }

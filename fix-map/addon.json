@@ -5,6 +5,7 @@
     "fun"
   ],
   "ignore": [
-    "README.md"
+    "README.md",
+    "thumb.png"
   ]
 }
