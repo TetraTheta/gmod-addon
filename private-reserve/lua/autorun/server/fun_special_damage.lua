@@ -57,7 +57,7 @@ hook.Add("EntityTakeDamage", "PR_SpecialDamage", function(e, dmg)
   if e:IsPlayer() then
     -- Process damage applied to the player
     -- I don't like being insta-killed by flying objects
-    if band(dmg:GetDamageType(), DMG_CRUSH) then
+    if dmg:IsDamageType(DMG_CRUSH) then
       dmg:SetDamage(1)
       dmg:SetMaxDamage(1)
       dmg:SetDamageForce(dmg:GetDamageForce():GetNormalized())
