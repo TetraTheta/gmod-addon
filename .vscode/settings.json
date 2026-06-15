@@ -6,11 +6,11 @@
   "Lua.runtime.nonstandardSymbol": [
     "!",
     "!=",
+    "&&",
     "/**/",
     "//",
-    "&&",
-    "||",
-    "continue"
+    "continue",
+    "||"
   ],
   "Lua.diagnostics.disable": [
     "duplicate-set-field",

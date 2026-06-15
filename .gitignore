@@ -69,8 +69,9 @@ luac.out
 
 # End of https://www.toptal.com/developers/gitignore/api/lua,visualstudiocode,blender
 
-.build/
-.ignore/
-.unpack/
 *.gma
 *.lnk
+.build/
+.ignore/
+.luals/
+.unpack/

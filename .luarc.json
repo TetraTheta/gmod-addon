@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "diagnostics": {
+    "disable": ["duplicate-set-field", "undefined-global"]
+  },
+  "runtime": {
+    "nonstandardSymbol": ["!", "!=", "&&", "/**/", "//", "continue", "||"],
+    "version": "LuaJIT",
+    "special": {
+      "include": "require",
+      "IncludeCS": "require"
+    }
+  },
+  "workspace": {
+    "checkThirdParty": false,
+    "ignoreDir": [".luals", ".vscode"],
+    "library": [".luals/addons/garrysmod/library"]
+  }
+}
