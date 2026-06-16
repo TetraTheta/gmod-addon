@@ -1,7 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
   "diagnostics": {
-    "disable": ["duplicate-set-field", "undefined-global"]
+    "disable": ["duplicate-set-field", "undefined-global"],
+    "neededFileStatus": {
+      "codestyle-check": "Any"
+    }
   },
   "runtime": {
     "nonstandardSymbol": ["!", "!=", "&&", "/**/", "//", "continue", "||"],
@@ -15,5 +18,11 @@
     "checkThirdParty": false,
     "ignoreDir": [".luals", ".vscode"],
     "library": [".luals/addons/garrysmod/library"]
+  },
+  "format": {
+    "defaultConfig": {
+      "indent_size": "2",
+      "indent_style": "space"
+    }
   }
 }
