@@ -10,6 +10,7 @@ if CLIENT then return end
 local b_bor = bit.bor
 local c_RemoveAll = constraint.RemoveAll
 local DevEntMsgN = DevEntMsgN
+local e_FindByClass = ents.FindByClass
 local ErrorNoHalt = ErrorNoHalt
 local f_CreateDir = file.CreateDir
 local f_Exists = file.Exists
@@ -18,6 +19,7 @@ local f_Write = file.Write
 local p_GetHumans = player.GetHumans
 local s_Explode = string.Explode
 local s_find = string.find
+local s_lower = string.lower
 local s_Split = string.Split
 local s_sub = string.sub
 local s_Trim = string.Trim
@@ -49,6 +51,79 @@ local function _DisableNPC(ent)
       end
     end
   end
+end
+
+---Open areaportals that are linked to the removed door.
+---@param ent Entity
+local function _OpenLinkedAreaportals(ent)
+  local doorClasses = {
+    ["func_door"] = true,
+    ["func_door_rotating"] = true,
+    ["prop_door_rotating"] = true,
+  }
+
+  if not doorClasses[ent:GetClass()] then return end
+
+  local name = ent:GetName()
+  if name == "" then return end
+
+  name = s_lower(name)
+  for _, portal in ipairs(e_FindByClass("func_areaportal")) do
+    local target = portal:GetInternalVariable("target")
+    if not isstring(target) then target = portal:GetKeyValues().target end
+    if isstring(target) and s_lower(target) == name then
+      DevEntMsgN(portal, "OpenLinkedAreaportals: Open")
+      portal:Fire("Open")
+    end
+  end
+end
+
+---Open areaportals that are near the removed door.
+---@param ent Entity
+local function _OpenLinkedAreaportals2(ent)
+  local areaportalDistanceSqr = 192 * 192
+  local doorClasses = {
+    ["func_door"] = true,
+    ["func_door_rotating"] = true,
+    ["prop_door_rotating"] = true,
+  }
+
+  if not doorClasses[ent:GetClass()] then return end
+
+  local center = ent:WorldSpaceCenter()
+  local doors = { ent }
+  for class in pairs(doorClasses) do
+    for _, door in ipairs(e_FindByClass(class)) do
+      if door ~= ent and door:NearestPoint(center):DistToSqr(center) <= areaportalDistanceSqr then
+        t_insert(doors, door)
+      end
+    end
+  end
+
+  for _, portal in ipairs(e_FindByClass("func_areaportal")) do
+    local target = portal:GetInternalVariable("target")
+    if not isstring(target) then target = portal:GetKeyValues().target end
+
+    for _, door in ipairs(doors) do
+      local name = door:GetName()
+      if name ~= "" then name = s_lower(name) end
+      local linkedByName = name ~= "" and isstring(target) and s_lower(target) == name
+      -- ponytail: no exposed BSP room query here; nearest portal catches button-driven maps.
+      local linkedByArea = portal:NearestPoint(door:WorldSpaceCenter()):DistToSqr(door:WorldSpaceCenter()) <= areaportalDistanceSqr
+      if linkedByName or linkedByArea then
+        DevEntMsgN(portal, "OpenLinkedAreaportals2: Open")
+        portal:Fire("Open")
+        break
+      end
+    end
+  end
+end
+
+---Remove constraints from entity.
+---@param ent Entity
+local function _RemoveConstraints(ent)
+  _OpenLinkedAreaportals(ent)
+  c_RemoveAll(ent)
 end
 
 ---Read config file and return its value as table
@@ -146,12 +221,20 @@ function sctools.ReloadConfig()
   sctools._SmallModelDir = _ReadFile("sctools/small_model_dir.txt")
 end
 
+---Remove constraints from the entity.
+---@param ent Entity
+function sctools.RemoveConstraints(ent)
+  if not IsValid(ent) or ent:IsPlayer() then return end
+  _RemoveConstraints(ent)
+end
+
 ---Remove the entity with effect.
 ---@param ent Entity
 function sctools.RemoveEntity(ent)
   if not IsValid(ent) or ent:IsPlayer() then return end
   local removeType = GetConVar("sc_remove_effect"):GetInt()
   _DisableNPC(ent)
+  _OpenLinkedAreaportals(ent)
   if removeType == 0 then
     -- Remove effect
     DevEntMsgN(ent, "RemoveEntity: Remove")
