@@ -1,8 +1,8 @@
 require("sctools")
 local c_GetAllConstrainedEntities = constraint.GetAllConstrainedEntities
-local c_RemoveAll = constraint.RemoveAll
 local GetTraceEntity = sctools.GetTraceEntity
 local IsSuperAdmin = sctools.IsSuperAdmin
+local RemoveConstraintsFromEntity = sctools.RemoveConstraints
 local RemoveEntity = sctools.RemoveEntity
 --
 --[[
@@ -35,8 +35,7 @@ end
 ---@param ply Player
 local function RemoveConstraints(ply)
   if not IsSuperAdmin(ply) then return end
-  local e = GetTraceEntity(ply)
-  if IsValid(e) and not e:IsPlayer() then c_RemoveAll(e) end
+  RemoveConstraintsFromEntity(GetTraceEntity(ply))
 end
 
 --
