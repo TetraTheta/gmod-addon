@@ -15,29 +15,6 @@ local function _AddCheckBox(panel, label, convar, help)
   _AddHelp(panel, help)
 end
 
----@param panel DForm
----@param label string
----@param convar string
----@param help string
----@param choices table
-local function _AddComboBox(panel, label, convar, help, choices)
-  local combo = panel:ComboBox(label, convar)
-  combo:SetSortItems(false)
-
-  local current = GetConVar(convar)
-  local currentValue = current and current:GetString() or nil
-  for _, choice in ipairs(choices) do
-    combo:AddChoice(choice.label, choice.value, choice.value == currentValue)
-  end
-
-  ---@diagnostic disable-next-line: inject-field -- This is valid usage but LuaLS thinks it is wrong.
-  function combo:OnSelect(_, _, data)
-    RunConsoleCommand(convar, tostring(data))
-  end
-
-  _AddHelp(panel, help)
-end
-
 hook.Add("PopulateToolMenu", "PrivateReserveSettingsMenu", function()
   ---@param panel DForm
   ---@diagnostic disable-next-line: deprecated -- Deprecation is for 6th argument(config).
@@ -53,10 +30,9 @@ hook.Add("PopulateToolMenu", "PrivateReserveSettingsMenu", function()
     _AddCheckBox(panel, "Automatic loadout", "pr_enable_loadout", "Enables Private Reserve's automatic loadout management.")
     _AddCheckBox(panel, "Shoot ammo crates open", "pr_enable_shoot_open_crate", "Allows ammo crates to open when they are shot.")
     _AddCheckBox(panel, "Special damage rules", "pr_enable_special_damage", "Applies custom damage rules for supported weapons and damage types.")
-    _AddComboBox(panel, "Shoot buttons", "pr_shoot_button_use", "Controls whether buttons can be used by shooting them.", {
-      { label = "Disabled",       value = "0" },
-      { label = "Use only",       value = "1" },
-      { label = "Unlock and use", value = "2" }
-    })
+    _AddCheckBox(panel, "Shoot buttons and doors", "pr_shoot_button_use_enable", "Allows player bullets that hit supported buttons and doors to activate them.")
+    _AddCheckBox(panel, "Unlock shoot-used targets", "pr_shoot_button_use_unlock", "Unlocks the hit button or door before activating it.")
+    panel:TextEntry("Excluded shoot-use weapons", "pr_shoot_button_use_excluded_weapons")
+    _AddHelp(panel, "Space or comma separated weapon classes that cannot activate buttons or doors by shooting.")
   end)
 end)
