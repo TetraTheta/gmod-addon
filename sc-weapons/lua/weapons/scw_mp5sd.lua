@@ -31,7 +31,7 @@ SWEP.Primary.CFG_Delay = 0.05
 SWEP.Primary.CFG_Force = 10000
 SWEP.Primary.CFG_Recoil = 0.1
 SWEP.Primary.CFG_Sound = "SCW.MP5SD.Primary"
-SWEP.Primary.CFG_Spread = 0.015
+SWEP.Primary.CFG_Spread = Vector(0.015, 0.015, 0)
 -- SWEP Secondary Fire
 SWEP.Secondary.Ammo = "SMG1_Grenade"
 SWEP.Secondary.Automatic = true
@@ -81,6 +81,16 @@ function SWEP:CanBePickedUpByNPCs()
   return true
 end
 
+function SWEP:CustomAmmoDisplay()
+  self.AmmoDisplay = self.AmmoDisplay or {}
+  self.AmmoDisplay.Draw = true
+  self.AmmoDisplay.PrimaryClip = self:Clip1()
+  self.AmmoDisplay.PrimaryAmmo = self:Ammo1()
+  self.AmmoDisplay.SecondaryAmmo = self:Ammo2()
+  self.AmmoDisplay.SecondaryClip = nil
+  return self.AmmoDisplay
+end
+
 -- function SWEP:FireAnimationEvent(_, _, evt, _)
 --   -- Disable Brass Shell Ejection
 --   if evt == 6001 then return true end
@@ -104,9 +114,10 @@ function SWEP:PrimaryAttack()
   if game.SinglePlayer() then self:CallOnClient("PrimaryAttack") end
   if not (IsFirstTimePredicted() and self:CanPrimaryAttack()) then return end
   local owner = self:GetOwner()
+  local spread, _, _ = self.Primary.CFG_Spread:Unpack()
   ---@cast owner Player
   self:EmitSound(self.Primary.CFG_Sound)
-  self:ShootBullet(self.Primary.CFG_Damage, 1, self.Primary.CFG_Spread, self.Primary.Ammo, self.Primary.CFG_Force, 1)
+  self:ShootBullet(self.Primary.CFG_Damage, 1, spread, self.Primary.Ammo, self.Primary.CFG_Force, 1)
   self:TakePrimaryAmmo(1)
   self:_RemoveMissile()
   if owner:IsPlayer() then

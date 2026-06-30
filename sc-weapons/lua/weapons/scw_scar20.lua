@@ -31,7 +31,7 @@ SWEP.Primary.CFG_Delay = 0.25
 SWEP.Primary.CFG_Force = 10000
 SWEP.Primary.CFG_Recoil = 0.1
 SWEP.Primary.CFG_Sound = "SCW.SCAR20.Primary"
-SWEP.Primary.CFG_Spread = 0.0
+SWEP.Primary.CFG_Spread = Vector(0, 0, 0)
 -- SWEP Secondary Fire
 SWEP.Secondary.Ammo = ""
 SWEP.Secondary.Automatic = false
@@ -138,9 +138,10 @@ function SWEP:PrimaryAttack()
   if game.SinglePlayer() then self:CallOnClient("PrimaryAttack") end
   if not (IsFirstTimePredicted() and self:CanPrimaryAttack()) then return end
   local owner = self:GetOwner()
+  local spread, _, _ = self.Primary.CFG_Spread:Unpack()
   ---@cast owner Player
   self:EmitSound(self.Primary.CFG_Sound)
-  self:ShootBullet(self.Primary.CFG_Damage, 1, self.Primary.CFG_Spread, self.Primary.Ammo, self.Primary.CFG_Force, 1)
+  self:ShootBullet(self.Primary.CFG_Damage, 1, spread, self.Primary.Ammo, self.Primary.CFG_Force, 1)
   self:TakePrimaryAmmo(1)
   self:_RemoveMissile()
   if owner:IsPlayer() then

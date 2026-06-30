@@ -159,7 +159,13 @@ end
 
 -- Disable ammo display
 function SWEP:CustomAmmoDisplay()
-  return { false, 0, 0, 0 }
+  self.AmmoDisplay = self.AmmoDisplay or {}
+  self.AmmoDisplay.Draw = false
+  self.AmmoDisplay.PrimaryClip = nil
+  self.AmmoDisplay.PrimaryAmmo = nil
+  self.AmmoDisplay.SecondaryAmmo = nil
+  self.AmmoDisplay.SecondaryClip = nil
+  return self.AmmoDisplay
 end
 
 function SWEP:FireAnimationEvent(_, _, evt, _)
