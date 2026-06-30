@@ -35,7 +35,7 @@ SWEP.Primary.CFG_Recoil = 0.1
 SWEP.Primary.CFG_Sound_MeleeHit = "Weapon_Crowbar.Melee_Hit"
 SWEP.Primary.CFG_Sound_MeleeHitWorld = "Weapon_Crowbar.Melee_HitWorld"
 SWEP.Primary.CFG_Sound_Single = "Weapon_Crowbar.Single"
-SWEP.Primary.CFG_Spread = 0.015
+SWEP.Primary.CFG_Spread = Vector(0.015, 0.015, 0)
 -- SWEP Secondary Fire
 SWEP.Secondary.Ammo = ""
 SWEP.Secondary.Automatic = false
