@@ -1,5 +1,8 @@
 local cv_autojump = GetConVar("pr_autojump")
+local cv_autojump_delay = GetConVar("pr_autojump_delay")
+local default_activation_delay = 0.75
 local spam_interval = math.max(0.01, engine.TickInterval())
+local jump_held_since = {}
 local spam_next_flip_time = {}
 local spam_is_key_down = {}
 local spam_announced_state = {}
@@ -7,6 +10,19 @@ local spam_announced_state = {}
 local autojump_state_key = "pr_autojump_server_spam"
 local autojump_reason_key = "pr_autojump_server_spam_reason"
 local autojump_reason_value = "server_allowed"
+
+local function get_autojump_delay()
+  if not cv_autojump_delay then cv_autojump_delay = GetConVar("pr_autojump_delay") end
+  if not cv_autojump_delay then return default_activation_delay end
+
+  return cv_autojump_delay:GetFloat()
+end
+
+local function clear_player_state(steam_id)
+  jump_held_since[steam_id] = nil
+  spam_next_flip_time[steam_id] = nil
+  spam_is_key_down[steam_id] = nil
+end
 
 local function can_use_autojump(ply)
   if not IsValid(ply) then return false end
@@ -29,32 +45,40 @@ local function set_server_spam_state(ply, is_active)
   local steam_id = ply:SteamID64()
   if spam_announced_state[steam_id] == is_active then return end
   spam_announced_state[steam_id] = is_active
-
-  local player_name = ply:Nick()
-  local state_text = is_active and "enabled" or "disabled"
-  --ServerLog(string.format("[AutoJump] Server-managed jump spam %s for %s (%s)\n", state_text, player_name, steam_id))
 end
 
 hook.Add("StartCommand", "PR_AutoJump_ServerSpam", function(ply, cmd)
   local steam_id = ply:SteamID64()
+  if not cv_autojump then cv_autojump = GetConVar("pr_autojump") end
+
+  if not cv_autojump then
+    set_server_spam_state(ply, false)
+    clear_player_state(steam_id)
+    return
+  end
+
   local autojump_mode = cv_autojump:GetInt()
   if autojump_mode <= 0 then
     set_server_spam_state(ply, false)
-    spam_next_flip_time[steam_id] = nil
-    spam_is_key_down[steam_id] = nil
+    clear_player_state(steam_id)
     return
   end
 
   if not can_use_autojump(ply) or not cmd:KeyDown(IN_JUMP) then
     set_server_spam_state(ply, false)
-    spam_next_flip_time[steam_id] = nil
-    spam_is_key_down[steam_id] = nil
+    clear_player_state(steam_id)
+    return
+  end
+
+  local now = CurTime()
+  jump_held_since[steam_id] = jump_held_since[steam_id] or now
+  if now - jump_held_since[steam_id] < get_autojump_delay() then
+    set_server_spam_state(ply, false)
     return
   end
 
   set_server_spam_state(ply, true)
 
-  local now = CurTime()
   local next_flip_time = spam_next_flip_time[steam_id] or 0
   local is_key_down = spam_is_key_down[steam_id]
   if is_key_down == nil then
@@ -82,7 +106,6 @@ end)
 
 hook.Add("PlayerDisconnected", "PR_AutoJump_ServerSpamCleanup", function(ply)
   local steam_id = ply:SteamID64()
-  spam_next_flip_time[steam_id] = nil
-  spam_is_key_down[steam_id] = nil
+  clear_player_state(steam_id)
   spam_announced_state[steam_id] = nil
 end)
