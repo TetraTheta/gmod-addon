@@ -181,13 +181,16 @@ end
 ##################
 ]]
 function SWEP:Reload()
-  -- Convert Pistol ammo to SMG1 ammo
-  if self:Ammo1() == 0 then
+  local ammoNeeded = self:GetMaxClip1() - self:Clip1() - self:Ammo1()
+  if ammoNeeded > 0 then
     local owner = self:GetOwner()
     ---@cast owner Player
     local ammoPistol = owner:GetAmmoCount("Pistol")
-    owner:SetAmmo(0, "Pistol")
-    owner:SetAmmo(ammoPistol, "SMG1")
+    local ammoPistolToUse = math.min(ammoPistol, ammoNeeded)
+    if ammoPistolToUse > 0 then
+      owner:SetAmmo(ammoPistol - ammoPistolToUse, "Pistol")
+      owner:SetAmmo(self:Ammo1() + ammoPistolToUse, "SMG1")
+    end
   end
 
   if self:Clip1() < self:GetMaxClip1() and self:Ammo1() > 0 then self:EmitSound("SCW.MP5SD.Reload") end

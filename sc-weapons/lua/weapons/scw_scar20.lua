@@ -187,13 +187,16 @@ end
 ##################
 ]]
 function SWEP:Reload()
-  local owner = self:GetOwner()
-  ---@cast owner Player
-  -- Convert AR2 ammo to XBowBolt ammo
-  if self:Ammo1() == 0 then
+  local ammoNeeded = self:GetMaxClip1() - self:Clip1() - self:Ammo1()
+  if ammoNeeded > 0 then
+    local owner = self:GetOwner()
+    ---@cast owner Player
     local ammoAR2 = owner:GetAmmoCount("AR2")
-    owner:SetAmmo(0, "AR2")
-    owner:SetAmmo(ammoAR2, "XBowBolt")
+    local ammoAR2ToUse = math.min(ammoAR2, ammoNeeded)
+    if ammoAR2ToUse > 0 then
+      owner:SetAmmo(ammoAR2 - ammoAR2ToUse, "AR2")
+      owner:SetAmmo(self:Ammo1() + ammoAR2ToUse, "XBowBolt")
+    end
   end
 
   if self:Clip1() < self:GetMaxClip1() and self:Ammo1() > 0 then
