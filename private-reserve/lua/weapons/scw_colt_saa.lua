@@ -191,6 +191,22 @@ end
 ##################
 ]]
 function SWEP:Reload()
+  local ammoNeeded = self:GetMaxClip1() - self:Clip1() - self:Ammo1()
+  if ammoNeeded > 0 then
+    local owner = self:GetOwner()
+    ---@cast owner Player
+    local ammoPistol = owner:GetAmmoCount("Pistol")
+    local ammo357ToAdd = math.floor(math.min(ammoPistol, ammoNeeded * 2) / 2)
+    local ammoPistolToUse = ammo357ToAdd * 2
+
+    if ammo357ToAdd > 0 then
+      owner:SetAmmo(ammoPistol - ammoPistolToUse, "Pistol")
+      owner:SetAmmo(self:Ammo1() + ammo357ToAdd, "357")
+    end
+
+    if self:Ammo1() == 0 then return end
+  end
+
   if self:DefaultReload(ACT_VM_RELOAD) then
     self:SetNextPrimaryFire(CurTime() + self:SequenceDuration())
     self:SetNextSecondaryFire(CurTime() + self:SequenceDuration())
