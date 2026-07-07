@@ -1,4 +1,4 @@
-local menu_lib = include("autorun/client/menu_lib.lua") or SC_MenuLib
+local menu_lib = include("autorun/client/menu_lib_scweapons.lua") or SC_MenuLib
 
 hook.Add("PopulateToolMenu", "SCWeaponsSettingsMenu", function()
   ---@param panel DForm
