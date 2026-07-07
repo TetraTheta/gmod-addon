@@ -1,4 +1,4 @@
-local menu_lib = include("autorun/client/menu_lib.lua") or SC_MenuLib
+local menu_lib = include("autorun/client/menu_lib_private_reserve.lua") or SC_MenuLib
 
 hook.Add("PopulateToolMenu", "PrivateReserveSettingsMenu", function()
   ---@param panel DForm
