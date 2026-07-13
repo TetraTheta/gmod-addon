@@ -1,0 +1,14 @@
+{
+  "title": "SC Killfeed",
+  "type": "tool",
+  "tags": [
+    "fun",
+    "roleplay"
+  ],
+  "ignore": [
+    "lua/weapons/.ignore/*",
+    "models/.ignore/*",
+    "modelsrc/*",
+    "thumb.png"
+  ]
+}
