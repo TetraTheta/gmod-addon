@@ -5,7 +5,6 @@ local spam_interval = math.max(0.01, engine.TickInterval())
 local jump_held_since = {}
 local spam_next_flip_time = {}
 local spam_is_key_down = {}
-local spam_announced_state = {}
 
 local autojump_state_key = "pr_autojump_server_spam"
 local autojump_reason_key = "pr_autojump_server_spam_reason"
@@ -19,9 +18,7 @@ local function get_autojump_delay()
 end
 
 local function clear_player_state(steam_id)
-  jump_held_since[steam_id] = nil
-  spam_next_flip_time[steam_id] = nil
-  spam_is_key_down[steam_id] = nil
+  jump_held_since[steam_id], spam_next_flip_time[steam_id], spam_is_key_down[steam_id] = nil, nil, nil
 end
 
 local function can_use_autojump(ply)
@@ -41,30 +38,13 @@ local function set_server_spam_state(ply, is_active)
 
   ply:SetNW2Bool(autojump_state_key, is_active)
   ply:SetNW2String(autojump_reason_key, is_active and autojump_reason_value or "")
-
-  local steam_id = ply:SteamID64()
-  if spam_announced_state[steam_id] == is_active then return end
-  spam_announced_state[steam_id] = is_active
 end
 
 hook.Add("StartCommand", "PR_AutoJump_ServerSpam", function(ply, cmd)
   local steam_id = ply:SteamID64()
   if not cv_autojump then cv_autojump = GetConVar("pr_autojump") end
 
-  if not cv_autojump then
-    set_server_spam_state(ply, false)
-    clear_player_state(steam_id)
-    return
-  end
-
-  local autojump_mode = cv_autojump:GetInt()
-  if autojump_mode <= 0 then
-    set_server_spam_state(ply, false)
-    clear_player_state(steam_id)
-    return
-  end
-
-  if not can_use_autojump(ply) or not cmd:KeyDown(IN_JUMP) then
+  if not cv_autojump or cv_autojump:GetInt() <= 0 or not can_use_autojump(ply) or not cmd:KeyDown(IN_JUMP) then
     set_server_spam_state(ply, false)
     clear_player_state(steam_id)
     return
@@ -105,7 +85,5 @@ hook.Add("PlayerInitialSpawn", "PR_AutoJump_ServerSpamInit", function(ply)
 end)
 
 hook.Add("PlayerDisconnected", "PR_AutoJump_ServerSpamCleanup", function(ply)
-  local steam_id = ply:SteamID64()
-  clear_player_state(steam_id)
-  spam_announced_state[steam_id] = nil
+  clear_player_state(ply:SteamID64())
 end)
