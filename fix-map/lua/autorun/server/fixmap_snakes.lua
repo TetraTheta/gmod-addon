@@ -1,3 +1,16 @@
+--[[
+Mod: Snakes Mod Maps
+Map:
+- beta1f
+- beta2f
+- beta3f
+- beta4f
+- beta5f
+- beta6f
+]]
+---@param curmap string
+---@param nextmap string
+---@param origin Vector
 local function CreateChangeLevel(curmap, nextmap, origin)
   for _, v in ipairs(ents.FindByClass("trigger_once")) do
     if v:GetPos() == origin then
@@ -22,21 +35,51 @@ hook.Add("InitPostEntity", "FixMap_Snakes_ChangeLevel", function()
   if SERVER then
     local cmap = game.GetMap()
     if cmap == "beta1f" then
+      --[[
+      ############
+      #  beta1f  #
+      ############
+      ]]
       CreateChangeLevel("beta1f", "beta2f", Vector(1480, 449.5, -1158))
     elseif cmap == "beta2f" then
+      --[[
+      ############
+      #  beta2f  #
+      ############
+      ]]
       CreateChangeLevel("beta2f", "beta3f", Vector(846, 2984.69, -510.09))
       local t = ents.FindByName("ftrigger")[1]
       if t ~= nil then t:Input("AddOutput", t, nil, "OnStartTouch lever,Unlock,,0,1") end
     elseif cmap == "beta3f" then
+      --[[
+      ############
+      #  beta3f  #
+      ############
+      ]]
       CreateChangeLevel("beta3f", "beta4f", Vector(3587.27, 296.04, 255.09))
     elseif cmap == "beta4f" then
+      --[[
+      ############
+      #  beta4f  #
+      ############
+      ]]
       CreateChangeLevel("beta4f", "beta5f", Vector(1372, 273, 888))
     elseif cmap == "beta5f" then
+      --[[
+      ############
+      #  beta5f  #
+      ############
+      ]]
       CreateChangeLevel("beta5f", "beta6f", Vector(-397.5, 228, -604.5))
     end
   end
 end)
 
+--[[
+############
+#  beta6f  #
+############
+]]
 hook.Add("PlayerSpawn", "FixMap_Snakes_beta6f", function(ply, _)
   if SERVER and (game.GetMap() == "beta6f") then
     ply:SetPos(Vector(3287, -1349.43, -50))

@@ -1,3 +1,8 @@
+--[[
+Mod: OUTSKIRTS
+Map:
+- nuggie01
+]]
 hook.Add("PlayerSpawn", "FixMap_OUTSKIRTS_nuggie01", function(ply, _)
   if SERVER and (game.GetMap() == "nuggie01") then
     ply:SetPos(Vector(-6496, -413, 33))

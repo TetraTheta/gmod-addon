@@ -1,3 +1,8 @@
+--[[
+Mod: Mistake of Pythagoras
+Map:
+- ks_mop_pita3
+]]
 hook.Add("InitPostEntity", "FixMap_MOP_ks_mop_pita3", function()
   if SERVER and game.GetMap() == "ks_mop_pita3" then
     local ax1_exists = false

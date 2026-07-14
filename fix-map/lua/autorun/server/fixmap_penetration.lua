@@ -1,3 +1,8 @@
+--[[
+Mod: Penetration
+Map:
+- penetration05
+]]
 hook.Add("InitPostEntity", "FixMap_Penetration_penetration05", function()
   if SERVER and game.GetMap() == "penetration05" then
     local tm = ents.FindByName("template_gunship01")[1]

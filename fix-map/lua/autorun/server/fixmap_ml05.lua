@@ -1,3 +1,15 @@
+--[[
+Mod: Map Labs #05: Half-Life Abridged
+Map:
+- ml05_bmi
+- ml05_grigoriswildride
+- ml05_training_facilitea
+- ml05_wegothostiles
+- ml05_werepullingout
+]]
+---@param class string
+---@param origin Vector
+---@param name string|nil
 local function FindByClassAndOrigin(class, origin, name)
   local classes = ents.FindByClass(class)
   for _, v in ipairs(classes) do
@@ -12,6 +24,11 @@ local function FindByClassAndOrigin(class, origin, name)
   return NULL
 end
 
+--[[
+##############
+#  ml05_bmi  #
+##############
+]]
 hook.Add("PlayerSpawn", "FixMap_ML05_ml05_bmi", function(ply, _)
   if SERVER and (game.GetMap() == "ml05_bmi") then
     ply:SetPos(Vector(128, 64, 91))
@@ -19,6 +36,11 @@ hook.Add("PlayerSpawn", "FixMap_ML05_ml05_bmi", function(ply, _)
   end
 end)
 
+--[[
+###########################
+#  ml05_grigoriswildride  #
+###########################
+]]
 hook.Add("PlayerSpawn", "FixMap_ML05_ml05_grigoriswildride", function(ply, _)
   if SERVER and (game.GetMap() == "ml05_grigoriswildride") then
     ply:SetPos(Vector(-956, 592, 17))
@@ -26,6 +48,11 @@ hook.Add("PlayerSpawn", "FixMap_ML05_ml05_grigoriswildride", function(ply, _)
   end
 end)
 
+--[[
+#############################
+#  ml05_training_facilitea  #
+#############################
+]]
 hook.Add("PlayerSpawn", "FixMap_ML05_ml05_training_facilitea", function(ply, _)
   if SERVER and (game.GetMap() == "ml05_training_facilitea") then
     ply:SetPos(Vector(-256, 472, 80))
@@ -33,6 +60,11 @@ hook.Add("PlayerSpawn", "FixMap_ML05_ml05_training_facilitea", function(ply, _)
   end
 end)
 
+--[[
+#############################
+#  ml05_training_facilitea  #
+#############################
+]]
 hook.Add("PlayerSpawn", "FixMap_ML05_ml05_wegothostiles", function(ply, _)
   if SERVER and (game.GetMap() == "ml05_wegothostiles") then
     ply:SetPos(Vector(-408, -384, 324))
@@ -40,6 +72,11 @@ hook.Add("PlayerSpawn", "FixMap_ML05_ml05_wegothostiles", function(ply, _)
   end
 end)
 
+--[[
+#########################
+#  ml05_werepullingout  #
+#########################
+]]
 hook.Add("InitPostEntity", "FixMap_ML05_ml05_werepullingout_IO", function()
   if SERVER and game.GetMap() == "ml05_werepullingout" then
     local to = FindByClassAndOrigin("trigger_once", Vector(-368, 2208, 475.81))

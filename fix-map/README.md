@@ -1,5 +1,9 @@
 # Fix Map
 
+## Usage
+
+Write Lua file here, and make a hard-link to lua directory of add-on.
+
 ## TODO
 
 Use [`InitPostEntity`](https://wiki.facepunch.com/gmod/GM:InitPostEntity) and [`PlayerSelectSpawn`](https://wiki.facepunch.com/gmod/GM:PlayerSelectSpawn).
