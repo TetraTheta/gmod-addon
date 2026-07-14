@@ -1,3 +1,8 @@
+--[[
+Mod: Death Mine Island
+Map:
+- deadman_island
+]]
 hook.Add("InitPostEntity", "FixMap_DMI_deadman_island_IPE", function()
   local k1 = ents.FindByName("blackout")[1]
   local k2 = ents.FindByName("startcam")[2]

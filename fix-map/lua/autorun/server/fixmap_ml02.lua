@@ -1,3 +1,14 @@
+--[[
+Mod: Map Labs #02: Episode One
+Map:
+- ep1_eeh
+- outland_resistance
+]]
+--[[
+#############
+#  ep1_eeh  #
+#############
+]]
 hook.Add("PlayerSpawn", "FixMap_ML02_ep1_eeh", function(ply, _)
   if SERVER and (game.GetMap() == "ep1_eeh") then
     ply:Give("item_suit", false)
@@ -7,7 +18,11 @@ hook.Add("PlayerSpawn", "FixMap_ML02_ep1_eeh", function(ply, _)
     ply:Give("weapon_physcannon", false)
   end
 end)
-
+--[[
+########################
+#  outland_resistance  #
+########################
+]]
 hook.Add("PlayerSpawn", "FixMap_ML02_outland_resistance", function(ply, _)
   if SERVER and (game.GetMap() == "outland_resistance") then
     ply:SetPos(Vector(230, -770, -60))
