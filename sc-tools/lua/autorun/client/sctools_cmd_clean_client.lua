@@ -43,3 +43,5 @@ net.Receive("SCTOOLS_CleanResult", function(_, _)
   if sound then _ShowNotification(result.decals, "Decals") end
   if sound then s_PlaySound("garrysmod/ui_hover.wav") end
 end)
+--
+net.Receive("SCTOOLS_CleanRagdolls", function(_, _) game.RemoveRagdolls() end)
