@@ -15,6 +15,7 @@ local u_Compress = util.Compress
 local u_TableToJSON = util.TableToJSON
 --
 util.AddNetworkString("SCTOOLS_CleanResult")
+util.AddNetworkString("SCTOOLS_CleanRagdolls")
 --
 --[[
 ###########################
@@ -107,12 +108,17 @@ end
 
 ---@return integer
 local function CleanRagdolls()
+  -- Due to the ragdoll limitation, this variable only stores server-sided ragdoll count
   local result = 0
   for _, v in ipairs(e_GetAll()) do
     if IsValid(v) and v:GetClass() == "prop_ragdoll" and IsValid(v:GetPhysicsObject()) and v:GetName() == "" then
       RemoveEntity(v)
       result = result + 1
     end
+  end
+  for _, v in ipairs(player.GetHumans()) do
+    net.Start("SCTOOLS_CleanRagdolls")
+    net.Send(v)
   end
 
   local max = GetConVar("g_ragdoll_maxcount"):GetInt()
