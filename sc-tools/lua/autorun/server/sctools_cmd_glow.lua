@@ -29,10 +29,17 @@ end
 ###########################
 ]]
 --
+---@param ply Player|Entity
+---@return boolean
+local function _CanModifyGlow(ply)
+  return not IsValid(ply) or not ply:IsPlayer() or ply:IsUserGroup("superadmin")
+end
+
 ---@param target string
 ---@param args table
 ---@param isAdd boolean `true`: Add, `false`: Remove
-local function GlowModify(target, args, isAdd)
+local function GlowModify(ply, target, args, isAdd)
+  if not _CanModifyGlow(ply) or args[1] == nil or args[1] == "" then return end
   local elem_str = GetConVar(target):GetString()
   local elem_tbl = _StringToTable(elem_str)
   local val = isAdd and true or nil
@@ -54,11 +61,11 @@ end
 ############################
 ]]
 --
-concommand.Add("sc_glow_add_class", function(_, _, args, _) GlowModify("sc_glow_class", args, true) end, nil, "Make entities with given class to glow", { FCVAR_NONE })
-concommand.Add("sc_glow_remove_class", function(_, _, args, _) GlowModify("sc_glow_class", args, false) end, nil, "Stop entities with given class from glowing", { FCVAR_NONE })
+concommand.Add("sc_glow_add_class", function(ply, _, args, _) GlowModify(ply, "sc_glow_class", args, true) end, nil, "Make entities with given class to glow", { FCVAR_NONE })
+concommand.Add("sc_glow_remove_class", function(ply, _, args, _) GlowModify(ply, "sc_glow_class", args, false) end, nil, "Stop entities with given class from glowing", { FCVAR_NONE })
 --
-concommand.Add("sc_glow_add_model", function(_, _, args, _) GlowModify("sc_glow_model", args, true) end, nil, "Make entities with given model to glow", { FCVAR_NONE })
-concommand.Add("sc_glow_remove_model", function(_, _, args, _) GlowModify("sc_glow_model", args, false) end, nil, "Stop entities with given model from glowing", { FCVAR_NONE })
+concommand.Add("sc_glow_add_model", function(ply, _, args, _) GlowModify(ply, "sc_glow_model", args, true) end, nil, "Make entities with given model to glow", { FCVAR_NONE })
+concommand.Add("sc_glow_remove_model", function(ply, _, args, _) GlowModify(ply, "sc_glow_model", args, false) end, nil, "Stop entities with given model from glowing", { FCVAR_NONE })
 --
-concommand.Add("sc_glow_add_name", function(_, _, args, _) GlowModify("sc_glow_name", args, true) end, nil, "Make entities with given targetname to glow", { FCVAR_NONE })
-concommand.Add("sc_glow_remove_name", function(_, _, args, _) GlowModify("sc_glow_name", args, false) end, nil, "Stop entities with given targetname from glowing", { FCVAR_NONE })
+concommand.Add("sc_glow_add_name", function(ply, _, args, _) GlowModify(ply, "sc_glow_name", args, true) end, nil, "Make entities with given targetname to glow", { FCVAR_NONE })
+concommand.Add("sc_glow_remove_name", function(ply, _, args, _) GlowModify(ply, "sc_glow_name", args, false) end, nil, "Stop entities with given targetname from glowing", { FCVAR_NONE })

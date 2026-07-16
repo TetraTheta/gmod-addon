@@ -8,7 +8,7 @@ local cv_sc_pitch = GetConVar("sc_change_sound_pitch")
 ]]
 --
 ---@param t EmitSoundInfo
-hook.Add("EntityEmitSound", "SCTOOLS_SoundPitchClient", function(t)
+hook.Add("EntityEmitSound", "SCTOOLS_SoundPitchServer", function(t)
   if not cv_sc_pitch then cv_sc_pitch = GetConVar("sc_change_sound_pitch") end
   local p = t.Pitch
   ---@cast p number

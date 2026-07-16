@@ -36,7 +36,7 @@ local u_TraceLine = util.TraceLine
 ---'Disable' NPC if applicable.
 ---@param ent Entity
 local function _DisableNPC(ent)
-  if t_IsEmpty(sctools._NPCDisable) then return end
+  if t_IsEmpty(sctools._NPCDisable) or CLIENT then return end
   local class = ent:GetClass()
   if sctools._NPCDisable[class] then
     for _, v in ipairs(sctools._NPCDisable[class]) do
@@ -56,6 +56,8 @@ end
 ---Open areaportals that are linked to the removed door.
 ---@param ent Entity
 local function _OpenLinkedAreaportals(ent)
+  if CLIENT then return end
+
   local doorClasses = {
     ["func_door"] = true,
     ["func_door_rotating"] = true,
@@ -81,6 +83,8 @@ end
 ---Open areaportals that are near the removed door.
 ---@param ent Entity
 local function _OpenLinkedAreaportals2(ent)
+  if CLIENT then return end
+
   local areaportalDistanceSqr = 192 * 192
   local doorClasses = {
     ["func_door"] = true,
@@ -122,6 +126,7 @@ end
 ---Remove constraints from entity.
 ---@param ent Entity
 local function _RemoveConstraints(ent)
+  if CLIENT then return end
   _OpenLinkedAreaportals(ent)
   c_RemoveAll(ent)
 end
@@ -170,7 +175,8 @@ local function _RemoveEntity(ent)
   if not IsValid(ent) or ent:IsPlayer() then return end
   -- remove effect
   -- https://github.com/Facepunch/garrysmod/blob/master/garrysmod/gamemodes/sandbox/entities/weapons/gmod_tool/stools/remover.lua
-  c_RemoveAll(ent)
+  -- constraints are only available in SERVER
+  if SERVER then c_RemoveAll(ent) end
   -- Removal delay: 0.1 second
   timer.Simple(0.1, function() if IsValid(ent) then ent:Remove() end end)
   ent:SetNotSolid(true)
@@ -241,6 +247,12 @@ function sctools.RemoveEntity(ent)
     ent.SCTOOLS_REMOVAL = true ---@diagnostic disable-line inject-field
     _RemoveEntity(ent)
   elseif removeType == 1 then
+    -- CLIENT can't dissolve entity, so just remove it
+    if CLIENT then
+      DevEntMsgN(ent, "RemoveEntity: Remove")
+      ent.SCTOOLS_REMOVAL = true ---@diagnostic disable-line inject-field
+      _RemoveEntity(ent)
+    end
     -- Dissolve effect
     local class = ent:GetClass()
     local class_break = {
