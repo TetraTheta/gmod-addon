@@ -4,7 +4,7 @@ sctools.command = {}
 sctools.protect = {} -- GodMode (Hidden Table)
 module("sctools", package.seeall)
 --
-if CLIENT then return end
+--if CLIENT then return end
 --
 -- localize functions for optimization
 local b_bor = bit.bor
