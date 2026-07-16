@@ -1,8 +1,12 @@
+require("sctools")
 local m_floor = math.floor
 local n_AddLegacy = notification.AddLegacy
 local s_PlaySound = surface.PlaySound
+local t_insert = table.insert
 local u_Decompress = util.Decompress
 local u_JSONToTable = util.JSONToTable
+--
+local ragdolls = setmetatable({}, { __mode = "v" }) -- 'value'(Ragdoll) is weak reference (can be garbage collected)
 --
 ---@param value any
 ---@param msg string
@@ -44,4 +48,36 @@ net.Receive("SCTOOLS_CleanResult", function(_, _)
   if sound then s_PlaySound("garrysmod/ui_hover.wav") end
 end)
 --
-net.Receive("SCTOOLS_CleanRagdolls", function(_, _) game.RemoveRagdolls() end)
+net.Receive("SCTOOLS_CleanRagdolls", function(_, _)
+  -- attempt to remove with effect
+  for _, v in ipairs(ents.FindByClass("client_ragdoll")) do
+    if IsValid(v) then
+      if sctools ~= nil then
+        sctools.RemoveEntity(v)
+      else
+        v:Remove()
+      end
+    end
+  end
+  for _, v in ipairs(ragdolls) do
+    if IsValid(v) then
+      if sctools ~= nil then
+        sctools.RemoveEntity(v)
+      else
+        v:Remove()
+      end
+    end
+  end
+  ragdolls = {}
+  -- fallback: just remove them
+  game.RemoveRagdolls()
+end)
+--[[
+################
+#     HOOK     #
+################
+]]
+--
+hook.Add("CreateClientsideRagdoll", "SCTOOLS_RagdollClientCreation", function(_, ragdoll)
+  t_insert(ragdolls, ragdoll)
+end)
