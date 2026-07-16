@@ -13,7 +13,7 @@ end
 ---@param ... any
 function DevEntMsgN(ent, ...)
   local entity = ""
-  if ent:GetName() == "" then
+  if CLIENT or ent:GetName() == "" then -- CLIENT can't call ent:GetName()
     entity = Format("%s (#%s) ", ent:GetClass(), ent:EntIndex())
   else
     entity = Format("%s (#%s, %s) ", ent:GetClass(), ent:EntIndex(), ent:GetName())
@@ -32,7 +32,7 @@ end
 ---@param ent Entity
 function EntMsgN(ent, ...)
   local entity = ""
-  if ent:GetName() == "" then
+  if CLIENT or ent:GetName() == "" then
     entity = Format("%s (#%s) ", ent:GetClass(), ent:EntIndex())
   else
     entity = Format("%s (#%s, %s) ", ent:GetClass(), ent:EntIndex(), ent:GetName())
