@@ -281,6 +281,10 @@ function sctools.RemoveEntity(ent)
     else
       DevEntMsgN(ent, "RemoveEntity: Dissolve")
       ent.SCTOOLS_REMOVAL = true ---@diagnostic disable-line inject-field
+      -- surprisingly, calling Entity:Dissolve() directly is highly optimized.
+      -- It runs natively in C++ using direct memory pointers, avoiding the heavy
+      -- server overhead of assigning targetnames and performing string lookups
+      -- that a manual env_entity_dissolver would require.
       ent:Dissolve(ENTITY_DISSOLVE_NORMAL, 100)
       -- Removal delay: 1 second
       timer.Simple(1, function() if IsValid(ent) then ent:Remove() end end)
