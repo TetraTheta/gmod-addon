@@ -1,6 +1,8 @@
 --[[
 Mod: Single Map Collection
 Map:
+- a_brief_detour
+- facility
 - mining_complex
 - random_17
 - so_much_for_freeman
@@ -44,9 +46,20 @@ local function FindByClassAndName(class, name)
   return NULL
 end
 
-hook.Add("InitPostEntity", "FixMap_SingleMapCollection", function()
+hook.Add("InitPostEntity", "FixMap_SingleMapCollection_InitPostEntity", function()
   if SERVER then
-    if curmap == "mining_complex" then
+    if curmap == "facility" then
+      --[[
+      ##############
+      #  facility  #
+      ##############
+      ]]
+      print("[Single Map Collection] Fixing weak explosion...")
+      local exp = FindByClassAndName("env_physexplosion", "physexplosion_ambush")
+      exp:SetKeyValue("magnitude", "1600")
+      local logic = FindByClassAndName("logic_relay", "relay_ambush_group1")
+      logic:Input("AddOutput", logic, nil, "OnTrigger door_combine_assault1,Kill,,1.9,-1")
+    elseif curmap == "mining_complex" then
       --[[
       ####################
       #  mining_complex  #
@@ -117,6 +130,20 @@ hook.Add("InitPostEntity", "FixMap_SingleMapCollection", function()
         airel1:SetKeyValue("target", "!player")
         airel1:Fire("ApplyRelationship", "", 0)
       end
+    end
+  end
+end)
+
+hook.Add("PlayerSpawn", "FixMap_SingleMapCollection_PlayerSpawn", function(ply, _)
+  if SERVER then
+    if curmap == "a_brief_detour" then
+      --[[
+      ####################
+      #  a_brief_detour  #
+      ####################
+      ]]
+      ply:SetPos(Vector(-1000, 256, 160))
+      ply:SetEyeAngles(Angle(0, 0, 0))
     end
   end
 end)
