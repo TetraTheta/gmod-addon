@@ -48,7 +48,16 @@ end
 
 hook.Add("InitPostEntity", "FixMap_SingleMapCollection_InitPostEntity", function()
   if SERVER then
-    if curmap == "facility" then
+    if curmap == "abandon" then
+      --[[
+      #############
+      #  abandon  #
+      #############
+      ]]
+      print("[Single Map Collection] Fixing (possibly) broken garage door...")
+      local button = FindByClassAndName("func_button", "button_gate1")
+      button:Input("AddOutput", button, nil, "OnPressed Gate1,Open,,30.0,-1")
+    elseif curmap == "facility" then
       --[[
       ##############
       #  facility  #
@@ -79,12 +88,12 @@ hook.Add("InitPostEntity", "FixMap_SingleMapCollection_InitPostEntity", function
       print("[Single Map Collection] Fixing slow winch...")
       local train = FindByClassAndName("func_tracktrain", "winch_r_ds_pp")
       train:SetKeyValue("startspeed", "100")
-      print("[Single Map Collection] Fixing sequence...")
-      local drum = FindByClassAndName("prop_physics", "ug_exp")
-      drum:Input("AddOutput", drum, nil, "OnBreak up_powerbox,SetAnimation,openPowerBox,0.5,-1")
-      drum:Input("AddOutput", drum, nil, "OnBreak up_door,Unlock,,1.0,-1")
-      drum:Input("AddOutput", drum, nil, "OnBreak up_sound,PlaySound,,1.0,-1")
-      drum:Input("AddOutput", drum, nil, "OnBreak up_door,Open,,1.2,-1")
+      -- print("[Single Map Collection] Fixing sequence...")
+      -- local drum = FindByClassAndName("prop_physics", "ug_exp")
+      -- drum:Input("AddOutput", drum, nil, "OnBreak up_powerbox,SetAnimation,openPowerBox,0.5,-1")
+      -- drum:Input("AddOutput", drum, nil, "OnBreak up_door,Unlock,,1.0,-1")
+      -- drum:Input("AddOutput", drum, nil, "OnBreak up_sound,PlaySound,,1.0,-1")
+      -- drum:Input("AddOutput", drum, nil, "OnBreak up_door,Open,,1.2,-1")
     elseif curmap == "so_much_for_freeman" then
       --[[
       #########################
