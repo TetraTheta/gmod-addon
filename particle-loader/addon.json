@@ -1,0 +1,12 @@
+{
+  "title": "Particle Loader",
+  "type": "effects",
+  "tags": [
+    "scenic",
+    "realism"
+  ],
+  "ignore": [
+    "README.md",
+    "thumb.png"
+  ]
+}
