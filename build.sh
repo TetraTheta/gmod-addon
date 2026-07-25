@@ -166,11 +166,11 @@ case "$target" in
     default_copy_dst="$ADDONS/DarkMode"
     copy_mode="directory"
     ;;
-  private-reserve)
-    artifact_path="$(build_gma "private-reserve")"
-    default_copy_dst="$ADDONS_PRIVATE"
-    copy_mode="file"
-    ;;
+  # private-reserve)
+  #   artifact_path="$(build_gma "private-reserve")"
+  #   default_copy_dst="$ADDONS_PRIVATE"
+  #   copy_mode="file"
+  #   ;;
   *)
     artifact_path="$(build_gma "$target")"
     default_copy_dst="$ADDONS_TEST"
