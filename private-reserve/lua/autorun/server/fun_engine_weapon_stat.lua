@@ -1,6 +1,6 @@
 local weapon_spread = {
   weapon_pistol = Vector(0.005, 0.005, 0),
-  weapon_smg1 = Vector(0.005, 0.005, 0),
+  --weapon_smg1 = Vector(0.005, 0.005, 0), -- replaced by 'weapon_smg2'
   weapon_ar2 = Vector(0.005, 0.005, 0),
   weapon_shotgun = Vector(0.04, 0.04, 0)
 }
