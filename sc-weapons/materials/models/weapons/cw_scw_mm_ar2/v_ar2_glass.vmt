@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$additive" "1"
+	"$basetexture" "models/weapons/cw_scw_mm_ar2/v_ar2_glass_d"
+	"$bumpmap" "models/weapons/cw_scw_mm_ar2/v_ar2_glass_n"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[1 1 1]"
+	"$normalmapalphaenvmapmask" "1"
+	"$phong" "1"
+	"$phongboost" "100"
+	"$phongexponent" "100"
+	"$phongfresnelranges" "[2 4 6]"
+	"$rimlight" "1"
+	"$rimlightboost" "0.2"
+	"$rimlightexponent" "50"
+	"$translucent" "1"
+}

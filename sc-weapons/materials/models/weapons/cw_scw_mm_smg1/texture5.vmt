@@ -1,0 +1,16 @@
+"Unlittwotexture"
+{
+	"$basetexture" "models/weapons/cw_scw_mm_smg1/texture5"
+	"$texture2" "models/weapons/cw_scw_mm_smg1/noise"
+	"$additive" "1"
+	"$model" "1"
+	"Proxies"
+	{
+		"TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" "4"
+			"texturescrollangle" "-50"
+		}
+	}
+}
