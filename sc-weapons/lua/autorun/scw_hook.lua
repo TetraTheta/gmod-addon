@@ -57,12 +57,12 @@ local function _AddHooks(className)
 end
 
 --
-_AddHooks("scaw_mp5_clean")
 _AddHooks("scaw_mp5")
-_AddHooks("scaw_mp5sd_clean")
+_AddHooks("scaw_mp5_clean")
 _AddHooks("scaw_mp5sd")
-_AddHooks("scaw_pistol_clean")
+_AddHooks("scaw_mp5sd_clean")
 _AddHooks("scaw_pistol")
+_AddHooks("scaw_pistol_clean")
 --[[
 ##############################################################
 #     PREVENT SECONDARY FIRE WHEN CONTEXT MENU IS OPENED     #
