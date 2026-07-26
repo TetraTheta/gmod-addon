@@ -93,7 +93,7 @@ bridge.Register({
   pr_autojump = { type = "bool", default = "0" },
   pr_autojump_delay = { type = "float", default = "0.75", min = 0, max = 5, decimals = 2 },
   pr_disable_headcrab = { type = "bool", default = "0" },
-  pr_enable_additional_pickup = { type = "bool", default = "0" },
+  pr_edit_weapon_pickup = { type = "bool", default = "0" },
   pr_enable_flying_drops = { type = "bool", default = "0" },
   pr_enable_kill_reload = { type = "bool", default = "0" },
   pr_enable_loadout = { type = "bool", default = "0" },
