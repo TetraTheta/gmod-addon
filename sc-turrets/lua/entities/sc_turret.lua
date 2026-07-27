@@ -133,6 +133,11 @@ local HITGROUP_AIM_GROUPS = {
   [HITGROUP_RIGHTLEG] = 3
 }
 
+local TRACE_PASSABLE_BREAKABLES = {
+  func_breakable = true,
+  func_breakable_surf = true
+}
+
 list.Set("NPC", "sc_turret", {
   Category = ENT.Category,
   Class = "sc_turret",
@@ -293,16 +298,29 @@ end
 ---@param aimPos Vector
 ---@param source Entity
 ---@param startPos Vector
+---@param maxDistance number
 ---@return boolean
-local function HasLineOfSight(target, aimPos, source, startPos)
-  local tr = util.TraceLine({
-    endpos = aimPos,
-    filter = source,
-    mask = MASK_SHOT,
-    start = startPos
-  })
+local function CanShootTarget(target, aimPos, source, startPos, maxDistance)
+  local dir = aimPos - startPos
+  if dir:IsZero() then return false end
 
-  return not tr.Hit or tr.Entity == target
+  local filter = { source }
+  local endPos = startPos + dir:GetNormalized() * maxDistance
+
+  for _ = 0, 3 do
+    local tr = util.TraceLine({
+      endpos = endPos,
+      filter = filter,
+      mask = MASK_SHOT,
+      start = startPos
+    })
+
+    if tr.Entity == target then return true end
+    if not (IsValid(tr.Entity) and TRACE_PASSABLE_BREAKABLES[tr.Entity:GetClass()]) then return false end
+    table.insert(filter, tr.Entity)
+  end
+
+  return false
 end
 
 ---@param self SCTurret
@@ -374,7 +392,7 @@ end
 local function SelectAimPos(self, target, startPos)
   for _, group in ipairs(BuildAimGroups(target)) do
     for _, aimPos in ipairs(group) do
-      if HasLineOfSight(target, aimPos, self, startPos) then return aimPos end
+      if CanShootTarget(target, aimPos, self, startPos, self.Range) then return aimPos end
     end
   end
 
@@ -539,6 +557,8 @@ local function Shoot(self, enemy, aimPos)
   end
 
   local muzzlePos = GetMuzzlePos(self)
+  if enemy ~= self and not CanShootTarget(enemy, aimPos, self, muzzlePos, self.Range) then return end
+
   local dir = (aimPos - muzzlePos):GetNormalized()
 
   ResetSequenceIfValid(self, self.FireSequence)
@@ -842,13 +862,7 @@ function ENT:OnTakeDamage(dmginfo)
   end
 
   local damage = dmginfo:GetDamage()
-  self:SetHealth(self:Health() - damage)
   self.LastSightTime = CurTime() + self.RetireDelay
-
-  if self:Health() <= 0 then
-    self:OnKilled(dmginfo)
-    return damage
-  end
 
   if self.Enabled and self.AutoStart and self.State == STATE_AUTO_SEARCH then
     SetState(self, STATE_DEPLOY)
