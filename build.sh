@@ -62,8 +62,10 @@ show_target_prompt() {
     echo "[8] SC Tools"
     echo "[9] SC Weapons"
   } >&2
-  read -r -p "Choice: " choice >&2
-  resolve_target "$choice"
+  read -r -p "Choice: " choice_arg post_arg >&2 || true
+  local target
+  target="$(resolve_target "$choice_arg")"
+  echo "${target}:${post_arg:-}"
 }
 
 show_post_build_prompt() {
@@ -141,11 +143,17 @@ else
   exit 1
 fi
 
-arg="${1:-}"
-if [[ -z "$arg" ]]; then
-  target="$(show_target_prompt)"
+arg1="${1:-}"
+arg2="${2:-}"
+auto_post_choice=""
+
+if [[ -z "$arg1" ]]; then
+  prompt_res="$(show_target_prompt)"
+  target="${prompt_res%%:*}"
+  auto_post_choice="${prompt_res#*:}"
 else
-  target="$(resolve_target "$arg")"
+  target="$(resolve_target "$arg1")"
+  auto_post_choice="$arg2"
 fi
 
 if [[ -z "$target" ]]; then
@@ -166,11 +174,6 @@ case "$target" in
     default_copy_dst="$ADDONS/DarkMode"
     copy_mode="directory"
     ;;
-  # private-reserve)
-  #   artifact_path="$(build_gma "private-reserve")"
-  #   default_copy_dst="$ADDONS_PRIVATE"
-  #   copy_mode="file"
-  #   ;;
   *)
     artifact_path="$(build_gma "$target")"
     default_copy_dst="$ADDONS_TEST"
@@ -178,7 +181,12 @@ case "$target" in
     ;;
 esac
 
-post_choice="$(show_post_build_prompt)"
+if [[ -n "$auto_post_choice" ]]; then
+  post_choice="$auto_post_choice"
+else
+  post_choice="$(show_post_build_prompt)"
+fi
+
 case "$post_choice" in
   1)
     if [[ "$copy_mode" == "directory" ]]; then
