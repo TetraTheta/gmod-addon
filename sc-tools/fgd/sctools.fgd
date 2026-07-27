@@ -1,0 +1,49 @@
+
+@include "base.fgd"
+@include "halflife2.fgd"
+@include "garrysmod.fgd"
+
+@BaseClass base(Targetname, Origin) = sc_point
+[
+	input Kill(void) : "Removes this entity from the world."
+	input KillHierarchy(void) : "Removes this entity and all its children from the world."
+]
+
+@BaseClass base(Targetname, Origin, Angles) = sc_npc
+[
+	Health(integer) : "Health" : 0 : "NPC health. A value below 1 uses the Lua default."
+	model(studio) : "World Model" : "" : "Optional model override."
+
+	input Kill(void) : "Removes this entity from the world."
+	input KillHierarchy(void) : "Removes this entity and all its children from the world."
+]
+
+@PointClass base(sc_point) iconsprite("editor/lua_run.vmt") = sc_changelevel : "Custom implementation of 'trigger_changelevel' that doesn't require 'info_landmark'"
+[
+	map(string) : "Next Map" : "" : "The name of the map to load next (e.g., gm_construct)."
+
+	input ChangeLevel(void) : "Triggers the level change immediately using the map specified in the 'Next Map' property."
+]
+
+@NPCClass base(sc_npc) studio("models/skeleton/skeleton_torso3.mdl") = npc_lost_soul : "Map Labs Lost Soul"
+[
+]
+
+@NPCClass base(sc_npc) studio("models/monster/subject.mdl") = npc_shadow_walker : "Map Labs Shadow Walker"
+[
+	WeaponModel(studio) : "Weapon Model" : "models/props_canal/mattpipe.mdl" : "Prop model shown as the held melee weapon."
+	DeathSound(sound) : "Death Sound" : "npc/zombie/zombie_die1.wav"
+	PainSound(sound) : "Pain Sound" : "npc/zombie/zombie_pain1.wav"
+	FoundEnemySound(sound) : "Found Enemy Sound" : "npc/zombie/zombie_alert2.wav"
+	CannotOpenDoors(choices) : "Cannot Open Doors" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+
+	input SetSpeedModifier(float) : "Sets the movement speed modifier."
+	input EnableOpenDoors(void) : "Allows this NPC to open doors."
+	input DisableOpenDoors(void) : "Prevents this NPC from opening doors."
+]
+
+// env_hudhint is declared at 'base.fgd', so no need to implement it.

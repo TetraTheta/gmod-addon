@@ -6,7 +6,11 @@
     "roleplay"
   ],
   "ignore": [
+    "fgd/*",
     "lua/.ignore/*",
-    "thumb.jpg"
+    "lua/weapons/.ignore/*",
+    "models/.ignore/*",
+    "modelsrc/*",
+    "thumb.jpg",
   ]
 }
