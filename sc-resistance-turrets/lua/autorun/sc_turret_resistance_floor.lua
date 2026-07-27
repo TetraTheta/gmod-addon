@@ -1,6 +1,6 @@
 -- Register 'Resistance Turret'
 list.Set("NPC", "sc_turret_resistance_floor", {
-  Category = "SC Entities",
+  Category = "SC Entity",
   Class = "npc_turret_floor",
   Health = "255",
   KeyValues = {
