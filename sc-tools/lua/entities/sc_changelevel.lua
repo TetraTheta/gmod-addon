@@ -5,9 +5,9 @@ ENT.Base = "sc_point"
 ENT.Type = "point"
 --
 function ENT:InputChangeLevel(_, _, _)
-  local nmap = self["Map"]
+  local nmap = self.Map
   ---@cast nmap string
-  if nmap then
+  if nmap ~= nil and nmap ~= "" then
     print("[sc_changelevel] Changing level to " .. nmap .. "...")
     game.ConsoleCommand("map " .. nmap .. "\n")
   else
@@ -22,12 +22,8 @@ end
 
 function ENT:KeyValue(key, value)
   if key:lower() == "map" then
-    self["Map"] = value
+    self.Map = value
   else
     self[key] = value
   end
-end
-
-function ENT:PreInitialize()
-  self["Map"] = ""
 end

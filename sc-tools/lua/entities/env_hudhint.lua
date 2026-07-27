@@ -14,7 +14,7 @@ end
 function ENT:InputShowHudHint(activator, _, _)
   if not activator:IsPlayer() then return end
   ---@cast activator Player
-  local vmsg = self["Message"]
+  local vmsg = self.Message
   ---@cast vmsg string
   if vmsg == nil or vmsg == "" then
     local name = self:GetName()
@@ -34,12 +34,8 @@ end
 
 function ENT:KeyValue(key, value)
   if key:lower() == "message" then
-    self["Message"] = value
+    self.Message = value
   else
     self[key] = value
   end
-end
-
-function ENT:PreInitialize()
-  self["Message"] = ""
 end
