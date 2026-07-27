@@ -9,7 +9,7 @@ SWEP.Category = "SC Weapon"
 SWEP.DrawAmmo = true
 SWEP.IconOverride = "materials/entities/weapon_ar2.png"
 SWEP.Instructions = "AR2 (MMod)"
-SWEP.PrintName = "AR2 (MMod)"
+SWEP.PrintName = "Pulse Rifle (MMod)"
 SWEP.Purpose = "Overwatch Standard Issue Pulse Rifle (MMod)"
 SWEP.Slot = 2
 SWEP.SlotPos = 1
@@ -150,6 +150,11 @@ function SWEP:Deploy()
   self:SetNextPrimaryFire(CurTime() + self:SequenceDuration())
   self:SetNextSecondaryFire(CurTime() + self:SequenceDuration())
   return true
+end
+
+function SWEP:FireAnimationEvent(_, _, evt, _)
+  -- Disable Brass Shell Ejection
+  if evt == 6001 then return true end
 end
 
 function SWEP:GetCapabilities()
