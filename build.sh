@@ -42,8 +42,8 @@ resolve_target() {
     4|more-properties|more_properties) echo "more-properties" ;;
     5|private-reserve|private_reserve) echo "private-reserve" ;;
     6|sc-killfeed|sc_killfeed) echo "sc-killfeed" ;;
-    7|sc-resistance-turrets|sc_resistance_turrets) echo "sc-resistance-turrets" ;;
-    8|sc-tools|sc_tools) echo "sc-tools" ;;
+    7|sc-tools|sc_tools) echo "sc-tools" ;;
+    8|sc-turrets|sc_turrets) echo "sc-turrets" ;;
     9|sc-weapons|sc_weapons) echo "sc-weapons" ;;
     *) echo "" ;;
   esac
@@ -58,8 +58,8 @@ show_target_prompt() {
     echo "[4] More Properties"
     echo "[5] Private Reserve"
     echo "[6] SC Killfeed"
-    echo "[7] SC Resistance Turrets"
-    echo "[8] SC Tools"
+    echo "[7] SC Tools"
+    echo "[8] SC Turrets"
     echo "[9] SC Weapons"
   } >&2
   read -r -p "Choice: " choice_arg post_arg >&2 || true
