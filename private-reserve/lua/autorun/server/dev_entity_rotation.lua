@@ -15,6 +15,7 @@ concommand.Add("set_entity_angle", function(ply, _, args)
       phy:SetAngles(targetAng)
     end
     if ent:IsNPC() then
+      ---@cast ent NPC
       ent:SetIdealYawAndUpdate(yaw)
     end
     ply:ChatPrint("Entity Angles changed: " .. tostring(targetAng))
