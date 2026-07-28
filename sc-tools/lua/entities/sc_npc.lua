@@ -5,11 +5,15 @@ if SERVER then AddCSLuaFile() end
 ---@field DebrisModels string[]|nil
 ---@field DefaultHealth integer|nil
 ---@field OnKilled fun(self: ENT, dmginfo: CTakeDamageInfo|nil)
+---@field SCClearEnemy fun(self: ENT)
 ---@field SCDead boolean|nil
 ---@field SCDropDebris fun(self: ENT, dmginfo: CTakeDamageInfo|nil, models: string[]|nil)
+---@field SCFindClosestPlayer fun(self: ENT, maxDistance: number|nil): Player|nil, number
 ---@field SCHealth number|nil
 ---@field SCModel string|nil
 ---@field SCNotifyKilled fun(self: ENT, dmginfo: CTakeDamageInfo|nil)
+---@field SCSetEnemy fun(self: ENT, enemy: Entity|nil)
+---@field SCShouldIgnorePlayers fun(self: ENT): boolean
 DEFINE_BASECLASS("base_ai")
 ENT.Base = "base_ai"
 ENT.DisableDuplicator = false
@@ -146,6 +150,7 @@ end
 
 ---@param dmginfo CTakeDamageInfo|nil
 ---@param models string[]|nil
+---@return Player|nil, number
 function ENT:SCDropDebris(dmginfo, models)
   local debrisModels = models or self.DebrisModels or DEFAULT_DEBRIS_MODELS
   local force = dmginfo ~= nil and dmginfo:GetDamageForce() or vector_origin
@@ -217,6 +222,18 @@ function ENT:SCFindClosestPlayer(maxDistance)
   end
 
   return closest, closestDist
+end
+
+---@return boolean
+function ENT:SCShouldIgnorePlayers()
+  return GetConVar("ai_disabled"):GetBool() or GetConVar("ai_ignoreplayers"):GetBool()
+end
+
+function ENT:SCClearEnemy()
+  ---@diagnostic disable-next-line: redundant-parameter
+  self:SetEnemy(NULL)
+  self:SetNPCState(NPC_STATE_IDLE)
+  self:ClearSchedule()
 end
 
 ---@param enemy Entity|nil

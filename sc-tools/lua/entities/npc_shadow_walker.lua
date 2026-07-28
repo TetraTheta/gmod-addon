@@ -180,11 +180,14 @@ function ENT:OnTakeDamage(dmginfo)
 end
 
 function ENT:GetRelationship(entity)
-  if IsValid(entity) and entity:IsPlayer() then return D_HT end
+  if not IsValid(entity) or not entity:IsPlayer() then return end
+  if self:SCShouldIgnorePlayers() then return D_NU end
+  return D_HT
 end
 
 function ENT:Think()
-  if GetConVar("ai_disabled"):GetBool() then
+  if self:SCShouldIgnorePlayers() then
+    self:SCClearEnemy()
     self:NextThink(CurTime() + 0.25)
     return true
   end

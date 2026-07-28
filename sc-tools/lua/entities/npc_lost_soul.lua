@@ -56,6 +56,13 @@ function ENT:OnTakeDamage(dmginfo)
 end
 
 function ENT:Think()
+  if self:SCShouldIgnorePlayers() then
+    self:SCClearEnemy()
+    self:SetLocalVelocity(vector_origin)
+    self:NextThink(CurTime() + 0.2)
+    return true
+  end
+
   local enemy = self:SCFindClosestPlayer(self.SearchDistance)
   if not IsValid(enemy) then
     self:SetLocalVelocity(vector_origin)
