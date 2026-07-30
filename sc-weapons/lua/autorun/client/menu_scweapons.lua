@@ -9,23 +9,26 @@ hook.Add("PopulateToolMenu", "SCWeaponsSettingsMenu", function()
     panel:Help("Server")
 
     menu_lib.AddServerComboBox(panel, "MP5 default secondary fire", "scaw_mp5_default", setterCmd, "Selects the default secondary fire mode for the SC Admin MP5.", {
-      { label = "Explosion Mode",    value = "1" },
-      { label = "Airboat Gun Mode",  value = "2" },
-      { label = "Combine Ball Mode", value = "3" },
-      { label = "Grenade Mode",      value = "4" }
+      { label = "Explosion Mode",     value = "1" },
+      { label = "Airboat Gun Mode",   value = "2" },
+      { label = "Combine Ball Mode",  value = "3" },
+      { label = "Crossbow Bolt Mode", value = "4" },
+      { label = "Grenade Mode",       value = "5" }
     })
     menu_lib.AddServerComboBox(panel, "MP5SD default secondary fire", "scaw_mp5sd_default", setterCmd, "Selects the default secondary fire mode for the SC Admin MP5SD.", {
-      { label = "Explosion Mode",    value = "1" },
-      { label = "Airboat Gun Mode",  value = "2" },
-      { label = "Combine Ball Mode", value = "3" },
-      { label = "Grenade Mode",      value = "4" }
+      { label = "Explosion Mode",     value = "1" },
+      { label = "Airboat Gun Mode",   value = "2" },
+      { label = "Combine Ball Mode",  value = "3" },
+      { label = "Crossbow Bolt Mode", value = "4" },
+      { label = "Grenade Mode",       value = "5" }
     })
     menu_lib.AddServerCheckBox(panel, "Owner explosion immunity", "scaw_owner_immune_explosion", setterCmd, "Prevents the weapon owner from taking damage from Explosion Mode.")
     menu_lib.AddServerComboBox(panel, "Pistol default secondary fire", "scaw_pistol_default", setterCmd, "Selects the default secondary fire mode for the SC Admin Pistol.", {
-      { label = "Explosion Mode",    value = "1" },
-      { label = "Airboat Gun Mode",  value = "2" },
-      { label = "Combine Ball Mode", value = "3" },
-      { label = "Grenade Mode",      value = "4" }
+      { label = "Explosion Mode",     value = "1" },
+      { label = "Airboat Gun Mode",   value = "2" },
+      { label = "Combine Ball Mode",  value = "3" },
+      { label = "Crossbow Bolt Mode", value = "4" },
+      { label = "Grenade Mode",       value = "5" }
     })
   end)
 end)
