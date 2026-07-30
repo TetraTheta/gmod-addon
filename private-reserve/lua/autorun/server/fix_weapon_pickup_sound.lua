@@ -35,7 +35,7 @@ hook.Add("PlayerCanPickupWeapon", "PR_FixWeaponPickup_Notification", function(pl
   _EnablePickupSound(wep)
 
   timer.Simple(0, function()
-    if not IsValid(ply) or IsValid(wep) or not ply:HasWeapon(class) then return end
+    if not IsValid(ply) or not ply:HasWeapon(class) then return end
     net.Start("PR_FixWeaponPickup_Notification")
     net.WriteString(class)
     net.Send(ply)
