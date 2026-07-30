@@ -319,7 +319,8 @@ $sequence "shake" {
 	fadein 0.2
 	fadeout 0.2
 	node "Fire"
-	fps 30
+	// fps 30
+	fps 45
 	loop
 }
 
@@ -334,7 +335,8 @@ $sequence "fire_alt" {
 	fadein 0.2
 	fadeout 0.2
 	snap
-	fps 30
+	// fps 30
+	fps 45
 }
 
 $sequence "reload" {
@@ -351,7 +353,8 @@ $sequence "reload" {
 	fadein 0.2
 	fadeout 0.2
 	node "Fire"
-	fps 30
+	// fps 30
+	fps 45
 }
 
 // It seems 'ACT_VM_RELOADMIDEMPTY' isn't registered. Maybe MMod exclusive?
