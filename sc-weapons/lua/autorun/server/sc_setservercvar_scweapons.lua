@@ -90,8 +90,8 @@ if bridge.Register == nil then
 end
 
 bridge.Register({
-  scaw_mp5_default = { type = "int", default = "1", min = 1, max = 4 },
-  scaw_mp5sd_default = { type = "int", default = "1", min = 1, max = 4 },
+  scaw_mp5_default = { type = "int", default = "1", min = 1, max = 5 },
+  scaw_mp5sd_default = { type = "int", default = "1", min = 1, max = 5 },
   scaw_owner_immune_explosion = { type = "bool", default = "0" },
-  scaw_pistol_default = { type = "int", default = "1", min = 1, max = 4 },
+  scaw_pistol_default = { type = "int", default = "1", min = 1, max = 5 },
 })

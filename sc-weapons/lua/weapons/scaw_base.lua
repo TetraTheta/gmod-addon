@@ -37,7 +37,7 @@ SWEP.Secondary.Automatic = true
 SWEP.Secondary.ClipSize = 1
 SWEP.Secondary.DefaultClip = 10
 SWEP.Secondary.CFG_Recoil = 0.1
-SWEP.Secondary.MOD_Max = 4
+SWEP.Secondary.MOD_Max = 5
 SWEP.Secondary.MOD_Current = ConVarExists("scaw_pistol_default") and GetConVar("scaw_pistol_default"):GetInt() or 1
 -- SWEP Secondary Fire | Mode 1 - Explosion
 SWEP.Secondary.MOD_EXP_Delay = 0.05
@@ -56,7 +56,12 @@ SWEP.Secondary.MOD_CMB_Lifespan = 5
 SWEP.Secondary.MOD_CMB_Sound1 = "SCAW.Base.CombineBall1"
 SWEP.Secondary.MOD_CMB_Sound2 = "SCAW.Base.CombineBall2"
 SWEP.Secondary.MOD_CMB_Speed = 3000
--- SWEP Secondary Fire | Mode 4 - Armed Grenade
+-- SWEP Secondary Fire | Mode 4 - Crossbow Bolt
+SWEP.Secondary.MOD_BLT_Damage = ConVarExists("sk_plr_dmg_crossbow") and GetConVar("sk_plr_dmg_crossbow"):GetInt() or 100
+SWEP.Secondary.MOD_BLT_Delay = 0.25
+SWEP.Secondary.MOD_BLT_Sound = "Weapon_Crossbow.Single"
+SWEP.Secondary.MOD_BLT_Speed = 3750 -- 2500
+-- SWEP Secondary Fire | Mode 5 - Armed Grenade
 SWEP.Secondary.MOD_GRN_Delay = 0.25
 SWEP.Secondary.MOD_GRN_Force = 1000
 SWEP.Secondary.MOD_GRN_Lifespan = 3
@@ -182,6 +187,7 @@ function SWEP:Precache()
   util.PrecacheSound(self.Primary.CFG_Sound)
   util.PrecacheSound(self.Secondary.MOD_EXP_Sound)
   util.PrecacheSound(self.Secondary.MOD_ABG_Sound)
+  util.PrecacheSound(self.Secondary.MOD_BLT_Sound)
   util.PrecacheSound(self.Secondary.MOD_CMB_Sound1)
   util.PrecacheSound(self.Secondary.MOD_CMB_Sound2)
   util.PrecacheSound(self.Secondary.MOD_GRN_Sound)
@@ -272,6 +278,8 @@ function SWEP:SecondaryAttack()
   elseif mode == 3 then
     self:_SA_CombineBall()
   elseif mode == 4 then
+    self:_SA_CrossbowBolt()
+  elseif mode == 5 then
     self:_SA_Grenade()
   end
 end
@@ -357,6 +365,27 @@ function SWEP:_SA_CombineBall()
   self:EmitSound(self.Secondary.MOD_CMB_Sound1)
   self:EmitSound(self.Secondary.MOD_CMB_Sound2)
   self:_FireEffect(false, self.Secondary.CFG_Recoil, self.Secondary.MOD_CMB_Delay)
+end
+
+function SWEP:_SA_CrossbowBolt()
+  -- NPC cannot do secondary attack
+  local owner = self:GetOwner() ---@cast owner Player
+  if SERVER then
+    local dir = owner:GetAimVector()
+    local bolt = ents.Create("crossbow_bolt")
+    if not IsValid(bolt) then return end
+
+    bolt:SetPos(owner:GetShootPos())
+    bolt:SetAngles(dir:Angle())
+    bolt:Spawn()
+    bolt:Activate()
+    bolt:SetOwner(owner)
+    bolt:SetSaveValue("m_iDamage", self.Secondary.MOD_BLT_Damage)
+    bolt:SetVelocity(dir * self.Secondary.MOD_BLT_Speed)
+  end
+
+  self:EmitSound(self.Secondary.MOD_BLT_Sound)
+  self:_FireEffect(false, self.Secondary.CFG_Recoil, self.Secondary.MOD_BLT_Delay)
 end
 
 function SWEP:_SA_Grenade()
