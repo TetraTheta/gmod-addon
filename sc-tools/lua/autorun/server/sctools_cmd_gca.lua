@@ -5,13 +5,13 @@ local IsSuperAdmin = sctools.IsSuperAdmin
 local GetPlayerByName = sctools.command.GetPlayerByName
 --
 util.AddNetworkString("SCTOOLS_GiveCurrentAmmoSound")
---
+
 --[[
-###########################
-#     COMMAND EXECUTE     #
-###########################
+#################
+#    COMMAND    #
+#################
 ]]
---
+
 ---@param ply Player
 ---@param args table
 ---@param silent boolean
@@ -29,13 +29,12 @@ local function GiveCurrentAmmo(ply, args, silent)
   end
 end
 
---
 --[[
-#################################
-#     COMMAND AUTO COMPLETE     #
-#################################
+##############################
+#    COMMAND AUTOCOMPLETE    #
+##############################
 ]]
---
+
 ---@param args string
 ---@return table
 local function GiveCurrentAmmoCompletion(_, args)
@@ -44,16 +43,15 @@ end
 
 ---@param args string
 ---@return table
-local function GiveCurrentAmmoSCompletion(_, args)
+local function GiveCurrentAmmoSilentCompletion(_, args)
   return SuggestPlayer("sc_gca_s", args)
 end
 
---
 --[[
-############################
-#     COMMAND REGISTER     #
-############################
+##########################
+#    COMMAND REGISTER    #
+##########################
 ]]
---
+
 concommand.Add("sc_gca", function(ply, _, args, _) GiveCurrentAmmo(ply, args, false) end, GiveCurrentAmmoCompletion, "Refill the ammo of the weapon that the given player is holding.", { FCVAR_NONE })
-concommand.Add("sc_gca_s", function(ply, _, args, _) GiveCurrentAmmo(ply, args, true) end, GiveCurrentAmmoSCompletion, "Refill the ammo of the weapon that the given player is holding. (Silent)", { FCVAR_NONE })
+concommand.Add("sc_gca_s", function(ply, _, args, _) GiveCurrentAmmo(ply, args, true) end, GiveCurrentAmmoSilentCompletion, "Refill the ammo of the weapon that the given player is holding. (Silent)", { FCVAR_NONE })

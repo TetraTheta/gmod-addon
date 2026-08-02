@@ -4,7 +4,7 @@ local msgHS = "SCTOOLS_HeadshotEffect"
 util.AddNetworkString(msgBS)
 util.AddNetworkString(msgHS)
 --
-local catAnimal = {
+local cate_animal = {
   npc_barnacle = true,
   npc_bullsquid = true,
   npc_crow = true,
@@ -16,16 +16,14 @@ local catAnimal = {
   npc_pigeon = true,
   npc_seagull = true,
 }
-
-local catAntlion = {
+local cate_antlion = {
   npc_antlion = true,
   npc_antlion_grub = true,
   npc_antlion_worker = true,
   npc_antlionguard = true,
   npc_antlionguardian = true,
 }
-
-local catHumanoid = {
+local cate_humanoid = {
   npc_alyx = true,
   npc_barney = true,
   npc_breen = true,
@@ -48,8 +46,7 @@ local catHumanoid = {
   npc_zombie_torso = true,
   npc_zombine = true,
 }
-
-local catRobot = {
+local cate_robot = {
   npc_clawscanner = true,
   npc_combine_camera = true,
   npc_crabsynth = true,
@@ -58,12 +55,11 @@ local catRobot = {
   npc_mortarsynth = true,
   npc_turret_ceiling = true,
 }
-
-local catSynth = {
+local cate_synth = {
   npc_hunter = true,
 }
 
-local hasArmor = {
+local has_armor = {
   npc_combine_s = true,
   npc_metropolice = true,
 }
@@ -71,15 +67,15 @@ local hasArmor = {
 ---@param npc NPC
 local function _GetNPCType(npc)
   local class = npc:GetClass()
-  if catAnimal[class] then
+  if cate_animal[class] then
     return 0
-  elseif catAntlion[class] then
+  elseif cate_antlion[class] then
     return 1
-  elseif catHumanoid[class] then
+  elseif cate_humanoid[class] then
     return 2
-  elseif catRobot[class] then
+  elseif cate_robot[class] then
     return 3
-  elseif catSynth[class] then
+  elseif cate_synth[class] then
     return 4
   else
     return -1
@@ -113,24 +109,21 @@ hook.Add("PostEntityTakeDamage", "SCTOOLS_ShotEffect", function(ent, di, _)
       net.Start(msgBS)
       cv = att:GetInfoNum("sc_bshot_effect", 0)
     end
-
     if cv <= 0 then
       net.Abort()
       return
     end
-
     -- 1. NPC Category (Animal, Antlion, Humanoid, Robot, Synth)
     local type = _GetNPCType(ent)
     if type == -1 then
       net.Abort()
       return
     end
-
     net.WriteUInt(type, 3)
     -- 2. Client Effect Type
     net.WriteUInt(cv, 3)
     -- 3. Armor/Helmet status
-    net.WriteBool(hasArmor[class] and true or false)
+    net.WriteBool(has_armor[class] and true or false)
     -- 4. NPC Death (Is this NPC dead from this damage?)
     if ent:Health() <= 0 then
       ent["SCTOOLS_SHOTEFFECT_DEAD"] = true
@@ -138,14 +131,12 @@ hook.Add("PostEntityTakeDamage", "SCTOOLS_ShotEffect", function(ent, di, _)
     else
       net.WriteBool(false)
     end
-
     -- 5. Volume (CLIENT can't read its own cvar)
     if hg == HITGROUP_HEAD then
       net.WriteFloat(att:GetInfoNum("snd_hshotvolume", 1.0))
     else
       net.WriteFloat(att:GetInfoNum("snd_bshotvolume", 1.0))
     end
-
     -- 6. NPC Class (for debugging)
     net.WriteString(ent:GetClass())
     -- Send

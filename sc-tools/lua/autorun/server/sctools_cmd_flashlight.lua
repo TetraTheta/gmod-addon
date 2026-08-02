@@ -9,13 +9,13 @@ local AUTO_FLASHLIGHT_ENABLED = 1
 local AUTO_FLASHLIGHT_ALL_PLAYERS = 2
 local AUTO_FLASHLIGHT_VERBOSE = 4
 local cv = GetConVar("sc_auto_flashlight")
---
+
 --[[
 ################
 #     HOOK     #
 ################
 ]]
---
+
 ---@param p Player
 hook.Add("PlayerSpawn", "SCTOOLS_EnableFlashlightAuto", function(p, _)
   local cvv = cv:GetInt()
@@ -34,13 +34,12 @@ hook.Add("PlayerSpawn", "SCTOOLS_EnableFlashlightAuto", function(p, _)
   end
 end)
 
---
 --[[
-###########################
-#     COMMAND EXECUTE     #
-###########################
+#################
+#    COMMAND    #
+#################
 ]]
---
+
 ---@param ply Player
 ---@param args table
 ---@param silent boolean
@@ -55,31 +54,32 @@ local function EnableFlashlight(ply, args, silent)
   end
 end
 
---
 --[[
-#################################
-#     COMMAND AUTO COMPLETE     #
-#################################
+##############################
+#    COMMAND AUTOCOMPLETE    #
+##############################
 ]]
---
+
+---@param cmd string
 ---@param args string
 ---@return table
-local function AllowFlashlightCompletion(_, args)
-  return SuggestPlayer("sc_flashlight", args)
+local function AllowFlashlightCompletion(cmd, args)
+  return SuggestPlayer(cmd, args)
 end
 
+---@param cmd string
 ---@param args string
 ---@return table
-local function AllowFlashlightSCompletion(_, args)
-  return SuggestPlayer("sc_flashlight", args)
+local function AllowFlashlightSilentCompletion(cmd, args)
+  return SuggestPlayer(cmd, args)
 end
 
 --
 --[[
-############################
-#     COMMAND REGISTER     #
-############################
+##########################
+#    COMMAND REGISTER    #
+##########################
 ]]
 --
 concommand.Add("sc_flashlight", function(p, _, args, _) EnableFlashlight(p, args, false) end, AllowFlashlightCompletion, "Enable flashlight for the given player.", { FCVAR_NONE })
-concommand.Add("sc_flashlight_s", function(p, _, args, _) EnableFlashlight(p, args, true) end, AllowFlashlightSCompletion, "Enable flashlight for the given player. (Silent)", { FCVAR_NONE })
+concommand.Add("sc_flashlight_s", function(p, _, args, _) EnableFlashlight(p, args, true) end, AllowFlashlightSilentCompletion, "Enable flashlight for the given player. (Silent)", { FCVAR_NONE })

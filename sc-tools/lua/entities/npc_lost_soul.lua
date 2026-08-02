@@ -21,7 +21,6 @@ local function GetLostSoulDamage()
   if ConVarExists("sk_lostsoul_melee_dmg") then
     return math.max(GetConVar("sk_lostsoul_melee_dmg"):GetFloat(), 1)
   end
-
   return 8
 end
 
@@ -37,12 +36,10 @@ function ENT:Initialize()
   self:SetCollisionGroup(COLLISION_GROUP_NONE)
   self:AddEffects(EF_NOSHADOW)
   self:CapabilitiesAdd(bit.bor(CAP_MOVE_FLY, CAP_INNATE_MELEE_ATTACK1))
-
   if ConVarExists("sk_lostsoul_health") and (self.SCHealth == nil or self.SCHealth < 1) then
     local health = GetConVar("sk_lostsoul_health"):GetInt()
     if health > 0 then self:SetHealth(health) end
   end
-
   self.NextAttackTime = 0
   self.NextFlySoundTime = 0
   self:Ignite(999999, 8)
@@ -62,7 +59,6 @@ function ENT:Think()
     self:NextThink(CurTime() + 0.2)
     return true
   end
-
   local enemy = self:SCFindClosestPlayer(self.SearchDistance)
   if not IsValid(enemy) then
     self:SetLocalVelocity(vector_origin)
@@ -70,9 +66,7 @@ function ENT:Think()
     return true
   end
   ---@cast enemy Player
-
   self:SCSetEnemy(enemy)
-
   local targetPos = enemy:EyePos()
   local pos = self:GetPos()
   local offset = targetPos - pos
@@ -84,7 +78,6 @@ function ENT:Think()
 
   if distance <= self.AttackDistance and CurTime() >= self.NextAttackTime then
     self.NextAttackTime = CurTime() + self.AttackInterval
-
     local dmginfo = DamageInfo()
     dmginfo:SetAttacker(self)
     dmginfo:SetInflictor(self)
@@ -95,12 +88,10 @@ function ENT:Think()
     enemy:TakeDamageInfo(dmginfo)
     enemy:Ignite(2, 8)
   end
-
   if distance < 96 and CurTime() >= self.NextFlySoundTime then
     self.NextFlySoundTime = CurTime() + math.Rand(0.5, 2)
     self:SCEmitSound("ambient/fire/mtov_flame2.wav")
   end
-
   self:NextThink(CurTime() + 0.05)
   return true
 end

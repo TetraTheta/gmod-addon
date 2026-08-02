@@ -3,12 +3,13 @@ local GetPlayerByName = sctools.command.GetPlayerByName
 local IsSuperAdmin = sctools.IsSuperAdmin
 local SendMessage = sctools.SendMessage
 local SuggestPlayer = sctools.command.SuggestPlayer
+
 --[[
-###########################
-#     COMMAND EXECUTE     #
-###########################
+#################
+#    COMMAND    #
+#################
 ]]
---
+
 ---@param ply Player
 ---@param args table
 ---@param silent boolean
@@ -45,30 +46,31 @@ local function OverhealPlayer(ply, args, silent)
 end
 
 --[[
-#################################
-#     COMMAND AUTO COMPLETE     #
-#################################
+##############################
+#    COMMAND AUTOCOMPLETE    #
+##############################
 ]]
---
+
+---@param cmd string
 ---@param args string
 ---@return table
-local function HealComplete(_, args)
-  return SuggestPlayer("sc_heal", args)
+local function HealComplete(cmd, args)
+  return SuggestPlayer(cmd, args)
 end
 
+---@param cmd string
 ---@param args string
 ---@return table
-local function OverHealComplete(_, args)
-  return SuggestPlayer("sc_overheal", args)
+local function OverHealComplete(cmd, args)
+  return SuggestPlayer(cmd, args)
 end
 
---
 --[[
-############################
-#     COMMAND REGISTER     #
-############################
+##########################
+#    COMMAND REGISTER    #
+##########################
 ]]
---
+
 concommand.Add("sc_heal", function(ply, _, args, _) HealPlayer(ply, args, false) end, HealComplete, "Heal player.", { FCVAR_NONE })
 concommand.Add("sc_heal_s", function(ply, _, args, _) HealPlayer(ply, args, true) end, HealComplete, "Heal player. (Silent)", { FCVAR_NONE })
 --

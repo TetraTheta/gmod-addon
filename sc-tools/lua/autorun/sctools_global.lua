@@ -2,6 +2,7 @@
 local cv_dev = GetConVar("developer")
 --
 local level = 3
+--
 ---`MsgN()` but only if `developer` is above 3
 ---@param ... any
 function DevMsgN(...)
@@ -18,7 +19,6 @@ function DevEntMsgN(ent, ...)
   else
     entity = Format("%s (#%s, %s) ", ent:GetClass(), ent:EntIndex(), ent:GetName())
   end
-
   DevMsgN(entity, ...)
 end
 
@@ -37,6 +37,5 @@ function EntMsgN(ent, ...)
   else
     entity = Format("%s (#%s, %s) ", ent:GetClass(), ent:EntIndex(), ent:GetName())
   end
-
   MsgN(entity, ...)
 end

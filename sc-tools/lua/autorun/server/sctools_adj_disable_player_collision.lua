@@ -1,10 +1,5 @@
 local cv = GetConVar("sc_disable_player_collision")
---[[
-################
-#     HOOK     #
-################
-]]
---
+
 ---@param p Player
 hook.Add("PlayerTick", "SCTOOLS_DisableP2PCollision", function(p, _)
   if cv:GetBool() then

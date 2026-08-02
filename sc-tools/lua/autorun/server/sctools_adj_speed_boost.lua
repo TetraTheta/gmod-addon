@@ -1,11 +1,5 @@
 local cv = GetConVar("sc_boost_speed_modifier")
 
---[[
-################
-#     HOOK     #
-################
-]]
---
 -- Save player's default speed multiplier
 ---@param p Player
 hook.Add("PlayerSpawn", "SCTOOLS_GetOriginalSpeedValue", function(p, _)

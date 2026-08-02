@@ -27,12 +27,13 @@ local t_insert = table.insert
 local t_IsEmpty = table.IsEmpty
 local u_GetPlayerTrace = util.GetPlayerTrace
 local u_TraceLine = util.TraceLine
---
+
 --[[
 #################
 #     LOCAL     #
 #################
 ]]
+
 ---'Disable' NPC if applicable.
 ---@param ent Entity
 local function _DisableNPC(ent)
@@ -57,18 +58,14 @@ end
 ---@param ent Entity
 local function _OpenLinkedAreaportals(ent)
   if CLIENT then return end
-
   local doorClasses = {
     ["func_door"] = true,
     ["func_door_rotating"] = true,
     ["prop_door_rotating"] = true,
   }
-
   if not doorClasses[ent:GetClass()] then return end
-
   local name = ent:GetName()
   if name == "" then return end
-
   name = s_lower(name)
   for _, portal in ipairs(e_FindByClass("func_areaportal")) do
     local target = portal:GetInternalVariable("target")
@@ -84,16 +81,13 @@ end
 ---@param ent Entity
 local function _OpenLinkedAreaportals2(ent)
   if CLIENT then return end
-
   local areaportalDistanceSqr = 192 * 192
   local doorClasses = {
     ["func_door"] = true,
     ["func_door_rotating"] = true,
     ["prop_door_rotating"] = true,
   }
-
   if not doorClasses[ent:GetClass()] then return end
-
   local center = ent:WorldSpaceCenter()
   local doors = { ent }
   for class in pairs(doorClasses) do
@@ -103,11 +97,9 @@ local function _OpenLinkedAreaportals2(ent)
       end
     end
   end
-
   for _, portal in ipairs(e_FindByClass("func_areaportal")) do
     local target = portal:GetInternalVariable("target")
     if not isstring(target) then target = portal:GetKeyValues().target end
-
     for _, door in ipairs(doors) do
       local name = door:GetName()
       if name ~= "" then name = s_lower(name) end
@@ -150,7 +142,6 @@ local function _ReadFile(f)
     f_CreateDir("sctools")
     f_Write(f, c)
   end
-
   if c then
     local lines = s_Split(c, "\n")
     for _, line in ipairs(lines) do
@@ -188,13 +179,12 @@ local function _RemoveEntity(ent)
   util.Effect("entity_remove", ed, true, true)
 end
 
---
 --[[
 ##################
 #     PUBLIC     #
 ##################
 ]]
---
+
 ---Get entity that player is looking at.
 ---@param ply Player
 ---@return Entity
@@ -259,7 +249,6 @@ function sctools.RemoveEntity(ent)
       ["func_breakable_surf"] = true,
       ["func_breakable"] = true,
     }
-
     local class_remove = {
       ["func_brush"] = true,
       ["func_door_rotating"] = true,
@@ -269,7 +258,6 @@ function sctools.RemoveEntity(ent)
       ["func_rotating"] = true,
       ["func_tracktrain"] = true,
     }
-
     if class_break[class] then
       DevEntMsgN(ent, "RemoveEntity: Break")
       ent.SCTOOLS_REMOVAL = true ---@diagnostic disable-line inject-field
@@ -311,11 +299,12 @@ end
 #     COMMAND     #
 ###################
 ]]
+
 ---Get `Player` by his name or nickname. The player must be inside of the server.
 ---@param name string
 ---@return Player `Player` if found, `NULL` if not found.
 function sctools.command.GetPlayerByName(name)
-  if s_sub(name, 1, 1) == "\"" and s_sub(name, -1) == "\"" then name = s_sub(2, -2) end
+  if s_sub(name, 1, 1) == "\"" and s_sub(name, -1) == "\"" then name = s_sub(name, 2, -2) end
   for _, p in ipairs(p_GetHumans()) do ---@cast p Player
     if p:Nick():lower() == name:lower() then return p end
   end
@@ -327,12 +316,16 @@ end
 ---@param args string
 ---@return table
 function sctools.command.SuggestPlayer(cmd, args)
-  args = s_Trim(args:lower())
+  args = s_Trim(args or "")
+  if s_sub(args:lower(), 1, #cmd) == cmd:lower() then args = s_Trim(s_sub(args, #cmd + 1)) end
+  if s_sub(args, 1, 1) == "\"" then args = s_sub(args, 2) end
+  args = args:lower()
   local tbl = {}
   for _, p in ipairs(p_GetHumans()) do ---@cast p Player
     local ln = p:Nick():lower()
-    if s_find(ln, args) then t_insert(tbl, Format("%s \"%s\"", cmd, p:Nick())) end
+    if s_sub(ln, 1, #args) == args then t_insert(tbl, Format("%s \"%s\"", cmd, p:Nick())) end
   end
+  table.sort(tbl)
   return tbl
 end
 
@@ -341,12 +334,13 @@ end
 #     INITIALIZE     #
 ######################
 ]]
+
 sctools.ReloadConfig()
---
+
 --[[
 ##################
 #     RETURN     #
 ##################
 ]]
---
+
 return sctools

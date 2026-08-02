@@ -16,13 +16,13 @@ local u_TableToJSON = util.TableToJSON
 --
 util.AddNetworkString("SCTOOLS_CleanResult")
 util.AddNetworkString("SCTOOLS_CleanRagdolls")
---
+
 --[[
-###########################
-#     COMMAND EXECUTE     #
-###########################
+#################
+#    COMMAND    #
+#################
 ]]
---
+
 ---@return integer
 local function CleanAmmo()
   local target = {
@@ -255,7 +255,7 @@ end
 
 ---@param ply Player
 ---@param args table
-local function CleanS(ply, _, args, _)
+local function CleanSilent(ply, _, args, _)
   if not IsSuperAdmin(ply) then return end
   local arg = s_lower(args[1])
   local valid = {
@@ -282,13 +282,12 @@ local function CleanS(ply, _, args, _)
   if arg == "all" or arg == "weapons" then CleanWeapons() end
 end
 
---
 --[[
-#################################
-#     COMMAND AUTO COMPLETE     #
-#################################
+##############################
+#    COMMAND AUTOCOMPLETE    #
+##############################
 ]]
---
+
 ---@param args string
 ---@return table
 local function CleanAutoComplete(_, args)
@@ -326,7 +325,7 @@ end
 
 ---@param args string
 ---@return table
-local function CleanSAutoComplete(_, args)
+local function CleanSilentAutoComplete(_, args)
   local arg = s_Trim(args:lower())
   local tbl = {}
   if s_StartsWith(arg, "a") then
@@ -359,12 +358,11 @@ local function CleanSAutoComplete(_, args)
   return tbl
 end
 
---
 --[[
-############################
-#     COMMAND REGISTER     #
-############################
+##########################
+#    COMMAND REGISTER    #
+##########################
 ]]
---
+
 concommand.Add("sc_clean", Clean, CleanAutoComplete, "Remove objects from the current map.", { FCVAR_NONE })
-concommand.Add("sc_clean_s", CleanS, CleanSAutoComplete, "Remove objects from the current map. (Silent)", { FCVAR_NONE })
+concommand.Add("sc_clean_s", CleanSilent, CleanSilentAutoComplete, "Remove objects from the current map. (Silent)", { FCVAR_NONE })
