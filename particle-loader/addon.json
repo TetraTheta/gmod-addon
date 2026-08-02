@@ -6,7 +6,15 @@
     "realism"
   ],
   "ignore": [
+    ".ignore/*",
+    "AGENTS.md",
     "README.md",
+    "fgd/*",
+    "lua/.ignore/*",
+    "lua/weapons/.ignore/*",
+    "models/.ignore/*",
+    "modelsrc/*",
+    "thumb.jpg",
     "thumb.png"
   ]
 }
