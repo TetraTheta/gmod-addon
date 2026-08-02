@@ -44,12 +44,13 @@ SWEP.Secondary.CFG_Sound = "SCW.MP5SD.Secondary"
 --
 util.PrecacheModel(SWEP.ViewModel)
 util.PrecacheModel(SWEP.WorldModel)
---
+
 --[[
 ########################
 #     SWEP UTILITY     #
 ########################
 ]]
+
 function SWEP:_RemoveMissile()
   local owner = self:GetOwner()
   if not owner:IsPlayer() then return end
@@ -65,12 +66,12 @@ function SWEP:_RemoveMissile()
   end
 end
 
---
 --[[
 #########################
 #     SWEP FUNCTION     #
 #########################
 ]]
+
 -- No DataTables. It just doesn't work. Fuck it. I'm so fed up with this.
 -- If anyone suggests it, just reply to him, "I'm so fed up with NetworkVar that doesn't work."
 function SWEP:Initialize()
@@ -110,6 +111,7 @@ end
 #     PRIMARY FIRE     #
 ########################
 ]]
+
 function SWEP:PrimaryAttack()
   if game.SinglePlayer() then self:CallOnClient("PrimaryAttack") end
   if not (IsFirstTimePredicted() and self:CanPrimaryAttack()) then return end
@@ -135,6 +137,7 @@ end
 #     SECONDARY FIRE     #
 ##########################
 ]]
+
 function SWEP:SecondaryAttack()
   if game.SinglePlayer() then self:CallOnClient("SecondaryAttack") end
   if not (IsFirstTimePredicted() and self:CanSecondaryAttack()) then return end
@@ -180,6 +183,7 @@ end
 #     RELOAD     #
 ##################
 ]]
+
 function SWEP:Reload()
   local ammoNeeded = self:GetMaxClip1() - self:Clip1() - self:Ammo1()
   if ammoNeeded > 0 then

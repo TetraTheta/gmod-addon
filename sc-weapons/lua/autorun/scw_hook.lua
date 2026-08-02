@@ -2,9 +2,9 @@
 local function _AddHooks(className)
   if SERVER then
     --[[
-    ####################################
-    #     SAVE SECONDARY FIRE MODE     #
-    ####################################
+    ##################################
+    #    SAVE SECONDARY FIRE MODE    #
+    ##################################
     ]]
     ---@param save ISave
     saverestore.AddSaveHook(className .. "_SaveData", function(save)
@@ -39,9 +39,9 @@ local function _AddHooks(className)
     end)
 
     --[[
-    ############################################
-    #     PREVENT GRENADE EARLY DETONATION     #
-    ############################################
+    ##########################################
+    #    PREVENT GRENADE EARLY DETONATION    #
+    ##########################################
     ]]
     ---@param target Entity
     ---@param dmginfo CTakeDamageInfo
@@ -64,9 +64,9 @@ _AddHooks("scaw_mp5sd_clean")
 _AddHooks("scaw_pistol")
 _AddHooks("scaw_pistol_clean")
 --[[
-##############################################################
-#     PREVENT SECONDARY FIRE WHEN CONTEXT MENU IS OPENED     #
-##############################################################
+############################################################
+#    PREVENT SECONDARY FIRE WHEN CONTEXT MENU IS OPENED    #
+############################################################
 ]]
 if SERVER then
   util.AddNetworkString("SCAW_ContextMenuState")
