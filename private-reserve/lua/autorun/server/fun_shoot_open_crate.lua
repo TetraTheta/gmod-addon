@@ -1,11 +1,5 @@
 local cv = GetConVar("pr_enable_shoot_open_crate")
 
---[[
-################
-#     HOOK     #
-################
-]]
---
 hook.Add("PostEntityFireBullets", "PR_Shoot_Open_AmmoCrate", function(_, fb)
   if not cv then cv = GetConVar("pr_enable_shoot_open_crate") end
   -- Sanitize attacker and entity

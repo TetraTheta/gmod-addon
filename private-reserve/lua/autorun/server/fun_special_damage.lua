@@ -1,5 +1,3 @@
-local band = bit.band
---
 local cv = GetConVar("pr_enable_special_damage")
 --
 local headcrabs = {
@@ -8,15 +6,18 @@ local headcrabs = {
   npc_headcrab_fast = true,
   npc_headcrab_poison = true,
 }
-
 local myWeapons = {
+  scw_colt_saa = true,
+  scw_mm_ar2 = true,
+  scw_mm_smg1 = true,
   scw_mp5sd = true,
   scw_scar20 = true,
+  weapon_smg2 = true,
 }
 
 ---@param dmg CTakeDamageInfo
 ---@return Player
-local function _CheckPlayer(dmg)
+local function CheckPlayer(dmg)
   local attacker = dmg:GetAttacker()
   if attacker:IsValid() and attacker:GetClass() == "player" then
     ---@cast attacker Player
@@ -28,7 +29,7 @@ end
 
 ---@param e Entity
 ---@return Weapon
-local function _CheckWeapon(e)
+local function CheckWeapon(e)
   if not (e:IsValid() and (e:IsNPC() or e:IsPlayer())) then return NULL end
   ---@cast e NPC
   local weapon = e:GetActiveWeapon()
@@ -40,20 +41,19 @@ local function _CheckWeapon(e)
   end
 end
 
---
 --[[
 ################
 #     HOOK     #
 ################
 ]]
---
+
 ---@param e NPC
 ---@param dmg CTakeDamageInfo
 hook.Add("EntityTakeDamage", "PR_SpecialDamage", function(e, dmg)
   if not cv then cv = GetConVar("pr_enable_special_damage") end
   if not cv:GetBool() or not e:IsValid() then return end
-  local attacker = _CheckPlayer(dmg)
-  local weapon = _CheckWeapon(attacker)
+  local attacker = CheckPlayer(dmg)
+  local weapon = CheckWeapon(attacker)
   if e:IsPlayer() then
     -- Process damage applied to the player
     -- I don't like being insta-killed by flying objects
@@ -72,8 +72,8 @@ hook.Add("EntityTakeDamage", "PR_SpecialDamage", function(e, dmg)
       end)
     end
   else
-    -- Special damage is for SC Weapons (Non-admin)
-    if not myWeapons[weapon] then return end
+    -- Special damage is for SC Weapons
+    if not (weapon:IsValid() and myWeapons[weapon:GetClass()]) then return end
     local cls = e:GetClass()
     if cls == "npc_manhack" or headcrabs[cls] then
       -- Insta-kill Manhacks and headcrabs
@@ -90,5 +90,4 @@ hook.Add("EntityTakeDamage", "PR_SpecialDamage", function(e, dmg)
   end
 end)
 
---
 hook.Add("PlayerNoClip", "PR_SpecialDamage_NoClip_Detect", function(p, nc) p["bNoClip"] = nc end)

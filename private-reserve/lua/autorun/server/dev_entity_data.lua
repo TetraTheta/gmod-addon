@@ -16,13 +16,12 @@ local function _GetTraceEntity(ply)
   end
 end
 
---
 --[[
-###########################
-#     COMMAND EXECUTE     #
-###########################
+#################
+#    COMMAND    #
+#################
 ]]
---
+
 local function GetEntityData(ply, args)
   local ent = _GetTraceEntity(ply)
   if ent:IsValid() then
@@ -49,23 +48,10 @@ local function GetEntityData(ply, args)
   end
 end
 
---
 --[[
-#################################
-#     COMMAND AUTO COMPLETE     #
-#################################
+##########################
+#    COMMAND REGISTER    #
+##########################
 ]]
---
----@return table
-local function GetEntityDataAutoComplete(_, _, _)
-  return { "get_entity_data", "get_entity_data save" }
-end
 
---
---[[
-############################
-#     COMMAND REGISTER     #
-############################
-]]
---
-concommand.Add("get_entity_data", function(ply, _, args, _) GetEntityData(ply, args) end, GetEntityDataAutoComplete, "Show entity data you're looking at.", { FCVAR_NONE })
+concommand.Add("get_entity_data", function(ply, _, args, _) GetEntityData(ply, args) end, function() return { "get_entity_data", "get_entity_data save" } end, "Show entity data you're looking at.", { FCVAR_NONE })

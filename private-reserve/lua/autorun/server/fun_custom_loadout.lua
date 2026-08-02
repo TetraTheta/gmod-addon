@@ -6,9 +6,8 @@ local cv_sbox_weapons = GetConVar("sbox_weapons")
 #     HOOK     #
 ################
 ]]
---
--- TODO: Remove 'redundant-return-value' when unneeded
----@diagnostic disable: redundant-return-value
+
+---@diagnostic disable: redundant-return-value -- TODO: Remove 'redundant-return-value' when unneeded
 ---@param p Player
 hook.Add("PlayerLoadout", "PR_CustomLoadout", function(p)
   if not cv_enable then cv_enable = GetConVar("pr_enable_loadout") end
@@ -48,28 +47,40 @@ hook.Add("PlayerLoadout", "PR_CustomLoadout", function(p)
   end
 end)
 
---
 --[[
-############################
-#     COMMAND REGISTER     #
-############################
+#################
+#    COMMAND    #
+#################
 ]]
---
+
 ---@param p Player
-concommand.Add("pr_loadout", function(p, _, _, _)
+local function GivePrivateReserveLoadout(p)
   -- Strip
   p:StripWeapons()
-  -- GMod Weapons
+  -- Basic Weapons
+  p:Give("item_suit")
   p:Give("weapon_physgun")
   p:Give("gmod_tool")
   -- HL2 Weapons
   p:Give("weapon_crowbar")
   p:Give("weapon_physcannon")
+  -- SC Admin Weapons
+  p:Give("scaw_mp5")
   -- SC Weapons
-  p:Give("scw_mp5sd")
-  p:Give("scw_scar20")
+  p:Give("scw_mm_smg1")
+  p:Give("scw_mm_ar2")
   -- Ammo
   p:GiveAmmo(9999, "SMG1", true)
   p:GiveAmmo(9999, "SMG1_Grenade", true)
+  p:GiveAmmo(9999, "AR2", true)
+  p:GiveAmmo(9999, "AR2AltFire", true)
   p:GiveAmmo(9999, "XBowBolt", true)
-end, nil, "My Loadout", { FCVAR_NONE })
+end
+
+--[[
+##########################
+#    COMMAND REGISTER    #
+##########################
+]]
+
+concommand.Add("pr_loadout", function(p, _, _, _) GivePrivateReserveLoadout(p) end, nil, "My Loadout", { FCVAR_NONE })
