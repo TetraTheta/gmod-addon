@@ -6,7 +6,7 @@ local cv = GetConVar("pr_edit_weapon_pickup")
 ---@param is_replacement boolean true: alternative / false: additional
 ---@param ammo_count number|nil Additional ammo
 ---@param ammo_type string|nil Additional ammo type
-local function _EditPickupWeapon(p, wep, target_class, is_replacement, ammo_count, ammo_type)
+local function EditPickupWeapon(p, wep, target_class, is_replacement, ammo_count, ammo_type)
   if not IsValid(wep) or wep["PR_IsBeingPickedUp"] then return false end
   wep["PR_IsBeingPickedUp"] = true
   if p:HasWeapon(target_class) then
@@ -28,15 +28,17 @@ end
 #     HOOK     #
 ################
 ]]
---
+
 hook.Add("PlayerCanPickupWeapon", "PR_AdditionalWeaponPickup", function(p, wep)
   if not cv then cv = GetConVar("pr_edit_weapon_pickup") end
   if not cv:GetBool() then return end
   local cls = wep:GetClass()
 
   if cls == "weapon_smg1" then
-    return _EditPickupWeapon(p, wep, "scw_mm_smg1", true, 256, "SMG1")
+    -- 'weapon_smg1' -> 'scw_mm_smg1'
+    return EditPickupWeapon(p, wep, "scw_mm_smg1", true, 256, "SMG1")
   elseif cls == "weapon_ar2" then
-    return _EditPickupWeapon(p, wep, "scw_mm_ar2", true, 256, "AR2")
+    -- 'weapon_ar2' -> 'scw_mm_ar2'
+    return EditPickupWeapon(p, wep, "scw_mm_ar2", true, 256, "AR2")
   end
 end)

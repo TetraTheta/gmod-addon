@@ -1,11 +1,5 @@
 local cv = GetConVar("pr_enable_flying_drops")
 
---[[
-################
-#     HOOK     #
-################
-]]
---
 hook.Add("OnNPCKilled", "PR_FlyingDrops", function(npc, attacker, _)
   if not cv then cv = GetConVar("pr_enable_flying_drops") end
   if not cv:GetBool() then return end
