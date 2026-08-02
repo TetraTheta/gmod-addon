@@ -1,12 +1,8 @@
 local b_band = bit.band
 local m_random = math.random
 --
-local msgBS = "SCTOOLS_BodyshotEffect"
-local msgHS = "SCTOOLS_HeadshotEffect"
---
 local EFF_SND = 1
 local EFF_UI = 2
---
 local CAT_ANIMAL = 0
 local CAT_ANTLION = 1
 local CAT_HUMANOID = 2
@@ -14,7 +10,7 @@ local CAT_ROBOT = 3
 local CAT_SYNTH = 4
 --
 -- Soundscript won't work in here because CLIENT don't know its own cvar
-local function _GetCategory(cat)
+local function GetCategory(cat)
   if cat == CAT_ANIMAL then
     return "Animal"
   elseif cat == CAT_ANTLION then
@@ -79,31 +75,30 @@ local function PlayHeadSound(armor, death, vol)
   end
 end
 
---
 --[[
 ###############
 #     NET     #
 ###############
 ]]
---
-net.Receive(msgBS, function(_, _)
+
+net.Receive("SCTOOLS_BodyshotEffect", function(_, _)
   -- This is non-sense that CLIENT can't read its own cvar
   local cat, cv, armor, death, vol, class = net.ReadUInt(3), net.ReadUInt(3), net.ReadBool(), net.ReadBool(), net.ReadFloat(), net.ReadString()
   local eff_snd = b_band(cv, EFF_SND) > 0
   local eff_ui = b_band(cv, EFF_UI) > 0
-  DevMsgN(Format("cat: %s (%s) | eff_snd: %s | eff_ui: %s | armor: %s | death: %s | vol: %f", _GetCategory(cat), class, tostring(eff_snd), tostring(eff_ui), tostring(armor), tostring(death), vol))
+  DevMsgN(Format("cat: %s (%s) | eff_snd: %s | eff_ui: %s | armor: %s | death: %s | vol: %f", GetCategory(cat), class, tostring(eff_snd), tostring(eff_ui), tostring(armor), tostring(death), vol))
   --
   if eff_snd then PlayBodySound(cat, armor, death, vol) end
   if eff_ui then DevMsgN("Not implemented yet.") end
 end)
 
-net.Receive(msgHS, function(_, _)
+net.Receive("SCTOOLS_HeadshotEffect", function(_, _)
   -- This is non-sense that CLIENT can't read its own cvar
   -- Headshot is only available in Humanoid, so checking NPC type isn't necessary.
   local cat, cv, armor, death, vol, class = net.ReadUInt(3), net.ReadUInt(3), net.ReadBool(), net.ReadBool(), net.ReadFloat(), net.ReadString()
   local eff_snd = b_band(cv, EFF_SND) > 0
   local eff_ui = b_band(cv, EFF_UI) > 0
-  DevMsgN(Format("cat: %s (%s) | eff_snd: %s | eff_ui: %s | armor: %s | death: %s | vol: %f", _GetCategory(cat), class, tostring(eff_snd), tostring(eff_ui), tostring(armor), tostring(death), vol))
+  DevMsgN(Format("cat: %s (%s) | eff_snd: %s | eff_ui: %s | armor: %s | death: %s | vol: %f", GetCategory(cat), class, tostring(eff_snd), tostring(eff_ui), tostring(armor), tostring(death), vol))
   --
   if eff_snd then PlayHeadSound(armor, death, vol) end
   if eff_ui then DevMsgN("Not implemented yet.") end

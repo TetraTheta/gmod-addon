@@ -3,21 +3,27 @@ local msg = "MAP ENDED"
 local g_SinglePlayer = game.SinglePlayer
 local g_IsDedicated = game.IsDedicated
 local p_GetHumans = player.GetHumans
-local s_find = string.find
 --
 local cv = GetConVar("sc_disconnect_mode")
 --
 util.AddNetworkString(nw)
+
 --[[
 ################
 #     HOOK     #
 ################
 ]]
---
+
+---@param ent Entity
+---@param input string
+---@param value string|number|boolean|nil
 hook.Add("AcceptInput", "SCTOOLS_DisconnectInput", function(ent, input, _, _, value)
+  if not cv or not IsValid(ent) or value == nil then return end
   local class = ent:GetClass()
   local cvv = cv:GetBool()
-  if (class == "point_clientcommand" or class == "point_servercommand") and input:lower() == "command" and (s_find(value:lower(), "disconnect") or s_find(value:lower(), "startupmenu")) then
+  input = input:lower()
+  value = tostring(value):lower()
+  if (class == "point_clientcommand" or class == "point_servercommand") and input == "command" and (value:find("disconnect") or value:find("startupmenu")) then
     if g_SinglePlayer() then
       -- Singleplayer environment
       if cvv then

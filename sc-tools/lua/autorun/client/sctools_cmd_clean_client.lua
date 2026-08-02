@@ -11,7 +11,7 @@ local ragdolls = setmetatable({}, { __mode = "v" }) -- 'value'(Ragdoll) is weak 
 ---@param value any
 ---@param msg string
 ---@return boolean
-local function _ShowNotification(value, msg)
+local function ShowNotification(value, msg)
   if isnumber(value) and m_floor(value) > 0 then
     n_AddLegacy("Cleaned " .. value .. " " .. msg, NOTIFY_GENERIC, 3)
     return true
@@ -23,13 +23,12 @@ local function _ShowNotification(value, msg)
   end
 end
 
---
 --[[
 ###############
 #     NET     #
 ###############
 ]]
---
+
 net.Receive("SCTOOLS_CleanResult", function(_, _)
   local json = u_Decompress(net.ReadData(net.ReadUInt(16)))
   ---@cast json string
@@ -37,17 +36,17 @@ net.Receive("SCTOOLS_CleanResult", function(_, _)
   ---@cast result table
   local sound = false
   --
-  if _ShowNotification(result.ammo, "Ammo") then sound = true end
-  if _ShowNotification(result.debris, "Debris") then sound = true end
-  if _ShowNotification(result.gibs, "Gibs") then sound = true end
-  if _ShowNotification(result.powerups, "Powerups") then sound = true end
-  if _ShowNotification(result.ragdolls, "Ragdolls") then sound = true end
-  if _ShowNotification(result.small, "Small objects") then sound = true end
-  if _ShowNotification(result.weapons, "Weapons") then sound = true end
-  if sound then _ShowNotification(result.decals, "Decals") end
+  if ShowNotification(result.ammo, "Ammo") then sound = true end
+  if ShowNotification(result.debris, "Debris") then sound = true end
+  if ShowNotification(result.gibs, "Gibs") then sound = true end
+  if ShowNotification(result.powerups, "Powerups") then sound = true end
+  if ShowNotification(result.ragdolls, "Ragdolls") then sound = true end
+  if ShowNotification(result.small, "Small objects") then sound = true end
+  if ShowNotification(result.weapons, "Weapons") then sound = true end
+  if sound then ShowNotification(result.decals, "Decals") end
   if sound then s_PlaySound("garrysmod/ui_hover.wav") end
 end)
---
+
 net.Receive("SCTOOLS_CleanRagdolls", function(_, _)
   -- attempt to remove with effect
   for _, v in ipairs(ents.FindByClass("client_ragdoll")) do
@@ -72,12 +71,11 @@ net.Receive("SCTOOLS_CleanRagdolls", function(_, _)
   -- fallback: just remove them
   game.RemoveRagdolls()
 end)
+
 --[[
 ################
 #     HOOK     #
 ################
 ]]
---
-hook.Add("CreateClientsideRagdoll", "SCTOOLS_RagdollClientCreation", function(_, ragdoll)
-  t_insert(ragdolls, ragdoll)
-end)
+
+hook.Add("CreateClientsideRagdoll", "SCTOOLS_RagdollClientCreation", function(_, ragdoll) t_insert(ragdolls, ragdoll) end)

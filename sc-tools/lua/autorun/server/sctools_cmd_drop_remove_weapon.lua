@@ -3,13 +3,13 @@ local GetPlayerByName = sctools.command.GetPlayerByName
 local IsSuperAdmin = sctools.IsSuperAdmin
 local SuggestPlayer = sctools.command.SuggestPlayer
 local SendMessage = sctools.SendMessage
---
+
 --[[
-###########################
-#     COMMAND EXECUTE     #
-###########################
+#################
+#    COMMAND    #
+#################
 ]]
---
+
 ---@param ply Player
 ---@param args table
 ---@param silent boolean
@@ -42,13 +42,12 @@ local function RemoveWeapon(ply, args, silent)
   end
 end
 
---
 --[[
-#################################
-#     COMMAND AUTO COMPLETE     #
-#################################
+##############################
+#    COMMAND AUTOCOMPLETE    #
+##############################
 ]]
---
+
 local function DropWeaponComplete(_, args)
   return SuggestPlayer("sc_drop_weapon", args)
 end
@@ -65,13 +64,12 @@ local function RemoveWeaponSComplete(_, args)
   return SuggestPlayer("sc_remove_weapon_s", args)
 end
 
---
 --[[
-############################
-#     COMMAND REGISTER     #
-############################
+##########################
+#    COMMAND REGISTER    #
+##########################
 ]]
---
+
 concommand.Add("sc_drop_weapon", function(ply, _, args, _) DropWeapon(ply, args, false) end, DropWeaponComplete, "Drop weapon that given player is currently holding.", { FCVAR_NONE })
 concommand.Add("sc_drop_weapon_s", function(ply, _, args, _) DropWeapon(ply, args, true) end, DropWeaponSComplete, "Drop weapon that given player is currently holding. (Silent)", { FCVAR_NONE })
 concommand.Add("sc_remove_weapon", function(ply, _, args, _) RemoveWeapon(ply, args, false) end, RemoveWeaponComplete, "Remove weapon that given player is currently holding.", { FCVAR_NONE })

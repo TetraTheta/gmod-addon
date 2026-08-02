@@ -1,12 +1,7 @@
 local cv_cheat = GetConVar("sv_cheats")
 local cv_timescale = GetConVar("host_timescale")
 local cv_sc_pitch = GetConVar("sc_change_sound_pitch")
---[[
-################
-#     HOOK     #
-################
-]]
---
+
 ---@param t EmitSoundInfo
 hook.Add("EntityEmitSound", "SCTOOLS_SoundPitchServer", function(t)
   if not cv_sc_pitch then cv_sc_pitch = GetConVar("sc_change_sound_pitch") end

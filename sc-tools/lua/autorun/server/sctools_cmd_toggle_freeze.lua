@@ -4,7 +4,7 @@ local IsSuperAdmin = sctools.IsSuperAdmin
 local u_Effect = util.Effect
 --
 ---@param ent Entity
-local function _FreezeEffect(ent)
+local function FreezeEffect(ent)
   local ed = EffectData()
   ed:SetOrigin(ent:GetPos())
   ed:SetEntity(ent)
@@ -14,7 +14,7 @@ local function _FreezeEffect(ent)
 end
 
 ---@param ent Entity
-local function _UnfreezeEffect(ent)
+local function UnfreezeEffect(ent)
   local ed = EffectData()
   ed:SetOrigin(ent:GetPos())
   ed:SetEntity(ent)
@@ -24,18 +24,18 @@ local function _UnfreezeEffect(ent)
 end
 
 ---@param ply Player
-local function _FreezePlayer(ply)
+local function FreezePlayer(ply)
   local frozen = ply:IsFlagSet(FL_FROZEN)
   if frozen then
     ply:Freeze(false)
-    _UnfreezeEffect(ply)
+    UnfreezeEffect(ply)
   else
     ply:Freeze(true)
   end
 end
 
 ---@param ent NPC
-local function _FreezeNPC(ent)
+local function FreezeNPC(ent)
   local frozen = ent:IsEFlagSet(EFL_NO_THINK_FUNCTION)
   if frozen then
     ent:RemoveEFlags(EFL_NO_THINK_FUNCTION)
@@ -44,18 +44,17 @@ local function _FreezeNPC(ent)
       ent:SetPos(pos)
       ent:GetPhysicsObject():SetPos(pos)
     end)
-
-    _UnfreezeEffect(ent)
+    UnfreezeEffect(ent)
   else
     ent["SCTOOLS_SAVED_POS"] = ent:GetPos()
     ent:NavSetGoalPos(ent:GetPos())
     ent:AddEFlags(EFL_NO_THINK_FUNCTION)
-    _FreezeEffect(ent)
+    FreezeEffect(ent)
   end
 end
 
 ---@param ent Entity
-local function _FreezeEntity(ent)
+local function FreezeEntity(ent)
   local p = ent:GetPhysicsObject()
   if not p:IsValid() then return end
   local mt = ent:GetMoveType()
@@ -64,23 +63,23 @@ local function _FreezeEntity(ent)
     ent["SCTOOLS_MOVETYPE"] = mt
     ent:SetMoveType(MOVETYPE_NONE)
     p:EnableMotion(false)
-    _FreezeEffect(ent)
+    FreezeEffect(ent)
   else
     local smt = ent["SCTOOLS_MOVETYPE"]
     if not isnumber(smt) then smt = MOVETYPE_VPHYSICS end
     ent:SetMoveType(smt)
     ent["SCTOOLS_MOVETYPE"] = nil
     p:EnableMotion(true)
-    _UnfreezeEffect(ent)
+    UnfreezeEffect(ent)
   end
 end
 
 --[[
-###########################
-#     COMMAND EXECUTE     #
-###########################
+#################
+#    COMMAND    #
+#################
 ]]
---
+
 ---@param ply Player
 local function ToggleFreeze(ply)
   if not IsSuperAdmin(ply) then return end
@@ -89,29 +88,25 @@ local function ToggleFreeze(ply)
   if ent:IsPlayer() then
     -- Player
     ---@cast ent Player
-    _FreezePlayer(ent)
+    FreezePlayer(ent)
   elseif ent:IsNPC() and ent:GetClass() == "npc_turret_floor" then
     ---@cast ent NPC
-    _FreezeNPC(ent)
-    _FreezeEntity(ent)
+    FreezeNPC(ent)
+    FreezeEntity(ent)
   elseif ent:IsNPC() or ent:IsNextBot() then
     -- NPC
     ---@cast ent NPC
-    _FreezeNPC(ent)
+    FreezeNPC(ent)
   else
     -- Physics Object (+ Vehicle, Weapon, etc.)
-    _FreezeEntity(ent)
+    FreezeEntity(ent)
   end
 end
 
 --[[
-#################################
-#     COMMAND AUTO COMPLETE     #
-#################################
+##########################
+#    COMMAND REGISTER    #
+##########################
 ]]
---[[
-############################
-#     COMMAND REGISTER     #
-############################
-]]
+
 concommand.Add("sc_toggle_freeze", function(ply, _, _, _) ToggleFreeze(ply) end, nil, "Freeze the entity you are looking at.", { FCVAR_NONE })

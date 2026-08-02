@@ -64,7 +64,6 @@ function ENT:AcceptInput(inputName, activator, caller, data)
       return true
     end
   end
-
   local name = self:GetName()
   local detail = Format("Unhandled AcceptInput: %s %s %s %s", inputName, tostring(activator), tostring(caller), data)
   if name == nil or name == "" then
@@ -88,7 +87,6 @@ function ENT:InputKillHierarchy(_, _, _)
   for _, v in pairs(self:GetChildren()) do
     v:Remove()
   end
-
   self:Remove()
 end
 
@@ -115,12 +113,10 @@ end
 
 function ENT:OnTakeDamage(dmginfo)
   if self.SCDead then return 0 end
-
   self:SetHealth(self:Health() - dmginfo:GetDamage())
   if self:Health() <= 0 then
     self:OnKilled(dmginfo)
   end
-
   return dmginfo:GetDamage()
 end
 
@@ -141,10 +137,8 @@ function ENT:SCApplyModel(modelName)
     else
       ErrorNoHalt("[WARNING] [", self.ClassName or self:GetClass(), "] Model may be unavailable: ", selected, "\n")
     end
-
     self:SetModel(selected)
   end
-
   return selected
 end
 
@@ -155,7 +149,6 @@ function ENT:SCDropDebris(dmginfo, models)
   local debrisModels = models or self.DebrisModels or DEFAULT_DEBRIS_MODELS
   local force = dmginfo ~= nil and dmginfo:GetDamageForce() or vector_origin
   local created = false
-
   for _, modelName in ipairs(debrisModels) do
     if util.IsValidModel(modelName) then
       local debris = ents.Create("prop_physics")
@@ -165,30 +158,24 @@ function ENT:SCDropDebris(dmginfo, models)
         debris:SetAngles(AngleRand())
         debris:Spawn()
         debris:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-
         local phys = debris:GetPhysicsObject()
         if IsValid(phys) then
           phys:Wake()
           phys:ApplyForceCenter(force + VectorRand() * 120)
         end
-
         created = true
       end
     end
   end
-
   local modelName = self:GetModel()
   if created or modelName == nil or not util.IsValidModel(modelName) then return end
-
   local debris = ents.Create("prop_physics")
   if not IsValid(debris) then return end
-
   debris:SetModel(modelName)
   debris:SetPos(self:GetPos())
   debris:SetAngles(self:GetAngles())
   debris:Spawn()
   debris:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-
   local phys = debris:GetPhysicsObject()
   if IsValid(phys) then
     phys:Wake()
@@ -210,7 +197,6 @@ function ENT:SCFindClosestPlayer(maxDistance)
   local closest = nil
   local closestDist = maxDistance and maxDistance * maxDistance or math.huge
   local pos = self:GetPos()
-
   for _, ply in ipairs(player.GetAll()) do
     if IsAlivePlayer(ply) then
       local dist = pos:DistToSqr(ply:GetPos())
@@ -220,7 +206,6 @@ function ENT:SCFindClosestPlayer(maxDistance)
       end
     end
   end
-
   return closest, closestDist
 end
 

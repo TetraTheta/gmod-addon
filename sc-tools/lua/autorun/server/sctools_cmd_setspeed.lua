@@ -3,12 +3,13 @@ local GetPlayerByName = sctools.command.GetPlayerByName
 local IsSuperAdmin = sctools.IsSuperAdmin
 local SendMessage = sctools.SendMessage
 local SuggestPlayer = sctools.command.SuggestPlayer
+
 --[[
-###########################
-#     COMMAND EXECUTE     #
-###########################
+#################
+#    COMMAND    #
+#################
 ]]
---
+
 local argfunc = {
   ---@param p Player
   ---@param t string
@@ -69,7 +70,6 @@ local argfunc = {
   end
 }
 
---
 ---@param ply Player
 ---@param args table
 ---@param silent boolean
@@ -79,18 +79,15 @@ local function SetSpeed(ply, args, silent)
     if not silent then SendMessage("[SC SetSpeed] Insufficient or excessive arguments.", ply) end
     return
   end
-
   local arg1, arg2 = args[1]:lower(), args[2]:lower()
   if not argfunc[arg1] then
     if not silent then SendMessage("[SC SetSpeed] Invalid argument: must be one of these: all, duck, run, slow, walk", ply) end
     return
   end
-
   if arg2 ~= "fast" and arg2 ~= "reset" then
     if not silent then SendMessage("[SC SetSpeed] Invalid argument: must be either 'fast' or 'reset'.", ply) end
     return
   end
-
   local p = ply
   if #args == 3 then
     local np = GetPlayerByName(args[3])
@@ -101,71 +98,47 @@ local function SetSpeed(ply, args, silent)
       return
     end
   end
-
   argfunc[arg1](p, arg2)
 end
 
---
 --[[
-#################################
-#     COMMAND AUTO COMPLETE     #
-#################################
+##############################
+#    COMMAND AUTOCOMPLETE    #
+##############################
 ]]
---
+
+---@param cmd string
 ---@param args string
 ---@return table
-local function SetSpeedCompletion(_, args)
-  if args:StartsWith("sc_setspeed a") then
-    if args:StartsWith("sc_setspeed all fast") then
-      return SuggestPlayer("sc_setspeed all fast", args)
-    elseif args:StartsWith("sc_setspeed all reset") then
-      return SuggestPlayer("sc_setspeed all reset", args)
-    else
-      return { "sc_setspeed all fast ", "sc_setspeed all reset " }
-    end
-  elseif args:StartsWith("sc_setspeed d") then
-    if args:StartsWith("sc_setspeed duck fast") then
-      return SuggestPlayer("sc_setspeed duck fast", args)
-    elseif args:StartsWith("sc_setspeed duck reset") then
-      return SuggestPlayer("sc_setspeed duck reset", args)
-    else
-      return { "sc_setspeed duck fast ", "sc_setspeed duck reset " }
-    end
-  elseif args:StartsWith("sc_setspeed r") then
-    if args:StartsWith("sc_setspeed run fast") then
-      return SuggestPlayer("sc_setspeed run fast", args)
-    elseif args:StartsWith("sc_setspeed run reset") then
-      return SuggestPlayer("sc_setspeed run reset", args)
-    else
-      return { "sc_setspeed run fast ", "sc_setspeed run reset " }
-    end
-  elseif args:StartsWith("sc_setspeed s") then
-    if args:StartsWith("sc_setspeed slow fast") then
-      return SuggestPlayer("sc_setspeed slow fast", args)
-    elseif args:StartsWith("sc_setspeed slow reset") then
-      return SuggestPlayer("sc_setspeed slow reset", args)
-    else
-      return { "sc_setspeed slow fast ", "sc_setspeed slow reset " }
-    end
-  elseif args:StartsWith("sc_setspeed w") then
-    if args:StartsWith("sc_setspeed walk fast") then
-      return SuggestPlayer("sc_setspeed walk fast", args)
-    elseif args:StartsWith("sc_setspeed walk reset") then
-      return SuggestPlayer("sc_setspeed walk reset", args)
-    else
-      return { "sc_setspeed walk fast ", "sc_setspeed walk reset " }
-    end
-  else
-    return { "sc_setspeed all", "sc_setspeed duck", "sc_setspeed run", "sc_setspeed slow", "sc_setspeed walk" }
+local function SetSpeedCompletion(cmd, args)
+  local raw = args or ""
+  if raw:lower():StartsWith(cmd:lower()) then raw = raw:sub(#cmd + 1) end
+  raw = raw:gsub("^%s+", "")
+  local parts = {}
+  for part in raw:gmatch("%S+") do
+    parts[#parts + 1] = part
   end
+  if #parts >= 2 and (parts[2] == "fast" or parts[2] == "reset") then
+    return SuggestPlayer(cmd .. " " .. parts[1] .. " " .. parts[2], args)
+  end
+  local options = {}
+  local completing_mode = #parts == 1 and raw:EndsWith(" ") or #parts == 2
+  local values = completing_mode and { "fast", "reset" } or { "all", "duck", "run", "slow", "walk" }
+  local prefix = #parts == 2 and parts[2] or completing_mode and "" or parts[1] or ""
+  local base = completing_mode and cmd .. " " .. parts[1] or cmd
+  for _, value in ipairs(values) do
+    if value:StartsWith(prefix) then
+      options[#options + 1] = completing_mode and base .. " " .. value .. " " or base .. " " .. value
+    end
+  end
+  return options
 end
 
---
 --[[
-############################
-#     COMMAND REGISTER     #
-############################
+##########################
+#    COMMAND REGISTER    #
+##########################
 ]]
---
+
 concommand.Add("sc_setspeed", function(p, _, args, _) SetSpeed(p, args, false) end, SetSpeedCompletion, "Set player's speed.", { FCVAR_NONE })
 concommand.Add("sc_setspeed_s", function(p, _, args, _) SetSpeed(p, args, true) end, SetSpeedCompletion, "Set player's speed. (Silent)", { FCVAR_NONE })
