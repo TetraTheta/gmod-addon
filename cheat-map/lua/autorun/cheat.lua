@@ -56,6 +56,12 @@ local MAP_DATA = {
   },
 }
 
+--[[
+#################
+#    COMMAND    #
+#################
+]]
+
 local function Cheat(ply, _, args, _)
   if not SERVER then return end
 
@@ -67,6 +73,12 @@ local function Cheat(ply, _, args, _)
     print("[Cheat] There no cheat registered for this map: " .. curmap)
   end
 end
+
+--[[
+##############################
+#    COMMAND AUTOCOMPLETE    #
+##############################
+]]
 
 ---@return table
 local function CheatAutoComplete(cmd, _, args)
@@ -121,5 +133,11 @@ local function CheatAutoComplete(cmd, _, args)
 
   return suggestions
 end
+
+--[[
+##########################
+#    COMMAND REGISTER    #
+##########################
+]]
 
 concommand.Add("cheat", Cheat, CheatAutoComplete, "Cheat for various maps")

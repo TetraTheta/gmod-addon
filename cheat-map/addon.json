@@ -5,7 +5,15 @@
     "fun"
   ],
   "ignore": [
+    ".ignore/*",
+    "AGENTS.md",
     "README.md",
-    "thumb.jpg"
+    "fgd/*",
+    "lua/.ignore/*",
+    "lua/weapons/.ignore/*",
+    "models/.ignore/*",
+    "modelsrc/*",
+    "thumb.jpg",
+    "thumb.png"
   ]
 }
