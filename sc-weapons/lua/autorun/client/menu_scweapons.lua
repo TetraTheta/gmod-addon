@@ -1,6 +1,12 @@
 local menu_lib = include("autorun/client/menu_lib_scweapons.lua") or SC_MenuLib
 local setterCmd = "sc_setservercvar"
 
+--[[
+##############
+#    MENU    #
+##############
+]]
+
 hook.Add("PopulateToolMenu", "SCWeaponsSettingsMenu", function()
   ---@param panel DForm
   ---@diagnostic disable-next-line: deprecated -- Deprecation is for 6th argument(config).

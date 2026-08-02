@@ -70,11 +70,13 @@ SWEP.Secondary.MOD_GRN_Sound = "SCAW.Base.Grenade"
 -- [!!!!] Precache ViewModel and WorldModel!
 --util.PrecacheModel(SWEP.ViewModel)
 --util.PrecacheModel(SWEP.WorldModel)
+
 --[[
 ########################
 #     SWEP UTILITY     #
 ########################
 ]]
+
 ---@return Entity exp env_explosion
 function SWEP:_CreateEnvExplosion()
   local exp = ents.Create("env_explosion")
@@ -135,12 +137,12 @@ function SWEP:_RemoveMissile()
   end
 end
 
---
 --[[
 #########################
 #     SWEP FUNCTION     #
 #########################
 ]]
+
 -- No DataTables. It just doesn't work. Fuck it. I'm so fed up with this.
 -- If anyone suggests it, just reply to him, "I'm so fed up with NetworkVar that doesn't work."
 --
@@ -198,6 +200,7 @@ end
 #     PRIMARY FIRE     #
 ########################
 ]]
+
 local no_damage = {
   npc_rollermine = true,
   npc_turret_floor = true,
@@ -264,6 +267,7 @@ end
 #     SECONDARY FIRE     #
 ##########################
 ]]
+
 function SWEP:SecondaryAttack()
   -- Skip ammo check performed by 'CanSecondaryAttack'
   -- Prevent Secondary Attack when the player is opening Context Menu
@@ -416,6 +420,7 @@ end
 #     RELOAD     #
 ##################
 ]]
+
 function SWEP:Reload()
   local owner = self:GetOwner()
   ---@cast owner Player

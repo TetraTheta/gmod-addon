@@ -35,11 +35,13 @@ SWEP.Secondary.ClipSize = 0
 SWEP.Secondary.DefaultClip = 0
 --
 local isSpawned = true
+
 --[[
 #########################
 #     SWEP FUNCTION     #
 #########################
 ]]
+
 function SWEP:Initialize()
   self:SetHoldType(self.CFG_HoldType)
   isSpawned = true
@@ -73,6 +75,7 @@ end
 #     PRIMARY FIRE     #
 ########################
 ]]
+
 function SWEP:PrimaryAttack()
 end
 
@@ -81,6 +84,7 @@ end
 #     SECONDARY FIRE     #
 ##########################
 ]]
+
 function SWEP:SecondaryAttack()
 end
 
@@ -89,5 +93,6 @@ end
 #     RELOAD     #
 ##################
 ]]
+
 function SWEP:Reload()
 end

@@ -92,6 +92,7 @@ end
 #     SWEP UTILITY     #
 ########################
 ]]
+
 function SWEP:_GetPrimaryDamage()
   local owner = self:GetOwner()
   if owner:IsNPC() and ConVarExists("sk_npc_dmg_ar2") then return GetConVar("sk_npc_dmg_ar2"):GetInt() end
@@ -117,6 +118,7 @@ end
 #     SWEP FUNCTION     #
 #########################
 ]]
+
 function SWEP:Initialize()
   self.CFG_FireDuration = 0
   self.CFG_LastMotionState = "idle"
@@ -253,6 +255,7 @@ end
 #     PRIMARY FIRE     #
 ########################
 ]]
+
 function SWEP:PrimaryAttack()
   if game.SinglePlayer() then self:CallOnClient("PrimaryAttack") end
   if self.CFG_PendingSecondary then return end
@@ -340,6 +343,7 @@ end
 #     SECONDARY FIRE     #
 ##########################
 ]]
+
 function SWEP:SecondaryAttack()
   local owner = self:GetOwner()
   if not owner:IsPlayer() then return end
@@ -402,6 +406,7 @@ end
 #     RELOAD     #
 ##################
 ]]
+
 function SWEP:Reload()
   if self.CFG_PendingSecondary then return end
   local nextSecondaryFire = self:GetNextSecondaryFire()

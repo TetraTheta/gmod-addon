@@ -41,11 +41,13 @@ SWEP.Secondary.Ammo = ""
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.ClipSize = 0
 SWEP.Secondary.DefaultClip = 0
+
 --[[
 #########################
 #     SWEP FUNCTION     #
 #########################
 ]]
+
 function SWEP:Initialize()
   self:SetHoldType(self.CFG_HoldType)
 end
@@ -63,6 +65,7 @@ end
 #     PRIMARY FIRE     #
 ########################
 ]]
+
 ---@param weapon SWEP
 ---@param owner Entity|Player
 ---@param target Entity
@@ -133,6 +136,7 @@ end
 #     SECONDARY FIRE     #
 ##########################
 ]]
+
 function SWEP:SecondaryAttack()
 end
 
@@ -141,5 +145,6 @@ end
 #     RELOAD     #
 ##################
 ]]
+
 function SWEP:Reload()
 end

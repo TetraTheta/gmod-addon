@@ -1,7 +1,7 @@
 --[[
-################################
-#     SC ADMIN WEAPON BASE     #
-################################
+##############################
+#    SC ADMIN WEAPON BASE    #
+##############################
 ]]
 sound.Add({
   name = "SCAW.Base.Explosion",
@@ -44,9 +44,9 @@ sound.Add({
   sound = ")weapons/grenade/tick1.wav"
 })
 --[[
-##################
-#     SC MP5     #
-##################
+################
+#    SC MP5    #
+################
 ]]
 sound.Add({
   name = "SCW.MP5.Primary",
@@ -105,9 +105,9 @@ sound.Add({
   sound = ")weapons/scw_mp5/boltrelease.mp3"
 })
 --[[
-####################
-#     SC MP5SD     #
-####################
+##################
+#    SC MP5SD    #
+##################
 ]]
 sound.Add({
   name = "SCW.MP5SD.Primary",
@@ -134,9 +134,9 @@ sound.Add({
   sound = ")weapons/scw_mp5sd/reload.mp3"
 })
 --[[
-#####################
-#     SC Pistol     #
-#####################
+###################
+#    SC Pistol    #
+###################
 ]]
 sound.Add({
   name = "SCW.Pistol.Primary",
@@ -147,9 +147,9 @@ sound.Add({
   sound = ")weapons/m4a1/m4a1-1.wav"
 })
 --[[
-#####################
-#     SC SCAR20     #
-#####################
+###################
+#    SC SCAR20    #
+###################
 ]]
 sound.Add({
   name = "SCW.SCAR20.Primary",
@@ -216,9 +216,9 @@ sound.Add({
   sound = "weapons/scw_scar20/zoom.mp3"
 })
 --[[
-###########################
-#     SC MMod GENERIC     #
-###########################
+#########################
+#    SC MMod GENERIC    #
+#########################
 ]]
 sound.Add({
   name = "SCW.MM.Generic.Movement1",
@@ -339,9 +339,9 @@ sound.Add({
   }
 })
 --[[
-#######################
-#     SC MMod AR2     #
-#######################
+#####################
+#    SC MMod AR2    #
+#####################
 ]]
 sound.Add({
   name = "SCW.MM.AR2.BoltPull",
@@ -456,9 +456,9 @@ sound.Add({
   sound = "<weapons/scw_mm_ar2/secondary_fire.mp3"
 })
 --[[
-########################
-#     SC MMod SMG1     #
-########################
+######################
+#    SC MMod SMG1    #
+######################
 ]]
 sound.Add({
   name = "SCW.MM.SMG1.BoltBack",
