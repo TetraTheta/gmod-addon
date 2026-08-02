@@ -4,8 +4,6 @@ Map:
 - ravenholm10
 - ravenholm15
 ]]
-util.AddNetworkString("FixMap_RavenholmNCZ")
-
 ---@param class string
 ---@param origin Vector
 ---@param name string|nil
@@ -22,6 +20,20 @@ local function FindByClassAndOrigin(class, origin, name)
   end
   return nil
 end
+
+--[[
+#############
+#    NET    #
+#############
+]]
+
+util.AddNetworkString("FixMap_RavenholmNCZ")
+
+--[[
+##############
+#    HOOK    #
+##############
+]]
 
 hook.Add("InitPostEntity", "FixMap_RavenholmNCZ_IO", function()
   local m = game.GetMap()
