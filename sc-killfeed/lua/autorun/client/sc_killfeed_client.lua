@@ -51,10 +51,22 @@ local function AddDeathNoticeEntry(attacker, attacker_team, inflictor, victim, v
   table.insert(deaths, death)
 end
 
+--[[
+#############
+#    NET    #
+#############
+]]
+
 -- Queue one headshot marker per death and consume it from AddDeathNotice.
 net.Receive("SC_KillfeedHeadshot", function()
   table.insert(pending_headshots, net.ReadBool())
 end)
+
+--[[
+##############
+#    HOOK    #
+##############
+]]
 
 -- Capture the stock AddDeathNotice event and replace only the rendering path.
 ---@diagnostic disable-next-line:redundant-parameter -- This hook intentionally mirrors the engine callback signature.

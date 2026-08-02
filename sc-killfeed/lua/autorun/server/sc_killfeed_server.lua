@@ -1,3 +1,9 @@
+--[[
+#############
+#    NET    #
+#############
+]]
+
 -- Register the supplemental network channel used to mark headshot deaths.
 util.AddNetworkString("SC_KillfeedHeadshot")
 
@@ -76,6 +82,12 @@ local function ConsumeHeadshotState(target, attacker, fallback_hitgroup)
 
   return fallback_hitgroup == HITGROUP_HEAD
 end
+
+--[[
+##############
+#    HOOK    #
+##############
+]]
 
 -- Track the final trace result for every pellet. This is more reliable for shotgun killfeed
 -- than only looking at ScaleNPCDamage / LastHitGroup after multiple pellets land.
