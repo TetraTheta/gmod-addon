@@ -20,7 +20,10 @@ function ENT:InputChangeLevel(_, _, _)
   end
 end
 
-function ENT:KeyValue(key, value)
+---@param key string
+---@param value string
+---@return nil
+function ENT:SCApplyKeyValue(key, value)
   if key:lower() == "map" then
     self.Map = value
   else

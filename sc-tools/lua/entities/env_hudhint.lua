@@ -32,7 +32,10 @@ function ENT:InputShowHudHint(activator, _, _)
   end
 end
 
-function ENT:KeyValue(key, value)
+---@param key string
+---@param value string
+---@return nil
+function ENT:SCApplyKeyValue(key, value)
   if key:lower() == "message" then
     self.Message = value
   else
