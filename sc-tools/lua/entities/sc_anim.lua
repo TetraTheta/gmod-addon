@@ -1,11 +1,9 @@
--- Base of every SC Tools' point entity
+-- Base of every SC Tools anim entity
 if SERVER then AddCSLuaFile() end
-DEFINE_BASECLASS("base_point")
-ENT.Base = "base_point"
-ENT.DisableDuplicator = true
-ENT.DoNotDuplicate = true
-ENT.PhysgunDisabled = true
-ENT.Type = "point"
+DEFINE_BASECLASS("base_anim")
+ENT.Base = "base_anim"
+ENT.RenderGroup = RENDERGROUP_BOTH
+ENT.Type = "anim"
 --
 ---@param inputName string
 ---@param activator Entity
@@ -14,20 +12,19 @@ ENT.Type = "point"
 ---@return boolean|nil
 function ENT:AcceptInput(inputName, activator, caller, data)
   -- All inputs must be named as 'InputInputName' (e.g., 'InputUse')
-  local strInputFuncName = Format("Input%s", inputName:gsub("^%l", string.upper))
-  if isfunction(self[strInputFuncName]) then
-    local processed = self[strInputFuncName](self, activator, caller, data)
+  local inputFuncName = Format("Input%s", inputName:gsub("^%l", string.upper))
+  if isfunction(self[inputFuncName]) then
+    local processed = self[inputFuncName](self, activator, caller, data)
     return processed == nil and true or processed
   elseif self:AddOutputFromAcceptInput(inputName, data) then
     return true
+  end
+  local name = self:GetName()
+  local detail = Format("Unhandled AcceptInput: %s %s %s %s", inputName, tostring(activator), tostring(caller), data)
+  if name == nil or name == "" then
+    ErrorNoHalt("[ERROR] [", self.ClassName, "] ", detail, "\n")
   else
-    local name = self:GetName()
-    local detail = Format("Unhandled AcceptInput: %s %s %s %s", inputName, tostring(activator), tostring(caller), data)
-    if name == nil or name == "" then
-      ErrorNoHalt("[ERROR] [", self.ClassName, "] ", detail, "\n")
-    else
-      ErrorNoHalt("[ERROR] [", self.ClassName, ": ", name, "] ", detail, "\n")
-    end
+    ErrorNoHalt("[ERROR] [", self.ClassName, ": ", name, "] ", detail, "\n")
   end
 end
 
@@ -38,8 +35,8 @@ end
 
 ---@return nil
 function ENT:InputKillHierarchy(_, _, _)
-  for _, v in pairs(self:GetChildren()) do
-    v:Remove()
+  for _, child in pairs(self:GetChildren()) do
+    child:Remove()
   end
   self:Remove()
 end

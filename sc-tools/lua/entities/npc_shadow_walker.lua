@@ -49,8 +49,8 @@ end
 
 ---@param key string
 ---@param value string
-function ENT:KeyValue(key, value)
-  BaseClass.KeyValue(self, key, value)
+---@return nil
+function ENT:SCApplyKeyValue(key, value)
   local lkey = string.lower(key)
   if lkey == "weaponmodel" then
     self.WeaponModel = value
@@ -62,6 +62,8 @@ function ENT:KeyValue(key, value)
     self.SCFoundEnemySound = value
   elseif lkey == "cannotopendoors" then
     self.CannotOpenDoors = value == true or value == "1" or value == 1 or value == "true"
+  else
+    self[key] = value
   end
 end
 

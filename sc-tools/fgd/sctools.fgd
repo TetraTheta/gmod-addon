@@ -1,9 +1,10 @@
+// FGD for SC Tools
 
 @include "base.fgd"
 @include "halflife2.fgd"
 @include "garrysmod.fgd"
 
-@BaseClass base(Targetname, Origin) = sc_point
+@BaseClass base(prop_dynamic_base) = sc_anim
 [
 	input Kill(void) : "Removes this entity from the world."
 	input KillHierarchy(void) : "Removes this entity and all its children from the world."
@@ -18,12 +19,148 @@
 	input KillHierarchy(void) : "Removes this entity and all its children from the world."
 ]
 
+@BaseClass base(Targetname, Origin) = sc_point
+[
+	input Kill(void) : "Removes this entity from the world."
+	input KillHierarchy(void) : "Removes this entity and all its children from the world."
+]
+
+// ######################
+// #    Point Entity    #
+// ######################
+
+@PointClass base(sc_point, Parentname) iconsprite("editor/ambient_generic.vmt") sphere(radius) = ambient_generic : "Universal ambient sound. Use it to play and control a single sound."
+[
+	message(*sound) : "Sound Name" : "" : "Name of the GameSound entry for the sound to play. Also supports direct .wav filenames."
+	radius(float) : "Max Audible Distance" : "1250" : "Rough maximum distance at which this sound is audible. This value is converted to a soundlevel enumeration, which dictates the actual sound attenuation."
+	health(integer) : "Volume" : 10 : "Target sound volume, expressed as a range from 0 to 10, where 10 is the loudest."
+	volstart(integer) : "Start Volume" : 0 : "Starting volume (0-10) for fade in purposes."
+	fadeinsecs(integer) : "Fade in time in seconds (0-100)" : 0 : "Volume fade in time in seconds. 0 means instant."
+	fadeoutsecs(integer) : "Fade out time in seconds (0-100)" : 0 : "Volume fade out time in seconds. 0 means instant."
+	pitch(integer) : "Pitch" : 100 : "Sound pitch, expressed as a range from 1 to 255, where 100 is the sound's default pitch."
+	pitchstart(integer) : "Start Pitch" : 100 : "Starting pitch (0-255) for fade in purposes."
+	spinup(integer) : "Spin up time (0-100)" : 0 : "Pitch fade in time in seconds. 0 means instant."
+	spindown(integer) : "Spin down time (0-100)" : 0 : "Pitch fade out time in seconds. 0 means instant."
+	cspinup(integer) : "Incremental Spinup Count" : 0
+	SourceEntityName(target_destination) : "SourceEntityName" : : "If an entity is specified, sound will come from this named entity instead of the location of ambient_generic. Also supports !activator, !caller, and !self."
+	preset(choices) :"Dynamic Presets" : 0 : "Various DSP (Digital Signal Processing) effects that can be applied." =
+	[
+		0: "None"
+		1: "Huge Machine"
+		2: "Big Machine"
+		3: "Machine"
+		4: "Slow Fade in"
+		5: "Fade in"
+		6: "Quick Fade in"
+		7: "Slow Pulse"
+		8: "Pulse"
+		9: "Quick pulse"
+		10: "Slow Oscillator"
+		11: "Oscillator"
+		12: "Quick Oscillator"
+		13: "Grunge pitch"
+		14: "Very low pitch"
+		15: "Low pitch"
+		16: "High pitch"
+		17: "Very high pitch"
+		18: "Screaming pitch"
+		19: "Oscillate spinup/down"
+		20: "Pulse spinup/down"
+		21: "Random pitch"
+		22: "Random pitch fast"
+		23: "Incremental Spinup"
+		24: "Alien"
+		25: "Bizzare"
+		26: "Planet X"
+		27: "Haunted"
+	]
+	lfotype(integer) : "LFO type" : 0 : "Type of Low Frequency Oscillation to employ. 0=Off 1=Square wave 2=Triangle wave 3=Random"
+	lforate(integer) : "LFO rate (0-1000)" : 0 : "How frequently the LFO effect repeats itself."
+	lfomodpitch(integer) : "LFO mod pitch (0-100)" : 0 : "Affects the sound pitch or vibrato."
+	lfomodvol(integer) : "LFO mod vol (0-100)" : 0 : "Affects the volume of the sound, causing it to pulse."
+
+	spawnflags(flags) =
+	[
+		1 : "[1] Play everywhere" : 0
+		16 : "[16] Start Silent" : 1
+		32 : "[32] Is NOT Looped" : 1
+	]
+	soundflags(choices) :"Sound Flags" : 0 : "Additional options for your sound." =
+	[
+		0: "None"
+		128: "[128] Pause when game is paused"
+		256: "[256] Ignore phonemes (no lip-syncing)"
+		1024: "[1024] Don't overwrite existing sound on channel (untested)"
+	]
+
+	input Pitch(integer) : "Sets the sound pitch, expressed as a range from 1 to 255, where 100 is the sound's default pitch."
+	input PlaySound(void) : "Starts the sound."
+	input StopSound(void) : "Stops the sound if it is playing."
+	input ToggleSound(void) : "Toggles the sound between playing and stopping."
+	input Volume(integer) : "Sets the sound volume, expressed as a range from 0 to 10, where 10 is the loudest."
+	input FadeIn(integer) : "Fades the sound up to full volume over a specified number of seconds, with a range from 0 to 100 seconds."
+	input FadeOut(integer) : "Fades the sound to silence over a specified number of seconds, with a range from 0 to 100 seconds."
+	input SetSound(string) : "Sets the sound this ambient_generic should play."
+
+	output OnSoundFinished(void) : "Fires when the sound finishes playing. NOTE: This sound should be set to pause when the game is paused."
+]
+
+// env_hudhint is declared at 'base.fgd', so no need to implement it.
+
+// wirebox() draws from the named keyvalues; prop_interactable uses use_mins/use_maxs instead of the common mins/maxs names.
+@PointClass wirebox(use_mins, use_maxs) base(sc_anim) studioprop() = prop_interactable :
+	"A prop designed to be interacted with like a button. It has all of the properties of prop_dynamic without having to use an accompanying func_door or func_button."
+[
+	spawnflags(flags) =
+	[
+		512 : "[512] +USE interactable" : 1
+		1024 : "[1024] Touch interactable" : 0
+		2048 : "[2048] Disable interaction commands when locked" : 0
+		4096 : "[4096] Radius use" : 0
+	]
+
+	Locked(choices) : "Start locked" : 0 : "If set, this prop_interactable will start locked, making it uninteractable." =
+	[
+		0: "No"
+		1: "Yes"
+	]
+	SetCooldown(float) : "Cooldown" : "1.0" : "The amount of time after this prop_interactable is used before it can be interacted with again. This is always based on when the prop_interactable was pressed, disregarding any active In Sequence, but an optional Out Sequence will play after the cooldown is over. It is also used when the prop_interactable is locked."
+	PressedSound(sound) : "Pressed Sound" : "" : "The sound to play when the button is successfully pressed."
+	LockedSound(sound) : "Locked Sound" : "" : "The sound to play when the button is interacted with while locked."
+	InSequence(string) : "In Sequence" : "" : "Optional sequence to play when the button is pressed, representing a button going 'in'."
+	OutSequence(string) : "Out Sequence" : "" : "Optional sequence to play after the button was interacted with and the cooldown is finished, representing a button coming back 'out' after an 'in' animation."
+	LockedSequence(string) : "Locked Sequence" : "" : "Optional sequence to play when the prop_interactable is interacted with while locked."
+	use_mins(vector) : "+USE Mins" : "-0 -0 -0" : "Optional box for only permitting +USE interactions within. The prop_interactable should not change its angles while this is used."
+	use_maxs(vector) : "+USE Maxs" : "0 0 0" : "Optional box for only permitting +USE interactions within. The prop_interactable should not change its angles while this is used."
+
+	input Lock(void) : "Locks this prop_interactable, making it uninteractable."
+	input Unlock(void) : "Unlocks this prop_interactable, making it interactable."
+	input Press(void) : "Presses this prop_interactable as if someone interacted with it."
+	input EnableUseInteraction(void) : "Enables use interaction if it was disabled before."
+	input DisableUseInteraction(void) : "Disables use interaction if it was enabled before."
+	input EnableTouchInteraction(void) : "Enables touch interaction if it was disabled before."
+	input DisableTouchInteraction(void) : "Disables touch interaction if it was enabled before."
+	input StartIgnoringCommandsWhenLocked(void) : "Starts ignoring commands when this prop_interactable is locked."
+	input StopIgnoringCommandsWhenLocked(void) : "Stops ignoring commands when this prop_interactable is locked."
+	input EnableRadiusInteract(void) : "Enables radius use."
+	input DisableRadiusInteract(void) : "Disables radius use."
+
+	output OnPressed(void) : "Fired whenever the prop is interacted with."
+	output OnLockedUse(void) : "Fired whenever the button is interacted with while locked."
+	output OnIn(void) : "Fired whenever the prop completes its 'In' animation."
+	output OnOut(void) : "Fired whenever the prop completes its 'Out' animation."
+]
+
 @PointClass base(sc_point) iconsprite("editor/lua_run.vmt") = sc_changelevel : "Custom implementation of 'trigger_changelevel' that doesn't require 'info_landmark'"
 [
 	map(string) : "Next Map" : "" : "The name of the map to load next (e.g., gm_construct)."
 
 	input ChangeLevel(void) : "Triggers the level change immediately using the map specified in the 'Next Map' property."
 ]
+
+// ####################
+// #    NPC Entity    #
+// ####################
 
 @NPCClass base(sc_npc) studio("models/skeleton/skeleton_torso3.mdl") = npc_lost_soul : "Map Labs Lost Soul"
 [
@@ -45,5 +182,3 @@
 	input EnableOpenDoors(void) : "Allows this NPC to open doors."
 	input DisableOpenDoors(void) : "Prevents this NPC from opening doors."
 ]
-
-// env_hudhint is declared at 'base.fgd', so no need to implement it.
