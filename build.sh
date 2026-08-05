@@ -43,8 +43,9 @@ resolve_target() {
     5|private-reserve|private_reserve) echo "private-reserve" ;;
     6|sc-killfeed|sc_killfeed) echo "sc-killfeed" ;;
     7|sc-tools|sc_tools) echo "sc-tools" ;;
-    8|sc-turrets|sc_turrets) echo "sc-turrets" ;;
-    9|sc-weapons|sc_weapons) echo "sc-weapons" ;;
+    8|sc-loadout-manager|sc_loadout_manager|sclm) echo "sc-loadout-manager" ;;
+    9|sc-turrets|sc_turrets) echo "sc-turrets" ;;
+    10|sc-weapons|sc_weapons) echo "sc-weapons" ;;
     *) echo "" ;;
   esac
 }
@@ -59,8 +60,9 @@ show_target_prompt() {
     echo "[5] Private Reserve"
     echo "[6] SC Killfeed"
     echo "[7] SC Tools"
-    echo "[8] SC Turrets"
-    echo "[9] SC Weapons"
+    echo "[8] SC Loadout Manager"
+    echo "[9] SC Turrets"
+    echo "[10] SC Weapons"
   } >&2
   read -r -p "Choice: " choice_arg post_arg >&2 || true
   local target

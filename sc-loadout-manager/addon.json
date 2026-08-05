@@ -1,0 +1,13 @@
+{
+  "title": "SC Loadout Manager",
+  "type": "servercontent",
+  "tags": [
+    "fun",
+    "realism"
+  ],
+  "ignore": [
+    "*.psd",
+    "*.vcproj",
+    "*.svn*"
+  ]
+}
