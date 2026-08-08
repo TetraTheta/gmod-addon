@@ -269,7 +269,7 @@ end
 function SCLM.GiveLoadout(ply, loadout)
   if loadout.enforce then
     ply:StripWeapons()
-    ply:StripAmmo()
+    ply:RemoveAllAmmo()
   end
 
   -- Keep ammo writes conservative. Older loadout managers derive clip/reserve
@@ -487,7 +487,7 @@ local function WithPlayerTarget(ply, args, callback)
     return
   end
 
-  callback(SCLM.Users, target:SteamID())
+  if callback ~= nil then callback(SCLM.Users, target:SteamID()) end
 end
 
 ---@param target table
@@ -496,7 +496,7 @@ end
 function RefreshOwner(target, owner, ply)
   if target == SCLM.Users then
     local target_ply = player.GetBySteamID(owner)
-    if IsValid(target_ply) then SCLM.GiveLoadout(target_ply, SCLM.GetEffectiveLoadout(target_ply)) end
+    if type(target_ply) ~= "boolean" and IsValid(target_ply) then SCLM.GiveLoadout(target_ply, SCLM.GetEffectiveLoadout(target_ply)) end
     return
   end
 
