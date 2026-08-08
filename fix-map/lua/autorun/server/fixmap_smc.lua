@@ -4,6 +4,7 @@ Map:
 - a_brief_detour
 - facility
 - mining_complex
+- precinct_17
 - random_17
 - so_much_for_freeman
 ]]
@@ -54,7 +55,7 @@ hook.Add("InitPostEntity", "FixMap_SingleMapCollection_InitPostEntity", function
       #  abandon  #
       #############
       ]]
-      print("[Single Map Collection] Fixing (possibly) broken garage door...")
+      print("[Single Map Collection] DEV: Fixing (possibly) broken garage door...")
       local button = FindByClassAndName("func_button", "button_gate1")
       button:Input("AddOutput", button, nil, "OnPressed Gate1,Open,,30.0,-1")
     elseif curmap == "facility" then
@@ -63,7 +64,7 @@ hook.Add("InitPostEntity", "FixMap_SingleMapCollection_InitPostEntity", function
       #  facility  #
       ##############
       ]]
-      print("[Single Map Collection] Fixing weak explosion...")
+      print("[Single Map Collection] DEV: Fixing weak explosion...")
       local exp = FindByClassAndName("env_physexplosion", "physexplosion_ambush")
       exp:SetKeyValue("magnitude", "1600")
       local logic = FindByClassAndName("logic_relay", "relay_ambush_group1")
@@ -74,18 +75,69 @@ hook.Add("InitPostEntity", "FixMap_SingleMapCollection_InitPostEntity", function
       #  mining_complex  #
       ####################
       ]]
-      print("[Single Map Collection] Fixing text...")
+      print("[Single Map Collection] DEV: Fixing text...")
       local text1 = FindByClassAndName("game_text", "sat_text_1")
       text1:SetKeyValue("message", "Earth, do you copy me?")
       local text2 = FindByClassAndName("game_text", "finale_dish_scene_text_3")
       text2:SetKeyValue("message", "Mars? Mars, do you copy me?")
+    elseif curmap == "precinct_17" then
+      --[[
+      #################
+      #  precinct_17  #
+      #################
+      ]]
+      -- local base_breakable = ents.Create("sc_breakable")
+      -- if IsValid(base_breakable) then
+      --   base_breakable:SetPos(Vector(448, -256.5, -128))
+      --   base_breakable:SetKeyValue("mins", "-128 -0.5 -64")
+      --   base_breakable:SetKeyValue("maxs", "128 0.5 64")
+      --   base_breakable:SetKeyValue("ExplodeDamage", "0")
+      --   base_breakable:SetKeyValue("explodemagnitude", "0")
+      --   base_breakable:SetKeyValue("ExplodeRadius", "0")
+      --   base_breakable:SetKeyValue("explosion", "0")
+      --   base_breakable:SetKeyValue("gibdir", "0 0 0")
+      --   base_breakable:SetKeyValue("health", "1")
+      --   base_breakable:SetKeyValue("material", "10")
+      --   base_breakable:SetKeyValue("minhealthdmg", "0")
+      --   base_breakable:SetKeyValue("nodamageforces", "0")
+      --   base_breakable:SetKeyValue("PerformanceMode", "0")
+      --   base_breakable:SetKeyValue("physdamagescale", "1.0")
+      --   base_breakable:SetKeyValue("pressuredelay", "0")
+      --   base_breakable:SetKeyValue("propdata", "0")
+      --   base_breakable:SetKeyValue("spawnflags", "0")
+      --   base_breakable:SetKeyValue("spawnobject", "0")
+      --   base_breakable:SetKeyValue("StartDisabled", "1")
+      --   base_breakable:SetKeyValue("targetname", "base_breakable")
+      --   base_breakable:Spawn()
+      --   base_breakable:Activate()
+      --   --
+      --   base_breakable:Input("AddOutput", base_breakable, nil, "OnBreak smrly2,Trigger,,0,1")
+      -- end
+      -- local relay = FindByClassAndName("logic_relay", "smrly1")
+      -- relay:Input("AddOutput", relay, nil, "OnTrigger base_breakable,Enable,,0,1")
+      --
+      local crowbar = ents.Create("weapon_crowbar")
+      crowbar:SetPos(Vector(517, -64, 396))
+      crowbar:SetAngles(Angle(0, 90, 0))
+      crowbar:Spawn()
+      print("[Single Map Collection] DEV: Created weapon_crowbar")
+      --
+      local pistol_old = FindByClassAndOrigin("weapon_pistol", Vector(300, -460, -191))
+      pistol_old:Remove()
+      local pistol = ents.Create("weapon_pistol")
+      pistol:SetPos(Vector(300, -460, -191))
+      pistol:SetAngles(Angle(0, 140, 90))
+      pistol:Spawn()
+      pistol:Input("AddOutput", pistol, nil, "OnPlayerPickup z1rly,Trigger,,0,1")
+      pistol:Input("AddOutput", pistol, nil, "OnPlayerPickup smct,Add,1,0,1")
+      print("[Single Map Collection] DEV: Replaced weapon_pistol")
     elseif curmap == "random_17" then
       --[[
       ###############
       #  random_17  #
       ###############
       ]]
-      print("[Single Map Collection] Fixing slow winch...")
+      print("[Single Map Collection] DEV: Fixing slow winch...")
       local train = FindByClassAndName("func_tracktrain", "winch_r_ds_pp")
       train:SetKeyValue("startspeed", "100")
       -- print("[Single Map Collection] Fixing sequence...")
@@ -100,7 +152,7 @@ hook.Add("InitPostEntity", "FixMap_SingleMapCollection_InitPostEntity", function
       #  so_much_for_freeman  #
       #########################
       ]]
-      print("[Single Map Collection] Fixing slow pod...")
+      print("[Single Map Collection] DEV: Fixing slow pod...")
       ents.FindByName("pathTrack_PlayerTrain_Path6")[1]:Fire("SetSpeed", "150")
       ents.FindByName("pathTrack_PlayerTrain_Path2")[1]:Fire("SetSpeed", "150")
       ents.FindByName("pathTrack_PlayerTrain_Path3")[1]:Fire("SetSpeed", "150")
@@ -132,7 +184,7 @@ hook.Add("InitPostEntity", "FixMap_SingleMapCollection_InitPostEntity", function
         end
         print("shotgun2 fixed")
       end)
-      print("[Single Map Collection] Fixing Hammer I/O...")
+      print("[Single Map Collection] DEV: Fixing Hammer I/O...")
       local airel1 = ents.GetMapCreatedEntity(10485)
       ---@cast airel1 Entity
       if IsValid(airel1) and airel1:GetClass() == "ai_relationship" then
