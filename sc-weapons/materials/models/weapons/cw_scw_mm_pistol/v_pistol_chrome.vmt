@@ -11,6 +11,6 @@
 	"$phongfresnelranges" "[2 4 6]"
 	"$phongtint" "[0.85 0.9 1.15]"
 	"$rimlight" "1"
-	"$rimlightboost" "0.2"	
-	"$rimlightexponent" "50"	
+	"$rimlightboost" "0.2"
+	"$rimlightexponent" "50"
 }

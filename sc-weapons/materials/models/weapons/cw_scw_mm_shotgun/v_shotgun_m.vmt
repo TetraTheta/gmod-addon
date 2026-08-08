@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/weapons/cw_scw_mm_shotgun/v_shotgun_d"
+	"$bumpmap" "models/weapons/cw_scw_mm_shotgun/v_shotgun_n"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.1 .08 .06]"
+	"$normalmapalphaenvmapmask" "1"
+	"$phong" "1"
+	"$phongboost" "0.6"
+	"$phongexponent" "20"
+	"$phongfresnelranges" "[2 4 6]"
+	"$phongtint" "[1 0.9 0.85]"
+	"$selfillum" "1"
+}

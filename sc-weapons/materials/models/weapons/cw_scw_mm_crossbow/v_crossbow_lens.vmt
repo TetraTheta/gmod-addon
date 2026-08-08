@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/weapons/cw_scw_mm_crossbow/v_crossbow_lens_d"
+	"$bumpmap" "models/weapons/cw_scw_mm_crossbow/v_crossbow_lens_n"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[0.33 0.33 0.33]"
+	"$normalmapalphaenvmapmask" "1"
+	"$phong" "1"
+	"$phongboost" "1"
+	"$phongexponent" "50"
+	"$phongfresnelranges" "[2 4 6]"
+	"$phongtint" "[1 1 1]"
+	"$rimlight" "1"
+	"$rimlightboost""0.1"
+	"$rimlightexponent" "50"
+}
