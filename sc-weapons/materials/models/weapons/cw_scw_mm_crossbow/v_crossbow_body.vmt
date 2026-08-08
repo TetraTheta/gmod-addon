@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/weapons/cw_scw_mm_crossbow/v_crossbow_body_d"
+	"$bumpmap" "models/weapons/cw_scw_mm_crossbow/v_crossbow_body_n"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.066 .066 .066]"
+	"$normalmapalphaenvmapmask" "1"
+	"$phong" "1"
+	"$phongboost" "0.75"
+	"$phongexponent" "6"
+	"$phongfresnelranges" "[2 4 6]"
+	"$phongtint" "[0.6 0.7 0.75]"
+}
