@@ -5,12 +5,17 @@
     "fun"
   ],
   "ignore": [
+    "*.log",
+    "*.vmf",
+    "*.vmx",
     ".ignore/*",
     "AGENTS.md",
     "README.md",
     "fgd/*",
     "lua/.ignore/*",
     "lua/weapons/.ignore/*",
+    "maps_original/*",
+    "mapsrc/*",
     "models/.ignore/*",
     "modelsrc/*",
     "thumb.jpg",
