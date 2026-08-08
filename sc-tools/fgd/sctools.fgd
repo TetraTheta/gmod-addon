@@ -158,6 +158,24 @@
 	input ChangeLevel(void) : "Triggers the level change immediately using the map specified in the 'Next Map' property."
 ]
 
+@SolidClass base(BreakableBrush, Origin, RenderFields, Shadow) = sc_breakable :
+	"Minor GLua-only knockoff for maps that cannot be recompiled with func_breakable. Use func_breakable whenever possible. Hammer brush placement is only a boundary authoring aid; per-face materials are always ignored."
+[
+	mins(vector) : "GLua Mins" : "-16 -16 -16" : "Collision box minimum extents to pass when generating this entity from GLua. Hammer face materials are ignored."
+	maxs(vector) : "GLua Maxs" : "16 16 16" : "Collision box maximum extents to pass when generating this entity from GLua. Hammer face materials are ignored."
+	StartDisabled(choices) : "Start Disabled" : 0 : "If enabled, this breakable starts non-solid and cannot take damage until enabled." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	minhealthdmg(integer) : "Min Damage to Hurt" : 0 : "Minimum damage required before health changes."
+	physdamagescale(float) : "Physics Impact Damage Scale" : "1.0" : "Scales damage from physics impacts. 0 disables this feature for compatibility."
+
+	input Enable(void) : "Enables collision and damage for this breakable."
+	input Disable(void) : "Disables collision and damage for this breakable."
+	input Toggle(void) : "Toggles collision and damage for this breakable."
+]
+
 // ####################
 // #    NPC Entity    #
 // ####################
