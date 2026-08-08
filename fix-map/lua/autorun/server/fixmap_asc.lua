@@ -4,17 +4,17 @@ Map:
 - bemusement
 ]]
 
-local maps = {
-  bemusement = true,
-  beyond_the_fortress = true,
-  crosscastle = true,
-  profaned_fortress = true,
-  sacrificial_chamber = true,
-  snowy_castle = true,
-  talisman = true,
-  temple = true,
-  unlikely_friends = true
-}
+-- local maps = {
+--   bemusement = true,
+--   beyond_the_fortress = true,
+--   crosscastle = true,
+--   profaned_fortress = true,
+--   sacrificial_chamber = true,
+--   snowy_castle = true,
+--   talisman = true,
+--   temple = true,
+--   unlikely_friends = true
+-- }
 
 hook.Add("PlayerSpawn", "FixMap_AttackSlugCollection_PlayerSpawn", function(ply, _)
   if SERVER then
@@ -27,18 +27,18 @@ hook.Add("PlayerSpawn", "FixMap_AttackSlugCollection_PlayerSpawn", function(ply,
   end
 end)
 
-hook.Add("PlayerLoadout", "FixMap_AttackSlugCollection_PlayerLoadout", function(ply)
-  if SERVER then
-    local cm = game.GetMap()
-    -- strip weapons first
-    if maps[cm] then
-      ply:StripWeapons()
-      timer.Simple(0.1, function() ply:StripWeapons() end)
-      ---@diagnostic disable-next-line: redundant-return-value -- this is valid return that prevents default loadout
-      return true
-    end
-  end
-end)
+-- hook.Add("PlayerLoadout", "FixMap_AttackSlugCollection_PlayerLoadout", function(ply)
+--   if SERVER then
+--     local cm = game.GetMap()
+--     -- strip weapons first
+--     if maps[cm] then
+--       ply:StripWeapons()
+--       timer.Simple(0.1, function() ply:StripWeapons() end)
+--       ---@diagnostic disable-next-line: redundant-return-value -- this is valid return that prevents default loadout
+--       return true
+--     end
+--   end
+-- end)
 
 hook.Add("InitPostEntity", "FixMap_AttackSlugCollection_InitPostEntity", function()
   if SERVER then
