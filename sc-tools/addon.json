@@ -19,6 +19,7 @@
     "mapsrc/*",
     "models/.ignore/*",
     "modelsrc/*",
+    "scripts/*",
     "thumb.jpg",
     "thumb.png"
   ]
