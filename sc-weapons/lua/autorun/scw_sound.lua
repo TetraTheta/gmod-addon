@@ -456,6 +456,151 @@ sound.Add({
   sound = "<weapons/scw_mm_ar2/secondary_fire.mp3"
 })
 --[[
+##########################
+#    SC MMod Crossbow    #
+##########################
+]]
+--[[
+#########################
+#    SC MMod Shotgun    #
+#########################
+]]
+sound.Add({
+  name = "SCW.MM.Shotgun.CockBack",
+  channel = CHAN_AUTO,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/cock_back.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.CockForward",
+  channel = CHAN_AUTO,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/cock_forward.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.Double",
+  channel = CHAN_WEAPON,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_GUNFIRE, -- SNDLVL_140dB
+  pitch = { 90, 95 },
+  sound = "<weapons/scw_mm_shotgun/fire_dbl.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.Double_NPC",
+  channel = CHAN_WEAPON,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_GUNFIRE, -- SNDLVL_140dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/npc_fire_dbl.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.Draw",
+  channel = CHAN_AUTO,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/deploy.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.Reload",
+  channel = CHAN_AUTO,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = {
+    "<weapons/scw_mm_shotgun/reload1.mp3",
+    "<weapons/scw_mm_shotgun/reload2.mp3",
+    "<weapons/scw_mm_shotgun/reload3.mp3",
+    "<weapons/scw_mm_shotgun/reload4.mp3",
+    "<weapons/scw_mm_shotgun/reload5.mp3",
+    "<weapons/scw_mm_shotgun/reload6.mp3"
+  }
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.Single",
+  channel = CHAN_WEAPON,
+  volume = 0.43, -- 0.86
+  level = SNDLVL_GUNFIRE, -- SNDLVL_140dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/fire.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.Single_NPC",
+  channel = CHAN_WEAPON,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_GUNFIRE, -- SNDLVL_140dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/npc_fire.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.Sling1",
+  channel = CHAN_AUTO,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/sling1.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.Sling2",
+  channel = CHAN_AUTO,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/sling2.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.Sling3",
+  channel = CHAN_AUTO,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/sling3.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.Sling4",
+  channel = CHAN_AUTO,
+  volume = 0.5, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/sling4.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.SlingRun1",
+  channel = CHAN_AUTO,
+  volume = 0.4, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/sling1.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.SlingRun2",
+  channel = CHAN_AUTO,
+  volume = 0.4, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/sling2.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.SlingWalk1",
+  channel = CHAN_AUTO,
+  volume = 0.2, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/sling3.mp3"
+})
+sound.Add({
+  name = "SCW.MM.Shotgun.SlingWalk2",
+  channel = CHAN_AUTO,
+  volume = 0.2, -- 1.0
+  level = SNDLVL_IDLE, -- SNDLVL_60dB
+  pitch = 100,
+  sound = "<weapons/scw_mm_shotgun/sling4.mp3"
+})
+--[[
 ######################
 #    SC MMod SMG1    #
 ######################
