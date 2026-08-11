@@ -123,7 +123,7 @@ function ENT:Initialize()
   self:SCInitSoundState()
   self:SCApplyParent()
   if self.SoundName == nil or self.SoundName == "" then
-    ErrorNoHalt("[ERROR] [ambient_generic] Empty ambient_generic at ", tostring(self:GetPos()), "\n")
+    MsgC(Color(255, 100, 100), "[ERROR] [ambient_generic] Empty ambient_generic at ", tostring(self:GetPos()), "\n")
     self:Remove()
     return
   end
