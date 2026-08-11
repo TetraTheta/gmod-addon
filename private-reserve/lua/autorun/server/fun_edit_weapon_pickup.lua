@@ -40,5 +40,8 @@ hook.Add("PlayerCanPickupWeapon", "PR_AdditionalWeaponPickup", function(p, wep)
   elseif cls == "weapon_ar2" then
     -- 'weapon_ar2' -> 'scw_mm_ar2'
     return EditPickupWeapon(p, wep, "scw_mm_ar2", true, 256, "AR2")
+  elseif cls == "weapon_shotgun" then
+    -- 'weapon_shotgun' -> 'scw_mm_shotgun'
+    return EditPickupWeapon(p, wep, "scw_mm_shotgun", true, 256, "Buckshot")
   end
 end)
