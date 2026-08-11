@@ -35,14 +35,15 @@ hook.Add("PlayerLoadout", "PR_CustomLoadout", function(p)
     p:Give("weapon_357")
     p:Give("weapon_rpg")
     p:Give("weapon_ar2")
+    --
     return true
   else
-    p:RemoveAllAmmo()
+    -- Ammo
+    --p:RemoveAllAmmo()
     -- Weapon
     p:Give("gmod_tool")
     p:Give("weapon_physgun")
-    --p:Give("scw_empty")
-    --p:SelectWeapon("scw_empty")
+    --
     return true
   end
 end)
@@ -69,12 +70,14 @@ local function GivePrivateReserveLoadout(p)
   -- SC Weapons
   p:Give("scw_mm_smg1")
   p:Give("scw_mm_ar2")
+  p:Give("scw_mm_shotgun")
   -- Ammo
   p:GiveAmmo(9999, "SMG1", true)
   p:GiveAmmo(9999, "SMG1_Grenade", true)
   p:GiveAmmo(9999, "AR2", true)
   p:GiveAmmo(9999, "AR2AltFire", true)
   p:GiveAmmo(9999, "XBowBolt", true)
+  p:GiveAmmo(9999, "Buckshot", true)
 end
 
 --[[
