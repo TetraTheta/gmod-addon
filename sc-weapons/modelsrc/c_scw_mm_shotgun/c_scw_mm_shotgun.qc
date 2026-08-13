@@ -230,7 +230,7 @@ $sequence "fire" {
 	node "2"
 	snap
 	// fps 45
-	fps 60
+	fps 68
 }
 
 // $sequence "fire_ironsights" {
@@ -259,7 +259,7 @@ $sequence "altfire" {
 	node "2"
 	snap
 	// fps 55
-	fps 73
+	fps 85
 }
 
 $sequence "holster" {
