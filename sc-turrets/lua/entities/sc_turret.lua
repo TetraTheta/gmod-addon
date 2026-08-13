@@ -55,9 +55,13 @@ ENT.EyeAttachmentNames = { "light", "eye", "eyes" }
 ENT.SkinNumber = 0
 
 local SF_AUTOACTIVATE = 0x00000020
+local SF_BREAK_TRIGGER_ONLY = 0x00000001
 local SF_STARTINACTIVE = 0x00000040
 local SF_FASTRETIRE = 0x00000080
 local SF_OUT_OF_AMMO = 0x00000100
+
+local DAMAGE_NO_VALUE = 0
+local MATERIAL_UNBREAKABLE_GLASS = 7
 
 local STATE_ACTIVE = "active"
 local STATE_AUTO_SEARCH = "auto_search"
@@ -214,6 +218,38 @@ local function GetPistolDamage()
   return 10
 end
 
+---@param ent Entity
+---@param source Entity
+---@return boolean
+local function CanBreakPassable(ent, source)
+  if HasFlag(ent:GetSpawnFlags(), SF_BREAK_TRIGGER_ONLY) then return false end
+  if ent:Health() <= 0 then return false end
+
+  local damage = GetPistolDamage()
+
+  local takeDamage = ent:GetInternalVariable("m_takedamage")
+  if isnumber(takeDamage) and takeDamage == DAMAGE_NO_VALUE then return false end
+
+  local material = ent:GetInternalVariable("m_Material")
+  if material == MATERIAL_UNBREAKABLE_GLASS then return false end
+
+  local minHealthDamage = ent:GetInternalVariable("minhealthdmg")
+  if isnumber(minHealthDamage) and minHealthDamage > damage then return false end
+
+  local bulletDamageMod = ent:GetInternalVariable("m_flDmgModBullet")
+  if isnumber(bulletDamageMod) and bulletDamageMod <= 0 then return false end
+
+  local damageFilter = ent:GetInternalVariable("m_hDamageFilter")
+  if not IsValid(damageFilter) then return true end
+
+  local damageInfo = DamageInfo()
+  damageInfo:SetAttacker(source)
+  damageInfo:SetDamage(damage)
+  damageInfo:SetDamageType(DMG_BULLET)
+  damageInfo:SetInflictor(source)
+  return damageFilter:PassesDamageFilter(damageInfo)
+end
+
 ---@param target Entity
 ---@param boneName string
 ---@return Vector|nil
@@ -316,7 +352,7 @@ local function CanShootTarget(target, aimPos, source, startPos, maxDistance)
     })
 
     if tr.Entity == target then return true end
-    if not (IsValid(tr.Entity) and TRACE_PASSABLE_BREAKABLES[tr.Entity:GetClass()]) then return false end
+    if not (IsValid(tr.Entity) and TRACE_PASSABLE_BREAKABLES[tr.Entity:GetClass()] and CanBreakPassable(tr.Entity, source)) then return false end
     table.insert(filter, tr.Entity)
   end
 
