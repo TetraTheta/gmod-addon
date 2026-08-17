@@ -10,7 +10,21 @@ BUILD_DIR=".build"
 log() {
   local header="${1:-INFO}"
   local message="${2:-}"
-  printf "%s %s\n" "$header" "$message"
+  local color=""
+  local reset=""
+
+  if [[ -t 1 ]]; then
+    case "$header" in
+      ERROR) color=$'\033[31m' ;;
+      INFO) color=$'\033[32m' ;;
+    esac
+
+    if [[ -n "$color" ]]; then
+      reset=$'\033[0m'
+    fi
+  fi
+
+  printf "%s%s%s %s\n" "$color" "$header" "$reset" "$message"
 }
 
 to_unix_path() {
