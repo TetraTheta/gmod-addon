@@ -1,3 +1,5 @@
+---@param keybind string
+---@return string
 local function ReplaceKeybind(keybind)
   local vkey = input.LookupBinding(keybind, true)
   if vkey then
@@ -14,6 +16,9 @@ end
 ]]
 
 net.Receive("SCTOOLS_env_hudhint_message", function(_, _)
+  local hudhint_enable = GetConVar("env_hudhint_enable")
+  if hudhint_enable ~= nil and not hudhint_enable:GetBool() then return end
+
   local phrase = net.ReadString()
   phrase = language.GetPhrase(phrase)
   local vmsg = phrase:gsub("%%(.-)%%", ReplaceKeybind)
