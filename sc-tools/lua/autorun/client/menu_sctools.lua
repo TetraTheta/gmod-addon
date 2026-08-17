@@ -48,6 +48,7 @@ hook.Add("PopulateToolMenu", "SCToolsSettingsMenu", function()
       { label = "Sound and UI", value = "3" }
     })
     menu_lib.AddClientCheckBox(panel, "Dynamic fire", "sc_dynamic_fire", "Enables local dynamic fire effects.")
+    menu_lib.AddClientCheckBox(panel, "env_hudhint messages", "env_hudhint_enable", "Shows local env_hudhint map messages.")
     menu_lib.AddClientComboBox(panel, "Headshot feedback", "sc_hshot_effect", "Chooses which local headshot feedback effects are enabled.", {
       { label = "Disabled",     value = "0" },
       { label = "Sound only",   value = "1" },
