@@ -9,6 +9,7 @@ local headcrabs = {
 local myWeapons = {
   scw_colt_saa = true,
   scw_mm_ar2 = true,
+  scw_mm_shotgun = true,
   scw_mm_smg1 = true,
   scw_mp5sd = true,
   scw_scar20 = true,
