@@ -69,6 +69,18 @@ hook.Add("InitPostEntity", "FixMap_SingleMapCollection_InitPostEntity", function
       exp:SetKeyValue("magnitude", "1600")
       local logic = FindByClassAndName("logic_relay", "relay_ambush_group1")
       logic:Input("AddOutput", logic, nil, "OnTrigger door_combine_assault1,Kill,,1.9,-1")
+    elseif curmap == "lab_ex" then
+      --[[
+      ############
+      #  lab_ex  #
+      ############
+      ]]
+      local trigs = ents.FindByClass("trigger_physics_trap")
+      for _, t in ipairs(trigs) do
+        if t:GetName() == "physicstrap_ball_killer" then
+          timer.Simple(0.01, function() t:Remove() end)
+        end
+      end
     elseif curmap == "mining_complex" then
       --[[
       ####################
@@ -147,50 +159,6 @@ hook.Add("InitPostEntity", "FixMap_SingleMapCollection_InitPostEntity", function
       -- drum:Input("AddOutput", drum, nil, "OnBreak up_sound,PlaySound,,1.0,-1")
       -- drum:Input("AddOutput", drum, nil, "OnBreak up_door,Open,,1.2,-1")
     elseif curmap == "so_much_for_freeman" then
-      --[[
-      #########################
-      #  so_much_for_freeman  #
-      #########################
-      ]]
-      print("[Single Map Collection] DEV: Fixing slow pod...")
-      ents.FindByName("pathTrack_PlayerTrain_Path6")[1]:Fire("SetSpeed", "150")
-      ents.FindByName("pathTrack_PlayerTrain_Path2")[1]:Fire("SetSpeed", "150")
-      ents.FindByName("pathTrack_PlayerTrain_Path3")[1]:Fire("SetSpeed", "150")
-      ents.FindByName("pathTrack_PlayerTrain_Path4")[1]:Fire("SetSpeed", "150")
-      print("[Single Map Collection] Fixing sequence...")
-      local sg1 = FindByClassAndOrigin("weapon_shotgun", Vector(5941.39, 4732.3, -207.627))
-      local sg2 = FindByClassAndOrigin("weapon_shotgun", Vector(5940.39, 4741.3, -207.627))
-      timer.Simple(0, function()
-        if not IsValid(sg1) then return end
-        sg1:SetKeyValue("spawnflags", 0)
-        sg1:SetPos(Vector(5957, 4732, -207.627))
-        sg1:PhysicsInit(SOLID_VPHYSICS)
-        local sg1p = sg1:GetPhysicsObject()
-        if IsValid(sg1p) then
-          sg1p:EnableMotion(true)
-          sg1p:Wake()
-        end
-        print("shotgun1 fixed")
-      end)
-      timer.Simple(0, function()
-        if not IsValid(sg2) then return end
-        sg2:SetKeyValue("spawnflags", 0)
-        sg2:SetPos(Vector(5958, 4741, -207.627))
-        sg2:PhysicsInit(SOLID_VPHYSICS)
-        local sg2p = sg2:GetPhysicsObject()
-        if IsValid(sg2p) then
-          sg2p:EnableMotion(true)
-          sg2p:Wake()
-        end
-        print("shotgun2 fixed")
-      end)
-      print("[Single Map Collection] DEV: Fixing Hammer I/O...")
-      local airel1 = ents.GetMapCreatedEntity(10485)
-      ---@cast airel1 Entity
-      if IsValid(airel1) and airel1:GetClass() == "ai_relationship" then
-        airel1:SetKeyValue("target", "!player")
-        airel1:Fire("ApplyRelationship", "", 0)
-      end
     end
   end
 end)
