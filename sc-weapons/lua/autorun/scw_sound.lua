@@ -539,7 +539,7 @@ sound.Add({
 sound.Add({
   name = "SCW.MM.Shotgun.Sling1",
   channel = CHAN_AUTO,
-  volume = 0.5, -- 1.0
+  volume = 0.2, -- 1.0
   level = SNDLVL_IDLE, -- SNDLVL_60dB
   pitch = 100,
   sound = "<weapons/scw_mm_shotgun/sling1.mp3"
@@ -547,7 +547,7 @@ sound.Add({
 sound.Add({
   name = "SCW.MM.Shotgun.Sling2",
   channel = CHAN_AUTO,
-  volume = 0.5, -- 1.0
+  volume = 0.2, -- 1.0
   level = SNDLVL_IDLE, -- SNDLVL_60dB
   pitch = 100,
   sound = "<weapons/scw_mm_shotgun/sling2.mp3"
@@ -555,7 +555,7 @@ sound.Add({
 sound.Add({
   name = "SCW.MM.Shotgun.Sling3",
   channel = CHAN_AUTO,
-  volume = 0.5, -- 1.0
+  volume = 0.2, -- 1.0
   level = SNDLVL_IDLE, -- SNDLVL_60dB
   pitch = 100,
   sound = "<weapons/scw_mm_shotgun/sling3.mp3"
@@ -563,7 +563,7 @@ sound.Add({
 sound.Add({
   name = "SCW.MM.Shotgun.Sling4",
   channel = CHAN_AUTO,
-  volume = 0.5, -- 1.0
+  volume = 0.2, -- 1.0
   level = SNDLVL_IDLE, -- SNDLVL_60dB
   pitch = 100,
   sound = "<weapons/scw_mm_shotgun/sling4.mp3"
@@ -571,7 +571,7 @@ sound.Add({
 sound.Add({
   name = "SCW.MM.Shotgun.SlingRun1",
   channel = CHAN_AUTO,
-  volume = 0.4, -- 1.0
+  volume = 0.2, -- 1.0
   level = SNDLVL_IDLE, -- SNDLVL_60dB
   pitch = 100,
   sound = "<weapons/scw_mm_shotgun/sling1.mp3"
@@ -579,7 +579,7 @@ sound.Add({
 sound.Add({
   name = "SCW.MM.Shotgun.SlingRun2",
   channel = CHAN_AUTO,
-  volume = 0.4, -- 1.0
+  volume = 0.2, -- 1.0
   level = SNDLVL_IDLE, -- SNDLVL_60dB
   pitch = 100,
   sound = "<weapons/scw_mm_shotgun/sling2.mp3"
@@ -587,7 +587,7 @@ sound.Add({
 sound.Add({
   name = "SCW.MM.Shotgun.SlingWalk1",
   channel = CHAN_AUTO,
-  volume = 0.2, -- 1.0
+  volume = 0.1, -- 1.0
   level = SNDLVL_IDLE, -- SNDLVL_60dB
   pitch = 100,
   sound = "<weapons/scw_mm_shotgun/sling3.mp3"
@@ -595,7 +595,7 @@ sound.Add({
 sound.Add({
   name = "SCW.MM.Shotgun.SlingWalk2",
   channel = CHAN_AUTO,
-  volume = 0.2, -- 1.0
+  volume = 0.1, -- 1.0
   level = SNDLVL_IDLE, -- SNDLVL_60dB
   pitch = 100,
   sound = "<weapons/scw_mm_shotgun/sling4.mp3"
