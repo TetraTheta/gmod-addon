@@ -66,12 +66,14 @@ local function GivePrivateReserveLoadout(p)
   p:Give("weapon_crowbar")
   p:Give("weapon_physcannon")
   -- SC Admin Weapons
-  p:Give("scaw_mp5")
+  p:Give("scaw_mp5_clean")
   -- SC Weapons
+  p:Give("scw_colt_saa")
   p:Give("scw_mm_smg1")
   p:Give("scw_mm_ar2")
   p:Give("scw_mm_shotgun")
   -- Ammo
+  p:GiveAmmo(9999, "357", true)
   p:GiveAmmo(9999, "SMG1", true)
   p:GiveAmmo(9999, "SMG1_Grenade", true)
   p:GiveAmmo(9999, "AR2", true)
