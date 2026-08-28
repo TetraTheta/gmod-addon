@@ -107,6 +107,57 @@
 
 // env_hudhint is declared at 'base.fgd', so no need to implement it.
 
+@PointClass base(sc_point) iconsprite("editor/game_text.vmt") = game_text : "An entity that displays text on player's screens."
+[
+	spawnflags(flags) =
+	[
+		1 : "All Players" : 0
+	]
+
+	message(string) : "Message Text" : "" : "Message to display onscreen. '/n' and '\n' sequences are converted to line breaks."
+	x(float) : "X (0 - 1.0 = left to right) (-1 centers)" : "-1" : "Horizontal position on the player's screens to draw the text. The value should be between 0 and 1, where 0 is the far left of the screen and 1 is the far right. -1 centers the text."
+	y(float) : "Y (0 - 1.0 = top to bottom) (-1 centers)" : "-1" : "Vertical position on the player's screens to draw the text. The value should be between 0 and 1, where 0 is the top of the screen and 1 is the bottom. -1 centers the text."
+	effect(Choices) : "Text Effect" : 0 =
+	[
+		0 : "Fade In/Out"
+		1 : "Credits"
+		2 : "Scan Out"
+	]
+	color(color255) : "Color1" : "200 200 200" : "The text color."
+	color2(color255) : "Color2 (Scan)" : "240 110 0" : "The color for the letter being scanned if the 'Text Effect' is set to 'Scan Out'."
+	fadein(float) : "Fade in Time (or character scan time)" : "1.5" : "The time it should take for the text to fully fade in."
+	fadeout(float) : "Fade Out Time" : "0.5" : "The time it should take for the text to fade out, after the hold time has expired."
+	holdtime(float) : "Hold Time" : "1.2" : "The time the text should stay onscreen, after fading in, before it begins to fade out."
+	fxtime(float) : "Scan time (scan effect only)" : "0.25" : "If the 'Text Effect' is set to Scan Out, this is the time it should take to scan out all the letters in the text."
+	channel(choices) : "Text Channel" : 1 : "You can have up to four individual game_text messages onscreen at once, stored in channels. Select which channel this text should be placed in, which will overwrite any active message already in that channel." =
+	[
+		1 : "Channel 1"
+		2 : "Channel 2"
+		3 : "Channel 3"
+		4 : "Channel 4"
+		5 : "Channel 5"
+		6 : "Channel 6"
+		7 : "Channel 7"
+		8 : "Channel 8"
+	]
+	master(string) : "Master" : : "Legacy support: The name of a master entity. If the master hasn't been activated, this entity will not activate."
+	font(string) : "Font" : "" : "Optional ClientScheme.res font name, such as CenterPrintText or HudHintTextLarge."
+	autobreak(choices) : "Auto-break" : 0 : "Automatically wraps long lines." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+
+	// Inputs
+	input Display(void) : "Display the message text."
+	input SetText(string) : "Set the text to display. MapBase-style /n and literal \n sequences are converted to line breaks."
+	input SetPosX(float) : "Set the text position on the screen (X Axis)."
+	input SetPosY(float) : "Set the text position on the screen (Y Axis)."
+	input SetTextColor(color255) : "Set the primary text color."
+	input SetTextColor2(color255) : "Set color of the transition text."
+	input SetFont(string) : "Sets the ClientScheme font name."
+]
+
 // wirebox() draws from the named keyvalues; prop_interactable uses use_mins/use_maxs instead of the common mins/maxs names.
 @PointClass wirebox(use_mins, use_maxs) base(sc_anim) studioprop() = prop_interactable :
 	"A prop designed to be interacted with like a button. It has all of the properties of prop_dynamic without having to use an accompanying func_door or func_button."
