@@ -60,6 +60,7 @@ if CLIENT then
   Client ConVar
 
   env_hudhint_enable <0|1> - Enable 'env_hudhint' message.
+  game_text_force_glua <0|1> - Force game_text to use GLua HUD rendering. 0 = Prefer native C++ rendering, 1 = Force GLua rendering.
   sc_bshot_effect <0|1|2|3> - Enable bodyshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.
   sc_dynamic_fire <0|1> - Enable dynamic fire.
   sc_hshot_effect <0|1|2|3> - Enable headshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.
@@ -67,6 +68,7 @@ if CLIENT then
   snd_hshotvolume <float> - Volume of headshot sound effect.
   ]]
   _CreateClientConVar("env_hudhint_enable", "Enable 'env_hudhint' message", "1", 0, 1)
+  _CreateClientConVar("game_text_force_glua", "Force game_text to use GLua HUD rendering. 0 = Prefer native C++ rendering, 1 = Force GLua rendering.", "0", 0, 1)
   _CreateClientConVar("sc_bshot_effect", "Enable bodyshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.", "0", 0, 3)
   _CreateClientConVar("sc_dynamic_fire", "Enable dynamic fire.", "0", 0, 1)
   _CreateClientConVar("sc_hshot_effect", "Enable headshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.", "0", 0, 3)
