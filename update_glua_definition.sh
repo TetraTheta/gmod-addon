@@ -44,3 +44,5 @@ rm -f "$ZIP_FILE"
 rm -rf temp_extract
 
 echo "작업이 성공적으로 완료되었습니다!"
+read -r -n 1 -s -p "Press any key to continue..."
+echo
