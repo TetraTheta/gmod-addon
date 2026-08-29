@@ -6,14 +6,42 @@ DEFINE_BASECLASS("sc_point")
 ENT.Base = "sc_point"
 ENT.Type = "point"
 --
-function ENT:InputHideHudHint(_, _, _)
-  -- Dummy function because there is no way to hide notification.AddLegacy() message early
+local SF_HUDHINT_ALLPLAYERS = 1
+--
+---@param value string|nil
+---@param fallback number
+---@return number
+local function NumberFromString(value, fallback)
+  if not isstring(value) then return fallback end
+  return tonumber(value) or fallback
+end
+
+---@param msg string
+---@param ent Entity
+---@param activator Entity
+---@return nil
+local function SendHudHint(msg, ent, activator)
+  ---@diagnostic disable-next-line: undefined-field
+  local all_plys = bit.band(ent.SpawnFlags or ent:GetSpawnFlags(), SF_HUDHINT_ALLPLAYERS) ~= 0
+  if not all_plys and (not IsValid(activator) or not activator:IsPlayer()) then return end
+  net.Start(nw)
+  net.WriteString(msg)
+  if all_plys then
+    net.Broadcast()
+  else
+    net.Send(activator)
+  end
 end
 
 ---@param activator Entity
+---@return nil
+function ENT:InputHideHudHint(activator, _, _)
+  SendHudHint("", self, activator)
+end
+
+---@param activator Entity
+---@return nil
 function ENT:InputShowHudHint(activator, _, _)
-  if not activator:IsPlayer() then return end
-  ---@cast activator Player
   local vmsg = self.Message
   ---@cast vmsg string
   if vmsg == nil or vmsg == "" then
@@ -26,9 +54,7 @@ function ENT:InputShowHudHint(activator, _, _)
       -- No need to return here because other code won't be executed anyway
     end
   else
-    net.Start(nw)
-    net.WriteString(vmsg)
-    net.Send(activator)
+    SendHudHint(vmsg, self, activator)
   end
 end
 
@@ -36,9 +62,13 @@ end
 ---@param value string
 ---@return nil
 function ENT:SCApplyKeyValue(key, value)
-  if key:lower() == "message" then
+  local lkey = key:lower()
+  if lkey == "message" then
     self.Message = value
+  elseif lkey == "spawnflags" then
+    self.SpawnFlags = math.floor(NumberFromString(value, 0))
   else
+    ---@diagnostic disable-next-line: inject-field
     self[key] = value
   end
 end
