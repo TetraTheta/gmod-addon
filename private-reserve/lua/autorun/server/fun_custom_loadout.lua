@@ -59,7 +59,7 @@ local function GivePrivateReserveLoadout(p)
   -- Strip
   p:StripWeapons()
   -- Basic Weapons
-  p:Give("item_suit")
+  p:EquipSuit()
   p:Give("weapon_physgun")
   p:Give("gmod_tool")
   -- HL2 Weapons
@@ -70,8 +70,8 @@ local function GivePrivateReserveLoadout(p)
   -- SC Weapons
   p:Give("scw_colt_saa")
   p:Give("scw_mm_smg1")
-  p:Give("scw_mm_ar2")
-  p:Give("scw_mm_shotgun")
+  local w1 = p:Give("scw_mm_ar2")
+  local w2 = p:Give("scw_mm_shotgun")
   -- Ammo
   p:GiveAmmo(9999, "357", true)
   p:GiveAmmo(9999, "SMG1", true)
@@ -80,6 +80,10 @@ local function GivePrivateReserveLoadout(p)
   p:GiveAmmo(9999, "AR2AltFire", true)
   p:GiveAmmo(9999, "XBowBolt", true)
   p:GiveAmmo(9999, "Buckshot", true)
+  -- Tweak current and previous weapon
+  local cmd = p:GetCurrentCommand()
+  cmd:SelectWeapon(w1)
+  cmd:SelectWeapon(w2)
 end
 
 --[[
