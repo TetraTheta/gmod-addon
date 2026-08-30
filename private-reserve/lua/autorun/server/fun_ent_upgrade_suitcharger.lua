@@ -1,3 +1,4 @@
+-- Convert Suit Charger to Citadel Recharger
 hook.Add("OnEntityCreated", "PR_Upgrade_SuitCharger", function(e)
   timer.Simple(0.01, function()
     if not IsValid(e) then return end

@@ -1,3 +1,4 @@
+-- Replace picked up weapon
 local cv = GetConVar("pr_edit_weapon_pickup")
 
 ---@param p Player Player

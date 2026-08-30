@@ -1,3 +1,4 @@
+-- Get Entity data via concommand
 local b_bor = bit.bor
 local u_GetPlayerTrace = util.GetPlayerTrace
 local u_TraceLine = util.TraceLine

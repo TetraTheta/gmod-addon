@@ -1,3 +1,4 @@
+-- Change weapon spread for Engine-level weapons
 local weapon_spread = {
   weapon_pistol = Vector(0.005, 0.005, 0),
   weapon_ar2 = Vector(0.005, 0.005, 0),

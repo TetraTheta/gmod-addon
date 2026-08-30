@@ -1,3 +1,4 @@
+-- Encode/Decode dupe data as JSON
 ---@param name string
 ---@param extension string
 ---@return string

@@ -1,3 +1,4 @@
+-- Reload every weapon when killing NPC
 local cv = GetConVar("pr_enable_kill_reload")
 
 ---@param p Player

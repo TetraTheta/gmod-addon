@@ -1,3 +1,4 @@
+-- Use button via shooting it
 local cv_enable = GetConVar("pr_shoot_button_use_enable")
 local cv_excluded_weapons = GetConVar("pr_shoot_button_use_excluded_weapons")
 local cv_unlock = GetConVar("pr_shoot_button_use_unlock")

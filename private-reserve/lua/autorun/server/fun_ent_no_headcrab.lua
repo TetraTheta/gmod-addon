@@ -1,3 +1,4 @@
+-- Prevent headcrab creation after the death of its host
 local cv = GetConVar("pr_disable_headcrab")
 
 local remove_chance = 0.35 -- 35% chance of headcrab removal

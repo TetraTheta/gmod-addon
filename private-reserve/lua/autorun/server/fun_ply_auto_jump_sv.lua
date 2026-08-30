@@ -1,3 +1,4 @@
+-- Enable auto jump
 local cv_aj = GetConVar("pr_autojump")
 local cv_ajd = GetConVar("pr_autojump_delay")
 local def_act_delay = 0.75
