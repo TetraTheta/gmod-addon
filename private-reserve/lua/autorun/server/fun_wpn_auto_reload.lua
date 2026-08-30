@@ -1,3 +1,4 @@
+-- Reload weapon automatically after holstering
 if not ConVarExists("sk_auto_reload_time") then
   CreateConVar("sk_auto_reload_time", "3", { FCVAR_REPLICATED }, "Seconds before holstered weapons silently reload.", 0)
 end

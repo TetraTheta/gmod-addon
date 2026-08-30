@@ -1,3 +1,4 @@
+-- Open ammo crate via shooting it
 local cv = GetConVar("pr_enable_shoot_open_crate")
 
 hook.Add("PostEntityFireBullets", "PR_Shoot_Open_AmmoCrate", function(_, fb)

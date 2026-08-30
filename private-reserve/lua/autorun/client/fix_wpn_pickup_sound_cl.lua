@@ -1,3 +1,4 @@
+-- Play pickup sound and show notification for some weapon (CLIENT)
 net.Receive("PR_FixWeaponPickup_Notification", function()
   local class = net.ReadString()
   timer.Simple(0, function()

@@ -1,3 +1,4 @@
+-- Set entity's angle via concommand
 local ANGLE_CANDIDATES = { "0", "45", "90", "180", "270" }
 
 --[[

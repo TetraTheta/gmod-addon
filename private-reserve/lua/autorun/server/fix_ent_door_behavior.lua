@@ -1,3 +1,4 @@
+-- Fix weird animation of 'prop_door_rotating' when closing it
 hook.Add("PlayerUse", "PR_DoorUse", function(ply, _)
   local door = ply:GetUseEntity()
   if IsValid(door) and door:GetClass() == "prop_door_rotating" and door:GetInternalVariable("m_eDoorState") == 2 then

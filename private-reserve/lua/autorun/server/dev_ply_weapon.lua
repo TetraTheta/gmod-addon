@@ -1,3 +1,4 @@
+-- Manage player's weapon via concommand
 local TARGET_PLAYER_REQUIRED = "Target must be a player."
 local BASE_WEAPON_CLASSES = {
   "gmod_camera",

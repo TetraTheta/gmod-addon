@@ -1,3 +1,4 @@
+-- Change max health and max armor
 local cv = GetConVar("sk_suitcharger_citadel_maxarmor")
 
 hook.Add("PlayerSpawn", "PR_PlayerMaxArmor", function(ply, is_transition)

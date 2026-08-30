@@ -1,3 +1,4 @@
+-- Dead NPC throws its active weapon to killer
 local cv = GetConVar("pr_enable_flying_drops")
 
 hook.Add("OnNPCKilled", "PR_FlyingDrops", function(npc, attacker, _)

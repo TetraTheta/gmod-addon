@@ -1,3 +1,4 @@
+-- Get materials used by map or entity
 local e_GetAll = ents.GetAll
 local f_Exists = file.Exists
 local g_GetMap = game.GetMap

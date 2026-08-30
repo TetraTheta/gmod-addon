@@ -1,3 +1,4 @@
+-- Change weapon damage for some NPC
 local cv = GetConVar("pr_enable_special_damage")
 --
 local headcrabs = {

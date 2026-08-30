@@ -1,3 +1,4 @@
+-- Play pickup sound and show notification for some weapon (SERVER)
 util.AddNetworkString("PR_FixWeaponPickup_Notification")
 
 local target_weapon = {
