@@ -6,40 +6,35 @@ local target_weapon = {
   weapon_physcannon = true,
 }
 
----@param wep Entity
-local function EnableWeaponPickupSound(wep)
-  if not IsValid(wep) then return end
-  if not target_weapon[wep:GetClass()] then return end
-  wep:SetShouldPlayPickupSound(true)
-end
-
 --[[
 ################
 #     HOOK     #
 ################
 ]]
 
-hook.Add("InitPostEntity", "PR_FixWeaponPickup_InitPostEntity", function()
-  for class in pairs(target_weapon) do
-    for _, wep in ipairs(ents.FindByClass(class)) do
-      EnableWeaponPickupSound(wep)
-    end
-  end
-end)
-
-hook.Add("OnEntityCreated", "PR_FixWeaponPickup_OnEntityCreated", function(e)
-  timer.Simple(0, function() EnableWeaponPickupSound(e) end)
-end)
-
+---@param ply Player
+---@param wep Weapon
 hook.Add("PlayerCanPickupWeapon", "PR_FixWeaponPickup_PlayerCanPickupWeapon", function(ply, wep)
   if not IsValid(ply) or not IsValid(wep) then return end
   local cls = wep:GetClass()
   if target_weapon[cls] ~= true then return end
-  EnableWeaponPickupSound(wep)
+  if wep:GetOwner() == ply then return end
+  if wep["PR_FixWeaponPickup_IsNotifying"] then return end
+  local show_notification = ply:HasWeapon(cls)
+  wep["PR_FixWeaponPickup_IsNotifying"] = true
   timer.Simple(0, function()
-    if not IsValid(ply) or not ply:HasWeapon(cls) then return end
+    if not IsValid(ply) or not ply:HasWeapon(cls) then
+      if IsValid(wep) then wep["PR_FixWeaponPickup_IsNotifying"] = nil end
+      return
+    end
+    if IsValid(wep) and wep:GetOwner() ~= ply then
+      wep["PR_FixWeaponPickup_IsNotifying"] = nil
+      return
+    end
     net.Start("PR_FixWeaponPickup_Notification")
     net.WriteString(cls)
+    net.WriteBool(show_notification)
     net.Send(ply)
+    if IsValid(wep) then wep["PR_FixWeaponPickup_IsNotifying"] = nil end
   end)
 end)
