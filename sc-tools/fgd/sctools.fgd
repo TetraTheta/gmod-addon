@@ -17,6 +17,7 @@
 
 	input Kill(void) : "Removes this entity from the world."
 	input KillHierarchy(void) : "Removes this entity and all its children from the world."
+	input UpdateEnemyMemory(target_destination) : "Updates this NPC's memory of the target entity's location."
 ]
 
 @BaseClass base(Targetname, Origin) = sc_point
