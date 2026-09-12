@@ -63,28 +63,52 @@ _AddHooks("scaw_mp5sd")
 _AddHooks("scaw_mp5sd_clean")
 _AddHooks("scaw_pistol")
 _AddHooks("scaw_pistol_clean")
+
 --[[
 ############################################################
 #    PREVENT SECONDARY FIRE WHEN CONTEXT MENU IS OPENED    #
 ############################################################
 ]]
+local context_menu_weapons = {
+  scaw_mp5 = true,
+  scaw_mp5_clean = true,
+  scaw_mp5sd = true,
+  scaw_mp5sd_clean = true,
+  scaw_pistol = true,
+  scaw_pistol_clean = true,
+  scw_empty = true,
+  scw_fastcrowbar = true,
+  scw_mm_ar2 = true,
+  scw_mm_shotgun = true,
+  scw_mm_smg1 = true,
+  scw_mp5sd = true,
+  scw_scar20 = true,
+}
+
 if SERVER then
-  util.AddNetworkString("SCAW_ContextMenuState")
-  net.Receive("SCAW_ContextMenuState", function(_, ply)
+  util.AddNetworkString("SCW_ContextMenuState")
+  net.Receive("SCW_ContextMenuState", function(_, ply)
     local open = net.ReadBool()
-    ply:SetNWBool("SCAW_IsContextMenuOpened", open)
+    ply:SetNWBool("SCW_IsContextMenuOpened", open)
+  end)
+
+  ---@param ply any
+  ---@param cmd any
+  hook.Add("StartCommand", "SCW_ContextMenuSecondaryFire", function(ply, cmd)
+    local wep = ply:GetActiveWeapon()
+    if IsValid(wep) and context_menu_weapons[wep:GetClass()] and ply:GetNWBool("SCW_IsContextMenuOpened", false) then cmd:RemoveKey(IN_ATTACK2) end
   end)
 end
 
 if CLIENT then
-  hook.Add("OnContextMenuOpen", "SCAW_ContextMenuOpen", function()
-    net.Start("SCAW_ContextMenuState")
+  hook.Add("OnContextMenuOpen", "SCW_ContextMenuOpen", function()
+    net.Start("SCW_ContextMenuState")
     net.WriteBool(true)
     net.SendToServer()
   end)
 
-  hook.Add("OnContextMenuClose", "SCAW_ContextMenuClose", function()
-    net.Start("SCAW_ContextMenuState")
+  hook.Add("OnContextMenuClose", "SCW_ContextMenuClose", function()
+    net.Start("SCW_ContextMenuState")
     net.WriteBool(false)
     net.SendToServer()
   end)
