@@ -48,6 +48,25 @@ local function IsAlivePlayer(ent)
   return true
 end
 
+---@param name string
+---@param activator Entity
+---@param caller Entity
+---@param self_ent Entity
+---@return Entity|nil
+local function ResolveInputEntity(name, activator, caller, self_ent)
+  if name == "!activator" and IsValid(activator) then return activator end
+  if name == "!caller" and IsValid(caller) then return caller end
+  if name == "!player" then return player.GetAll()[1] end
+  if name == "!pvsplayer" then
+    for _, ply in ipairs(player.GetAll()) do
+      if IsAlivePlayer(ply) and self_ent:TestPVS(ply) then return ply end
+    end
+    return nil
+  end
+  if name == "!self" then return self_ent end
+  return ents.FindByName(name)[1]
+end
+
 ---@param inputName string
 ---@param activator Entity
 ---@param caller Entity
@@ -85,6 +104,23 @@ function ENT:InputKillHierarchy(_, _, _)
     v:Remove()
   end
   self:Remove()
+end
+
+---@return boolean
+function ENT:InputKilledNPC()
+  return true
+end
+
+---@param activator Entity
+---@param caller Entity
+---@param data string
+function ENT:InputUpdateEnemyMemory(activator, caller, data)
+  if not isstring(data) or data == "" then return end
+  local enemy = ResolveInputEntity(data, activator, caller, self)
+  if not IsValid(enemy) then return end
+  ---@cast enemy Entity
+  ---@diagnostic disable-next-line: redundant-parameter
+  self:UpdateEnemyMemory(enemy, enemy:GetPos())
 end
 
 ---@param key string

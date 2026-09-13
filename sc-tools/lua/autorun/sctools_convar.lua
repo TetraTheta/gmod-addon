@@ -55,6 +55,12 @@ if SERVER then
   _CreateStringConVar("sc_glow_name", "Which targetname of entities should be glowed?", "")
 end
 
+-- Debug ConVar
+if SERVER then
+  if not ConVarExists("debug_custommelee") then CreateConVar("debug_custommelee", "0", { FCVAR_ARCHIVE }, "Enable Custom Melee debug logs.") end
+  if not ConVarExists("debug_shadow_walker") then CreateConVar("debug_shadow_walker", "0", { FCVAR_ARCHIVE }, "Enable Shadow Walker debug logs.") end
+end
+
 if CLIENT then
   --[[
   Client ConVar
