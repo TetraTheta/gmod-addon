@@ -4,24 +4,14 @@ Map:
 - interlopers_jimonions
 - overflow
 ]]
---[[
-###########################
-#  interlopers_jimonions  #
-###########################
-]]
-hook.Add("PlayerSpawn", "FixMap_TFJ_interlopers_jimonions", function(ply, _)
-  if SERVER and (game.GetMap() == "interlopers_jimonions") then
-    ply:SetPos(Vector(-320, -1264, -8176))
-    ply:SetEyeAngles(Angle(0, 90, 0))
-  end
-end)
---[[
-##############
-#  overflow  #
-##############
-]]
+
 hook.Add("InitPostEntity", "FixMap_TFJ_overflow", function()
   if SERVER and game.GetMap() == "overflow" then
+    --[[
+    ##############
+    #  overflow  #
+    ##############
+    ]]
     local mathCounter = ents.FindByName("bridge_wave2_counter")[1]
     mathCounter:Input("AddOutput", mathCounter, nil, "OnHitMax apc01_bullseye,Break,,11,1")
     mathCounter:Input("AddOutput", mathCounter, nil, "OnHitMax apc01_driver,SetRelationship,!player D_HT 9999,11,1")
@@ -36,5 +26,17 @@ hook.Add("InitPostEntity", "FixMap_TFJ_overflow", function()
     mathCounter:Input("AddOutput", mathCounter, nil, "OnHitMax sniper_tank,Deactivate,,11.01,1")
     mathCounter:Input("AddOutput", mathCounter, nil, "OnHitMax sniper_tank,Kill,,11.1,1")
     mathCounter:Input("AddOutput", mathCounter, nil, "OnHitMax sniper_controlvolume,Kill,,11.1,1")
+  end
+end)
+
+hook.Add("PlayerSpawn", "FixMap_TFJ_interlopers_jimonions", function(ply, _)
+  if game.GetMap() == "interlopers_jimonions" then
+    --[[
+    ###########################
+    #  interlopers_jimonions  #
+    ###########################
+    ]]
+    ply:SetPos(Vector(-320, -1264, -8176))
+    ply:SetEyeAngles(Angle(0, 90, 0))
   end
 end)

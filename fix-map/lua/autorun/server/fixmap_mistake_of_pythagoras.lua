@@ -3,8 +3,10 @@ Mod: Mistake of Pythagoras
 Map:
 - ks_mop_pita3
 ]]
-hook.Add("InitPostEntity", "FixMap_MOP_ks_mop_pita3", function()
-  if SERVER and game.GetMap() == "ks_mop_pita3" then
+
+hook.Add("InitPostEntity", "FixMap_MOP_InitPostEntity", function()
+  if not SERVER then return end
+  if game.GetMap() == "ks_mop_pita3" then
     local ax1_exists = false
     for _, v in ents.Iterator() do
       if v:GetClass() == "npc_alyx" and v:GetName() == "ax1" then ax1_exists = true end

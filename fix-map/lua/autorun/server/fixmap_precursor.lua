@@ -4,8 +4,8 @@ Map:
 - r_map7
 ]]
 
----@param ent Entity
 hook.Add("OnEntityCreated", "FixMap_Precursor_OnEntityCreated", function(ent)
+  if not SERVER then return end
   if game.GetMap() ~= "r_map7" then return end
   timer.Simple(0, function()
     if not IsValid(ent) or ent:GetClass() ~= "npc_hunter" or ent:GetName() ~= "hunter_boss" then return end

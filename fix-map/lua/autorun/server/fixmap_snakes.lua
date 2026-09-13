@@ -8,6 +8,7 @@ Map:
 - beta5f
 - beta6f
 ]]
+
 ---@param curmap string
 ---@param nextmap string
 ---@param origin Vector
@@ -31,7 +32,7 @@ local function CreateChangeLevel(curmap, nextmap, origin)
   end
 end
 
-hook.Add("InitPostEntity", "FixMap_Snakes_ChangeLevel", function()
+hook.Add("InitPostEntity", "FixMap_Snakes_InitPostEntity", function()
   if SERVER then
     local cmap = game.GetMap()
     if cmap == "beta1f" then
@@ -75,13 +76,13 @@ hook.Add("InitPostEntity", "FixMap_Snakes_ChangeLevel", function()
   end
 end)
 
---[[
-############
-#  beta6f  #
-############
-]]
-hook.Add("PlayerSpawn", "FixMap_Snakes_beta6f", function(ply, _)
-  if SERVER and (game.GetMap() == "beta6f") then
+hook.Add("PlayerSpawn", "FixMap_Snakes_PlayerSpawn", function(ply, _)
+  if game.GetMap() == "beta6f" then
+    --[[
+    ############
+    #  beta6f  #
+    ############
+    ]]
     ply:SetPos(Vector(3287, -1349.43, -50))
     ply:SetEyeAngles(Angle(0, 0, 0))
   end

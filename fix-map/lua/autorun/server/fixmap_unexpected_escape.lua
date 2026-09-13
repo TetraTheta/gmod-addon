@@ -3,8 +3,10 @@ Mod: Unexpected Escape
 Map:
 - prisoncellep2_1
 ]]
+
 hook.Add("InitPostEntity", "FixMap_UE_prisoncellep2_1", function()
-  if SERVER and game.GetMap() == "prisoncellep2_1" then
+  if not SERVER then return end
+  if game.GetMap() == "prisoncellep2_1" then
     local equip = ents.Create("game_player_equip")
     equip:SetPos(Vector(1144, 944, -1015))
     equip:Spawn()
