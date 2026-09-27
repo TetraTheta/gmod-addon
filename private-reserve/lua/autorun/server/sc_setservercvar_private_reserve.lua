@@ -161,7 +161,7 @@ bridge.Register({
   pr_edit_weapon_pickup = { type = "bool", default = "0" },
   pr_enable_flying_drops = { type = "bool", default = "0" },
   pr_enable_kill_reload = { type = "bool", default = "0" },
-  pr_enable_loadout = { type = "bool", default = "0" },
+  pr_enable_loadout = { type = "int", default = "0", min = 0, max = 2 },
   pr_enable_shoot_open_crate = { type = "bool", default = "0" },
   pr_enable_special_damage = { type = "bool", default = "0" },
   pr_shoot_button_use_enable = { type = "bool", default = "0" },

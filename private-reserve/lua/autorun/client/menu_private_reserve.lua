@@ -10,7 +10,11 @@ hook.Add("PopulateToolMenu", "PrivateReserveSettingsMenu", function()
 
     menu_lib.AddServerCheckBox(panel, "Auto jump", "pr_autojump", setterCmd, "Continuously jumps for players on the server-managed auto-jump mode.")
     menu_lib.AddServerSlider(panel, "Auto jump delay", "pr_autojump_delay", setterCmd, 0, 5, 2, "Seconds IN_JUMP must be held before auto jump starts.")
-    menu_lib.AddServerCheckBox(panel, "Automatic loadout", "pr_enable_loadout", setterCmd, "Enables Private Reserve's automatic loadout management.")
+    menu_lib.AddServerComboBox(panel, "Automatic loadout mode", "pr_enable_loadout", setterCmd, "Controls how Private Reserve handles the player's starting loadout.", {
+      { label = "Preserve",      value = "0" },
+      { label = "Fill if empty", value = "1" },
+      { label = "Replace",       value = "2" }
+    })
     menu_lib.AddServerCheckBox(panel, "Disable zombie headcrabs", "pr_disable_headcrab", setterCmd, "Prevents headcrabs from detaching when zombies die.")
     menu_lib.AddServerCheckBox(panel, "Edit weapon pickup", "pr_edit_weapon_pickup", setterCmd, "Allows custom pickup behavior for supported weapons.")
     menu_lib.AddServerCheckBox(panel, "Flying weapon drops", "pr_enable_flying_drops", setterCmd, "Lets dropped weapons keep more momentum after they are thrown from players.")

@@ -13,9 +13,14 @@ local cv_sbox_weapons = GetConVar("sbox_weapons")
 hook.Add("PlayerLoadout", "PR_CustomLoadout", function(p)
   if not cv_enable then cv_enable = GetConVar("pr_enable_loadout") end
   if not cv_sbox_weapons then cv_sbox_weapons = GetConVar("sbox_weapons") end
-  if not cv_enable:GetBool() then return end
-  if cv_sbox_weapons:GetBool() then
+  local mode = cv_enable:GetInt()
+  if mode == 0 then return end
+  if mode == 1 and #p:GetWeapons() > 0 then return true end
+  if mode == 2 then
+    p:StripWeapons()
     p:RemoveAllAmmo()
+  end
+  if cv_sbox_weapons:GetBool() then
     -- Ammo
     p:GiveAmmo(256, "Pistol", true)
     p:GiveAmmo(256, "SMG1", true)

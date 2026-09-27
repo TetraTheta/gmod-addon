@@ -25,7 +25,7 @@ pr_disable_headcrab <0|1> - Disable headcrab detachment from dead zombies. 0 = E
 pr_edit_weapon_pickup <0|1> - Enable custom weapon pickup for certain weapons. 0 = Disable, 1 = Enable.
 pr_enable_flying_drops <0|1> - Enable flying weapon drops. 0 = Disable, 1 = Enable.
 pr_enable_kill_reload <0|1> - Reload current weapon when kill. 0 = Disable, 1 = Enable.
-pr_enable_loadout <0|1> - Enable automatic loadout management. 0 = Disable, 1 = Enable.
+pr_enable_loadout <0|1|2> - Automatic loadout mode. 0 = Preserve, 1 = Fill if empty, 2 = Replace.
 pr_enable_shoot_open_crate <0|1> - Enable opening Ammo Crate by shooting it. 0 = Disable, 1 = Enable.
 pr_enable_special_damage <0|1> - Modify damage when using certain weapons. 0 = Disable, 1 = Enable.
 pr_shoot_button_use_enable <0|1> - Use buttons and doors hit by player bullets. 0 = Disable, 1 = Enable.
@@ -38,7 +38,7 @@ _CreateConVar("pr_disable_headcrab", "Disable headcrab detachment from dead zomb
 _CreateConVar("pr_edit_weapon_pickup", "Enable custom weapon pickup for certain weapons. 0 = Disable, 1 = Enable.", "0", 0, 1)
 _CreateConVar("pr_enable_flying_drops", "Enable flying weapon drops. 0 = Disable, 1 = Enable.", "0", 0, 1)
 _CreateConVar("pr_enable_kill_reload", "Reload current weapon when kill. 0 = Disable, 1 = Enable.", "0", 0, 1)
-_CreateConVar("pr_enable_loadout", "Enable automatic loadout management. 0 = Disable, 1 = Enable.", "0", 0, 1)
+_CreateConVar("pr_enable_loadout", "Automatic loadout mode. 0 = Preserve, 1 = Fill if empty, 2 = Replace.", "0", 0, 2)
 _CreateConVar("pr_enable_shoot_open_crate", "Enable opening Ammo Crate by shooting it. 0 = Disable, 1 = Enable.", "0", 0, 1)
 _CreateConVar("pr_enable_special_damage", "Modify damage when using certain weapons. 0 = Disable, 1 = Enable.", "0", 0, 1)
 _CreateConVar("pr_shoot_button_use_enable", "Use buttons and doors hit by player bullets. 0 = Disable, 1 = Enable.", "0", 0, 1)
