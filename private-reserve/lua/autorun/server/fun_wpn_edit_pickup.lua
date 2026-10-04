@@ -1,27 +1,76 @@
 -- Replace picked up weapon
 local cv = GetConVar("pr_edit_weapon_pickup")
 
----@param p Player Player
----@param wep Weapon Weapon for picking up
----@param target_class string Additional/Alternative weapon class
----@param is_replacement boolean true: alternative / false: additional
----@param ammo_count number|nil Additional ammo
----@param ammo_type string|nil Additional ammo type
-local function EditPickupWeapon(p, wep, target_class, is_replacement, ammo_count, ammo_type)
-  if not IsValid(wep) or wep["PR_IsBeingPickedUp"] then return false end
-  wep["PR_IsBeingPickedUp"] = true
-  if p:HasWeapon(target_class) then
-    if ammo_count and ammo_type then
-      p:GiveAmmo(ammo_count, ammo_type, false)
-    end
-    wep:Remove()
-    return false
+---@class PickupWeaponReplacement
+---@field ammo_count integer
+---@field ammo_type string
+---@field target_class string
+local weapon_replacements = {
+  weapon_ar2 = {
+    ammo_count = 256,
+    ammo_type = "AR2",
+    target_class = "scw_mm_ar2"
+  },
+  weapon_shotgun = {
+    ammo_count = 256,
+    ammo_type = "Buckshot",
+    target_class = "scw_mm_shotgun"
+  },
+  weapon_smg1 = {
+    ammo_count = 256,
+    ammo_type = "SMG1",
+    target_class = "scw_mm_smg1"
+  }
+}
+local spawn_menu_gives = {}
+
+--
+
+---@param ply Player
+---@param wep_cls string
+local function ClearSpawnMenuGive(ply, wep_cls)
+  if spawn_menu_gives[ply] == wep_cls then spawn_menu_gives[ply] = nil end
+end
+
+---@param ply Player
+---@param src_cls string
+---@param replacement PickupWeaponReplacement
+local function EditPickupWeapon(ply, src_cls, replacement)
+  if not IsValid(ply) then return end
+  ply:SetSuppressPickupNotices(false)
+  if not ply:Alive() or not ply:HasWeapon(src_cls) then return end
+  if not ply:HasWeapon(replacement.target_class) then
+    local target_wep = ply:Give(replacement.target_class)
+    if not IsValid(target_wep) then return end
   end
-  p:Give(target_class)
-  if ammo_count and ammo_type then
-    p:GiveAmmo(ammo_count, ammo_type, false)
+  ply:StripWeapon(src_cls)
+  ply:GiveAmmo(replacement.ammo_count, replacement.ammo_type, false)
+end
+
+---@param ply Player
+---@param wep_cls string
+---@param spawn_info table
+local function OnPlayerGiveSWEP(ply, wep_cls, spawn_info)
+  local spawn_cls = spawn_info.ClassName or wep_cls
+  if not weapon_replacements[spawn_cls] then return end
+  spawn_menu_gives[ply] = spawn_cls
+  timer.Simple(0, function() ClearSpawnMenuGive(ply, spawn_cls) end)
+end
+
+---@param wep Weapon
+---@param ply Player
+local function OnWeaponEquip(wep, ply)
+  if not cv then cv = GetConVar("pr_edit_weapon_pickup") end
+  if not cv:GetBool() then return end
+  local src_cls = wep:GetClass()
+  local replacement = weapon_replacements[src_cls]
+  if not replacement then return end
+  if spawn_menu_gives[ply] == src_cls then
+    spawn_menu_gives[ply] = nil
+    return
   end
-  return not is_replacement
+  ply:SetSuppressPickupNotices(true)
+  timer.Simple(0, function() EditPickupWeapon(ply, src_cls, replacement) end)
 end
 
 --[[
@@ -30,19 +79,5 @@ end
 ################
 ]]
 
-hook.Add("PlayerCanPickupWeapon", "PR_AdditionalWeaponPickup", function(p, wep)
-  if not cv then cv = GetConVar("pr_edit_weapon_pickup") end
-  if not cv:GetBool() then return end
-  local cls = wep:GetClass()
-
-  if cls == "weapon_smg1" then
-    -- 'weapon_smg1' -> 'scw_mm_smg1'
-    return EditPickupWeapon(p, wep, "scw_mm_smg1", true, 256, "SMG1")
-  elseif cls == "weapon_ar2" then
-    -- 'weapon_ar2' -> 'scw_mm_ar2'
-    return EditPickupWeapon(p, wep, "scw_mm_ar2", true, 256, "AR2")
-  elseif cls == "weapon_shotgun" then
-    -- 'weapon_shotgun' -> 'scw_mm_shotgun'
-    return EditPickupWeapon(p, wep, "scw_mm_shotgun", true, 256, "Buckshot")
-  end
-end)
+hook.Add("PlayerGiveSWEP", "PR_EditWeaponPickup_PlayerGiveSWEP", OnPlayerGiveSWEP)
+hook.Add("WeaponEquip", "PR_EditWeaponPickup_WeaponEquip", OnWeaponEquip)
