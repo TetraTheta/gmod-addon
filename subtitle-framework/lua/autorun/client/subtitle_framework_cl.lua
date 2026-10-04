@@ -51,10 +51,12 @@ end
 ---Formats a localized phrase for the caption renderer.
 ---@param text string
 ---@param col Color
+---@param prefix string?
+---@param suffix string?
 ---@return string
-local function FormatPhrase(text, col)
+local function FormatPhrase(text, col, prefix, suffix)
   local phrase = language.GetPhrase(text):gsub("\r", ""):gsub("\n", "<cr>")
-  return string.format("<clr:%d,%d,%d>%s", col.r, col.g, col.b, phrase)
+  return string.format("<clr:%d,%d,%d>%s%s%s", col.r, col.g, col.b, prefix or "", phrase, suffix or "")
 end
 
 ---Returns the subtitle registered for a sound script or file path.
@@ -83,8 +85,8 @@ local function LoadSubtitles()
       if sub_data.snd and sub_data.text then
         local caption = sub_data.closedcaption and "<sfx>" or ""
 
-        if sub_data.subject then
-          caption = caption .. FormatPhrase(sub_data.subject, sub_data.subjectcol or color_white) .. " "
+        if sub_data.subject and sub_data.subject ~= "" then
+          caption = caption .. FormatPhrase(sub_data.subject, sub_data.subjectcol or color_white, "[", "]") .. " "
         end
 
         caption = caption .. FormatPhrase(sub_data.text, sub_data.textcol or color_white)

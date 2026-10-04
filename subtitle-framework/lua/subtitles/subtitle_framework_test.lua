@@ -28,7 +28,7 @@ local sub_tbl = {
     duration = 5,
     range = 512,
     snd = "SIMPLEST_SUBTITLE_TEST_4",
-    subject = "G-Man:",
+    subject = "G-Man",
     subjectcol = Color(25, 25, 255, 255),
     text = "Doctorrr freeeemaaaan \nSeems like you only just arrived"
   },
@@ -36,7 +36,7 @@ local sub_tbl = {
     duration = 5,
     range = 512,
     snd = "SIMPLEST_SUBTITLE_TEST_5",
-    subject = "M4-Sopmod II:",
+    subject = "M4-Sopmod II",
     subjectcol = Color(25, 255, 25, 255),
     text = "*japanese talk* Shkikan *japanese talk*"
   }
