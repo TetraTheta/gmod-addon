@@ -52,13 +52,13 @@ resolve_target() {
   case "$lower" in
     1|cheat-map|cheat_map) echo "cheat-map" ;;
     2|dark-mode|dark_mode) echo "dark-mode" ;;
-    3|fix-map|fix_map) echo "fix-map" ;;
-    4|more-properties|more_properties) echo "more-properties" ;;
-    5|private-reserve|private_reserve) echo "private-reserve" ;;
-    6|sc-killfeed|sc_killfeed) echo "sc-killfeed" ;;
-    7|sc-tools|sc_tools) echo "sc-tools" ;;
-    8|sc-turrets|sc_turrets) echo "sc-turrets" ;;
-    9|sc-weapons|sc_weapons) echo "sc-weapons" ;;
+    3|particle-loader|particle_loader) echo "particle-loader" ;;
+    4|private-reserve|private_reserve) echo "private-reserve" ;;
+    5|sc-killfeed|sc_killfeed) echo "sc-killfeed" ;;
+    6|sc-tools|sc_tools) echo "sc-tools" ;;
+    7|sc-turrets|sc_turrets) echo "sc-turrets" ;;
+    8|sc-weapons|sc_weapons) echo "sc-weapons" ;;
+    9|subtitle-framework|subtitle_framework) echo "subtitle-framework" ;;
     *) echo "" ;;
   esac
 }
@@ -68,13 +68,13 @@ show_target_prompt() {
     echo "What do you want to build?"
     echo "[1] Cheat Map"
     echo "[2] Dark Mode"
-    echo "[3] Fix Map"
-    echo "[4] More Properties"
-    echo "[5] Private Reserve"
-    echo "[6] SC Killfeed"
-    echo "[7] SC Tools"
-    echo "[8] SC Turrets"
-    echo "[9] SC Weapons"
+    echo "[3] Particle Loader"
+    echo "[4] Private Reserve"
+    echo "[5] SC Killfeed"
+    echo "[6] SC Tools"
+    echo "[7] SC Turrets"
+    echo "[8] SC Weapons"
+    echo "[9] Subtitle Framework"
   } >&2
   read -r -p "Choice: " choice_arg post_arg >&2 || true
   local target
