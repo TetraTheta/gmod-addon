@@ -43,6 +43,8 @@ local function EditPickupWeapon(ply, src_cls, replacement)
     local target_wep = ply:Give(replacement.target_class)
     if not IsValid(target_wep) then return end
   end
+  local active_wep = ply:GetActiveWeapon()
+  if IsValid(active_wep) and active_wep:GetClass() == src_cls then ply:SelectWeapon(replacement.target_class) end
   ply:StripWeapon(src_cls)
   ply:GiveAmmo(replacement.ammo_count, replacement.ammo_type, false)
 end
