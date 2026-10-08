@@ -70,6 +70,7 @@ if CLIENT then
   sc_bshot_effect <0|1|2|3> - Enable bodyshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.
   sc_dynamic_fire <0|1> - Enable dynamic fire.
   sc_hshot_effect <0|1|2|3> - Enable headshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.
+  sc_prop_climbing <0|1> - Allow the player to jump from movable props reliably.
   snd_bshotvolume <float> - Volume of bodyshot sound effect.
   snd_hshotvolume <float> - Volume of headshot sound effect.
   ]]
@@ -78,6 +79,7 @@ if CLIENT then
   _CreateClientConVar("sc_bshot_effect", "Enable bodyshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.", "0", 0, 3)
   _CreateClientConVar("sc_dynamic_fire", "Enable dynamic fire.", "0", 0, 1)
   _CreateClientConVar("sc_hshot_effect", "Enable headshot effect (Sound, UI). 0 = Disable, 1 = Sound, 2 = UI, 3 = Both.", "0", 0, 3)
+  _CreateClientConVar("sc_prop_climbing", "Allow the player to jump from movable props reliably.", "0", 0, 1)
   _CreateClientConVar("snd_bshotvolume", "Volume of bodyshot sound effect.", "1.0", 0, 1)
   _CreateClientConVar("snd_hshotvolume", "Volume of headshot sound effect.", "1.0", 0, 1)
 end

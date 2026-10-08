@@ -5,6 +5,7 @@ local setter_cmd = "sc_setservercvar"
 local function AddClientMenu(panel)
   panel:Clear()
   menu_lib.AddClientCheckBox(panel, "Dynamic fire", "sc_dynamic_fire", "Enables local dynamic fire effects.")
+  menu_lib.AddClientCheckBox(panel, "Enable prop climbing", "sc_prop_climbing", "Allows you to jump reliably from movable props.")
   menu_lib.AddClientCheckBox(panel, "Force GLua game_text rendering", "game_text_force_glua", "Forces game_text to use GLua HUD rendering instead of native rendering.")
   menu_lib.AddClientCheckBox(panel, "Re-enable env_hudhint", "env_hudhint_enable", "Shows local env_hudhint map messages.")
 end
